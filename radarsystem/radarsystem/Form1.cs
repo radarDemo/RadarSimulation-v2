@@ -547,6 +547,31 @@ namespace radarsystem
 
             }
 
+            //如果场景是声呐（主动）
+            if (scene == Scene.ACT_SONAR)  
+            {
+                featurelistView.Items.Add("探测距离");
+                featurelistView.Items[++i].SubItems.Add("<40km");
+                featurelistView.Items[i].SubItems.Add("<40km");
+
+                featurelistView.Items.Add("方位");
+                featurelistView.Items[++i].SubItems.Add("0~2*pi");
+                featurelistView.Items[i].SubItems.Add("0~2*pi");
+            }
+            else if (scene == Scene.PAS_SONAR)
+            {
+                featurelistView.Items.Add("方位");
+                featurelistView.Items[++i].SubItems.Add("0~2*pi");
+                featurelistView.Items[i].SubItems.Add("0~2*pi");
+            }
+            else if (scene == Scene.ELEC_VS)
+            {
+                featurelistView.Items.Add("方位");
+                featurelistView.Items[++i].SubItems.Add("0~2*pi");
+                featurelistView.Items[i].SubItems.Add("0~2*pi");
+            }
+
+
             featurelistView.View = System.Windows.Forms.View.Details;
             featurelistView.GridLines = true;
             featurelistView.EndUpdate();

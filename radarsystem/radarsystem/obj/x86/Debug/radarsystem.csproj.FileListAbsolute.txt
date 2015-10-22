@@ -140,3 +140,16 @@ C:\Users\Administrator\Desktop\新建文件夹 (5)\RadarSimulation\radarsystem\r
 C:\Users\Administrator\Desktop\新建文件夹 (5)\RadarSimulation\radarsystem\radarsystem\obj\x86\Debug\radarsystem.Form1.resources
 C:\Users\Administrator\Desktop\新建文件夹 (5)\RadarSimulation\radarsystem\radarsystem\obj\x86\Debug\radarsystem.Properties.Resources.resources
 C:\Users\Administrator\Desktop\新建文件夹 (5)\RadarSimulation\radarsystem\radarsystem\obj\x86\Debug\radarsystem.csproj.GenerateResource.Cache
+C:\Users\Administrator\Documents\GitHub\RadarSimulation-v2\radarsystem\radarsystem\obj\x86\Debug\Interop.MapXLib.dll
+C:\Users\Administrator\Documents\GitHub\RadarSimulation-v2\radarsystem\radarsystem\obj\x86\Debug\AxInterop.MapXLib.dll
+C:\Users\Administrator\Documents\GitHub\RadarSimulation-v2\radarsystem\radarsystem\obj\x86\Debug\radarsystem.csproj.ResolveComReference.cache
+C:\Users\Administrator\Documents\GitHub\RadarSimulation-v2\radarsystem\radarsystem\obj\x86\Debug\radarsystem.exe
+C:\Users\Administrator\Documents\GitHub\RadarSimulation-v2\radarsystem\radarsystem\obj\x86\Debug\radarsystem.pdb
+C:\Users\Administrator\Documents\GitHub\RadarSimulation-v2\radarsystem\radarsystem\bin\x86\Debug\radarsystem.exe
+C:\Users\Administrator\Documents\GitHub\RadarSimulation-v2\radarsystem\radarsystem\bin\x86\Debug\radarsystem.pdb
+C:\Users\Administrator\Documents\GitHub\RadarSimulation-v2\radarsystem\radarsystem\bin\x86\Debug\Interop.MapXLib.dll
+C:\Users\Administrator\Documents\GitHub\RadarSimulation-v2\radarsystem\radarsystem\bin\x86\Debug\AxInterop.MapXLib.dll
+C:\Users\Administrator\Documents\GitHub\RadarSimulation-v2\radarsystem\radarsystem\obj\x86\Debug\radarsystem.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\GitHub\RadarSimulation-v2\radarsystem\radarsystem\obj\x86\Debug\radarsystem.Form1.resources
+C:\Users\Administrator\Documents\GitHub\RadarSimulation-v2\radarsystem\radarsystem\obj\x86\Debug\radarsystem.Properties.Resources.resources
+C:\Users\Administrator\Documents\GitHub\RadarSimulation-v2\radarsystem\radarsystem\obj\x86\Debug\radarsystem.csproj.GenerateResource.Cache
