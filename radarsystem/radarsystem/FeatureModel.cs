@@ -283,14 +283,13 @@ namespace radarsystem
         /**
          * 计算频域特性：傅立叶
          **/
-        public List<PointD>[] getFrequentFFTFeature(List<PointD> list)
+        public List<PointD> getFrequentFFTFeature(List<PointD> list)
         {
-            List<PointD>[] fftList = new List<PointD>[list.Count];
-            for(int i=0;i<list.Count;i++)
-            {
-                //首先将实数转为复数数组，接着进行傅立叶变换，之后将复数变换成实数
-                fftList[i] = complexToReal(FFT(realToComplex(list),false));
-            }
+            List<PointD> fftList = new List<PointD>();
+           
+            //首先将实数转为复数数组，接着进行傅立叶变换，之后将复数变换成实数
+            fftList = complexToReal(FFT(realToComplex(list),false));
+            
 
             return fftList;
 
@@ -298,14 +297,13 @@ namespace radarsystem
         }
 
         //反傅立叶变换
-        public List<PointD>[] getFrequentIFFTFeature(List<PointD> list)
+        public List<PointD> getFrequentIFFTFeature(List<PointD> list)
         {
-            List<PointD>[] ifftList = new List<PointD>[list.Count];
-            for (int i = 0; i < list.Count; i++)
-            {
-                //首先将实数转为复数数组，接着进行傅立叶变换，之后将复数变换成实数
-                ifftList[i] = complexToReal(FFT(realToComplex(list), true));
-            }
+            List<PointD> ifftList = new List<PointD>();
+        
+              //首先将实数转为复数数组，接着进行傅立叶变换，之后将复数变换成实数
+              ifftList = complexToReal(FFT(realToComplex(list), true));
+           
 
             return ifftList;
 

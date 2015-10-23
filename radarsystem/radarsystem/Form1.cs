@@ -689,7 +689,7 @@ namespace radarsystem
             featurelistView.GridLines = true;
             featurelistView.EndUpdate();
 
-            
+            //画出频率分析轨迹
 
 
             
