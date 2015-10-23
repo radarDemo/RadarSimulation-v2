@@ -83,10 +83,10 @@ namespace radarsystem
         public static PointD[] addUniformNoise(PointD[] points,double XA,double XB,double YA,double YB)
         {
             PointD[] noisePoint = new PointD[points.Length];
-            Random r = new Random();   //以系统时间为种子，生成伪随机数，这个函数不能放在for循环中，否则生成的是类似于 1，1，1，2，3，3，3.
+            Random r;
             for (int i = 0; i < points.Length; i++)
             {
-               
+                r = new Random();
                 
                 noisePoint[i] = new PointD();
                 noisePoint[i].X = points[i].X + r.Next((int)XA,(int)XB);
