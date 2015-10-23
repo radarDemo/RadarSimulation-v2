@@ -611,7 +611,7 @@ namespace radarsystem
 
             }
 
-<<<<<<< HEAD
+
             //如果场景是声呐（主动）
             if (scene == Scene.ACT_SONAR)  
             {
@@ -670,8 +670,7 @@ namespace radarsystem
             }
 
 
-=======
->>>>>>> origin/master
+
             featurelistView.View = System.Windows.Forms.View.Details;
             featurelistView.GridLines = true;
             featurelistView.EndUpdate();
