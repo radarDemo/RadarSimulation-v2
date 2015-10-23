@@ -511,6 +511,7 @@ namespace radarsystem
             this.groupBox4.Visible = false;
             this.groupBox5.Visible = false;
             this.groupBox6.Visible = false;
+            this.mixtrailButton.Visible = false;
             
         }
      
@@ -529,9 +530,9 @@ namespace radarsystem
             
             //int showIndex = featurecomboBox1.SelectedIndex;
             string selectedText = featurecomboBox1.SelectedItem.ToString();
-            long selectedId = Convert.ToInt64(selectedText);
-     //       int index = arr_tar.IndexOf(selectedId);
-            int index =(int) selectedId;
+            int selectedId =(int) Convert.ToInt64(selectedText);
+            int index = arr_tar.IndexOf(selectedId);
+            //int index =(int) selectedId;
             FeatureModel feature = new FeatureModel();
             Dictionary<String, double> featDicX;
             Dictionary<String, double> featDicY; 
@@ -1980,6 +1981,28 @@ namespace radarsystem
         private void mixtrailButton_Click(object sender, EventArgs e)
         {
             //点击了轨迹融合按钮，之后
+            if (hasChoosedRadar == 2)
+            {
+                if (this.dopplercheckBox.CheckState == CheckState.Checked)   
+                {
+                    if (this.multpBasecheckBox.Checked == true)       //选择了多基地雷达和多普勒雷达
+                    {
+
+                    }
+                    else                  //选择了多普勒雷达和超视距雷达
+                    {
+
+                    }
+                }
+                else                 //选择了多基地和超视距雷达
+                {
+
+                }
+            }
+            else
+            {
+                MessageBox.Show("限定选择两个雷达");
+            }
         }
         
       

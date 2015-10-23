@@ -45,6 +45,7 @@ namespace radarsystem
             this.label1 = new System.Windows.Forms.Label();
             this.featurecomboBox1 = new System.Windows.Forms.ComboBox();
             this.tbp_SceneSet = new System.Windows.Forms.TabPage();
+            this.mixtrailButton = new System.Windows.Forms.Button();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
@@ -103,7 +104,6 @@ namespace radarsystem
             this.axMap1 = new AxMapXLib.AxMap();
             this.textBox_doppler = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.mixtrailButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tbp_CharacterAnalysis.SuspendLayout();
@@ -287,10 +287,20 @@ namespace radarsystem
             this.tbp_SceneSet.Text = "岸基场景设置";
             this.tbp_SceneSet.UseVisualStyleBackColor = true;
             // 
+            // mixtrailButton
+            // 
+            this.mixtrailButton.Location = new System.Drawing.Point(778, 281);
+            this.mixtrailButton.Name = "mixtrailButton";
+            this.mixtrailButton.Size = new System.Drawing.Size(75, 23);
+            this.mixtrailButton.TabIndex = 37;
+            this.mixtrailButton.Text = "轨迹融合";
+            this.mixtrailButton.UseVisualStyleBackColor = true;
+            this.mixtrailButton.Click += new System.EventHandler(this.mixtrailButton_Click);
+            // 
             // pictureBox5
             // 
             this.pictureBox5.InitialImage = null;
-            this.pictureBox5.Location = new System.Drawing.Point(580, 479);
+            this.pictureBox5.Location = new System.Drawing.Point(708, 477);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(60, 56);
             this.pictureBox5.TabIndex = 36;
@@ -302,7 +312,7 @@ namespace radarsystem
             // 
             this.pictureBox3.Image = global::radarsystem.Properties.Resources.duopule;
             this.pictureBox3.InitialImage = null;
-            this.pictureBox3.Location = new System.Drawing.Point(645, 478);
+            this.pictureBox3.Location = new System.Drawing.Point(580, 478);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(60, 56);
             this.pictureBox3.TabIndex = 35;
@@ -610,7 +620,7 @@ namespace radarsystem
             this.pictureBox4.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox4.BackgroundImage = global::radarsystem.Properties.Resources.duopule;
             this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pictureBox4.Location = new System.Drawing.Point(710, 478);
+            this.pictureBox4.Location = new System.Drawing.Point(646, 478);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(58, 56);
             this.pictureBox4.TabIndex = 6;
@@ -898,16 +908,6 @@ namespace radarsystem
             this.tabControl1.TabIndex = 3;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.Feature_SelectedIndexChanged);
             // 
-            // mixtrailButton
-            // 
-            this.mixtrailButton.Location = new System.Drawing.Point(778, 281);
-            this.mixtrailButton.Name = "mixtrailButton";
-            this.mixtrailButton.Size = new System.Drawing.Size(75, 23);
-            this.mixtrailButton.TabIndex = 37;
-            this.mixtrailButton.Text = "轨迹融合";
-            this.mixtrailButton.UseVisualStyleBackColor = true;
-            this.mixtrailButton.Click += new System.EventHandler(this.mixtrailButton_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -919,7 +919,7 @@ namespace radarsystem
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "岸基探测情报分析与模拟软件";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
