@@ -57,6 +57,10 @@ namespace radarsystem
         List<PointD>[] poissonList_final = new List<PointD>[50];
         List<PointD>[] uniformList_final = new List<PointD>[50];
 
+        ///存储进行傅立叶和反傅立叶变换后的数据
+        List<PointD> fftList = null;
+        List<PointD> ifftList = null;
+
         //定义两个数组存储指挥控制中两个雷达检测的轨迹点
         List<PointD>[] command_listone = new List<PointD>[50];
         List<PointD>[] command_listtwo = new List<PointD>[50];
@@ -558,17 +562,28 @@ namespace radarsystem
             {
                 featDicX = feature.getTimeAndSpaceFeatureX(guassianList_final[index], 13);
                 featDicY = feature.getTimeAndSpaceFeatureY(guassianList_final[index], 13);
+
+                //点击目标之后画出频率分析轨迹
+                fftList = feature.getFrequentFFTFeature(guassianList_final[index]);
+                ifftList = feature.getFrequentIFFTFeature(guassianList_final[index]);
             }
             else if (noiseFlag == NoiseEnum.POISSON)
             {
                 featDicX = feature.getTimeAndSpaceFeatureX(poissonList_final[index], 13);
                 featDicY = feature.getTimeAndSpaceFeatureY(poissonList_final[index], 13);
+
+                //频率分析
+                fftList = feature.getFrequentFFTFeature(poissonList_final[index]);
+                ifftList = feature.getFrequentIFFTFeature(poissonList_final[index]);
             }
 
             else
             {
                 featDicX = feature.getTimeAndSpaceFeatureX(uniformList_final[index], 13);
                 featDicY = feature.getTimeAndSpaceFeatureY(uniformList_final[index], 13);
+
+                fftList = feature.getFrequentFFTFeature(uniformList_final[index]);
+                ifftList = feature.getFrequentIFFTFeature(uniformList_final[index]);
             }
                    
             String[] featName = new String[13];
@@ -670,11 +685,11 @@ namespace radarsystem
                 featurelistView.Items[i].SubItems.Add("±1%~±20%");
             }
 
-
-
             featurelistView.View = System.Windows.Forms.View.Details;
             featurelistView.GridLines = true;
             featurelistView.EndUpdate();
+
+            
 
 
             
@@ -1088,7 +1103,7 @@ namespace radarsystem
                         if (uniformList[i].Count != 0)
                             if (this.featurecomboBox1.FindString(arr_tar[i].ToString()) == -1)
                                 this.featurecomboBox1.Items.Add("" + arr_tar[i]);
-                        //if (uniformList_final[i].Count != 0)
+                        //if ( [i].Count != 0)
                         //    if (this.featurecomboBox1.FindString(arr_tar[i].ToString()) == -1)
                         //        this.featurecomboBox1.Items.Add("" + arr_tar[i]);
                     }

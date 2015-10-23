@@ -281,13 +281,59 @@ namespace radarsystem
         }
 
         /**
-         * 计算频域特性
+         * 计算频域特性：傅立叶
          **/
-        public Dictionary<String, Double> getFrequentFeature(List<PointD> list)
+        public List<PointD>[] getFrequentFFTFeature(List<PointD> list)
         {
-            Dictionary<String, Double> frequencyFeature = new Dictionary<string, double>();
+            List<PointD>[] fftList = new List<PointD>[list.Count];
+            for(int i=0;i<list.Count;i++)
+            {
+                //首先将实数转为复数数组，接着进行傅立叶变换，之后将复数变换成实数
+                fftList[i] = complexToReal(FFT(realToComplex(list),false));
+            }
 
-            return frequencyFeature;
+            return fftList;
+
+            
+        }
+
+        //反傅立叶变换
+        public List<PointD>[] getFrequentIFFTFeature(List<PointD> list)
+        {
+            List<PointD>[] ifftList = new List<PointD>[list.Count];
+            for (int i = 0; i < list.Count; i++)
+            {
+                //首先将实数转为复数数组，接着进行傅立叶变换，之后将复数变换成实数
+                ifftList[i] = complexToReal(FFT(realToComplex(list), true));
+            }
+
+            return ifftList;
+
+
+        }
+
+        public Complex[] realToComplex(List<PointD> list)
+        {
+            Complex[] c = new Complex[list.Count];
+            for(int i=0;i<list.Count;i++)
+            {
+                c[i] = Complex.transferToComplex(list[i]);
+            }
+
+            return c;
+        }
+
+        public List<PointD> complexToReal(Complex[] complex)
+        {
+            List<PointD> pointList = new List<PointD>();
+
+            for (int i = 0; i < complex.Length; i++)
+            {
+                PointD p = new PointD(complex[i].Real, complex[i].Image);
+                pointList.Add(p);
+            }
+
+            return pointList;
         }
 
         /// <summary>
