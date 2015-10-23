@@ -57,6 +57,10 @@ namespace radarsystem
         List<PointD>[] poissonList_final = new List<PointD>[50];
         List<PointD>[] uniformList_final = new List<PointD>[50];
 
+        //定义两个数组存储指挥控制中两个雷达检测的轨迹点
+        List<PointD>[] command_listone = new List<PointD>[50];
+        List<PointD>[] command_listtwo = new List<PointD>[50];
+
         //数据库操作
         DBInterface dbInterface = new DBInterface();
 
@@ -74,6 +78,8 @@ namespace radarsystem
         //Thread t1;
      //用pictureBox4 的左上角坐标表示雷达的中心点坐标
    
+        //在指挥控制中确定已经选择了雷达的个数
+        int hasChoosedRadar = 0;
       
         public Form1()
         {
@@ -97,6 +103,22 @@ namespace radarsystem
             textBox_saomiao.Visible = false;
             textBox_jiebianliang.Visible = false;
             textBox_doudongliang.Visible = false;
+
+            ///指挥控制中用到如下的控件
+            this.label5.Visible = false;
+
+            this.dopplercheckBox.Visible = false;
+            this.multpBasecheckBox.Visible = false;
+            this.bvrcheckBox.Visible = false;
+
+            this.groupBox4.Visible = false;
+            this.groupBox5.Visible = false;
+            this.groupBox6.Visible = false;
+
+            this.pictureBox3.Visible = false;
+            this.pictureBox5.Visible = false;
+            this.mixtrailButton.Visible = false;
+            ///end
 
             ArrayList ToolList = new ArrayList();
             ToolList.Add(MapXLib.ToolConstants.miZoomInTool);
@@ -464,6 +486,15 @@ namespace radarsystem
             textBox_jiebianliang.Visible = false;
             textBox_doudongliang.Visible = false;
             button_text_update.Visible = false;
+
+            //从指挥控制中返回
+            this.dopplercheckBox.Visible = false;
+            this.multpBasecheckBox.Visible = false;
+            this.bvrcheckBox.Visible = false;
+
+            this.groupBox4.Visible = false;
+            this.groupBox5.Visible = false;
+            this.groupBox6.Visible = false;
             
         }
      
@@ -551,8 +582,8 @@ namespace radarsystem
             if (scene == Scene.ACT_SONAR)  
             {
                 featurelistView.Items.Add("探测距离");
-                featurelistView.Items[++i].SubItems.Add("<40km");
-                featurelistView.Items[i].SubItems.Add("<40km");
+                featurelistView.Items[++i].SubItems.Add(">40km");
+                featurelistView.Items[i].SubItems.Add(">40km");
 
                 featurelistView.Items.Add("方位");
                 featurelistView.Items[++i].SubItems.Add("0~2*pi");
@@ -560,15 +591,48 @@ namespace radarsystem
             }
             else if (scene == Scene.PAS_SONAR)
             {
+                featurelistView.Items.Add("探测距离");
+                featurelistView.Items[++i].SubItems.Add("<20km");
+                featurelistView.Items[i].SubItems.Add("<20km");
+
                 featurelistView.Items.Add("方位");
                 featurelistView.Items[++i].SubItems.Add("0~2*pi");
                 featurelistView.Items[i].SubItems.Add("0~2*pi");
             }
             else if (scene == Scene.ELEC_VS)
             {
-                featurelistView.Items.Add("方位");
-                featurelistView.Items[++i].SubItems.Add("0~2*pi");
-                featurelistView.Items[i].SubItems.Add("0~2*pi");
+                //暂时在程序中写死，应该从文本框中获得值！！！
+                featurelistView.Items.Add("探测距离");
+                featurelistView.Items[++i].SubItems.Add("220km");
+                featurelistView.Items[i].SubItems.Add("220km");
+
+                featurelistView.Items.Add("载频");
+                featurelistView.Items[++i].SubItems.Add("100GHZ");
+                featurelistView.Items[i].SubItems.Add("100GHZ");
+
+                featurelistView.Items.Add("重频");
+                featurelistView.Items[++i].SubItems.Add("50GHZ");
+                featurelistView.Items[i].SubItems.Add("50GHZ");
+
+                featurelistView.Items.Add("脉宽");
+                featurelistView.Items[++i].SubItems.Add("20us");
+                featurelistView.Items[i].SubItems.Add("20us");
+
+                featurelistView.Items.Add("脉幅");
+                featurelistView.Items[++i].SubItems.Add("50");
+                featurelistView.Items[i].SubItems.Add("50");
+
+                featurelistView.Items.Add("天线扫描周期");
+                featurelistView.Items[++i].SubItems.Add("2.50");
+                featurelistView.Items[i].SubItems.Add("2.50");
+
+                featurelistView.Items.Add("载频捷变量");
+                featurelistView.Items[++i].SubItems.Add("0.5");
+                featurelistView.Items[i].SubItems.Add("0.5");
+
+                featurelistView.Items.Add("重频抖变量");
+                featurelistView.Items[++i].SubItems.Add("±1%~±20%");
+                featurelistView.Items[i].SubItems.Add("±1%~±20%");
             }
 
 
@@ -963,6 +1027,8 @@ namespace radarsystem
             }
                
         }
+
+
         private void radioButton1_CheckedChanged(object sender, EventArgs e)  //第一组groupbox1中的radiobutton,都对应了这个事件
         {
             clearforListDetectDis();  //切换到不同雷达，清空list_detect_distance_final 数组
@@ -1080,17 +1146,36 @@ namespace radarsystem
 
             }
             if (radioButton6.Checked == true)  //选中了第6个单选按钮，即选择了指挥控制
-            {         
-                pictureBox4.BackgroundImage = global::radarsystem.Properties.Resources.radarpic; 
+            {
+                //int first=0,second=0,third=0;
+                //pictureBox4.BackgroundImage = global::radarsystem.Properties.Resources.radarpic; 
                 //还没替换为指挥控制雷达图标，2部雷达？
-                pictureBox4.Visible = true;
-                buttonDectecModeling.Visible = true;
+               // pictureBox4.Visible = true;
+                //探测建模
+               // buttonDectecModeling.Visible = true;
                 label_sel_radartype.Visible = true;
                 label_sel_radartype.Text = "指挥控制";
                 groupBox1.Visible = false;
                 scene = Scene.COMMAND;
                 //清空combobox的值
                 this.featurecomboBox1.Items.Clear();
+
+                this.label5.Visible = true;
+                this.label5.Location = new System.Drawing.Point(775, 40);
+
+                this.dopplercheckBox.Visible = true;
+                this.dopplercheckBox.Location = new System.Drawing.Point(785,60);
+                this.multpBasecheckBox.Visible = true;
+                this.multpBasecheckBox.Location = new System.Drawing.Point(785, 150);
+                this.bvrcheckBox.Visible = true;
+                this.bvrcheckBox.Location = new System.Drawing.Point(785, 240);
+
+                this.dopplercheckBox.Checked = false;
+                this.multpBasecheckBox.Checked = false;
+                this.bvrcheckBox.Checked = false;
+
+                this.mixtrailButton.Location = new System.Drawing.Point(775, 370);
+                this.mixtrailButton.Visible = true;
               //  drawtrace();
            //     readTxt();
 
@@ -1112,7 +1197,7 @@ namespace radarsystem
             }
             button_goback.Visible = true;
         }
-        
+
         private void read_interface(int line_num)       //读配置文件公共接口
         {
             String path = Application.StartupPath + "\\configure.txt";
@@ -1269,7 +1354,7 @@ namespace radarsystem
                 groupBox3.Visible = true;
                 buttonModelDone.Visible = true;
                 button_goback.Visible = true;
-                button_goback.Enabled = false;
+                button_goback.Enabled = true;
                 radioButton7.Checked = false;     //清除单选按钮选中状态
                 radioButton8.Checked = false;
                 radioButton9.Checked = false;
@@ -1612,6 +1697,145 @@ namespace radarsystem
         {
             
         }
+        /// <summary>
+        /// 如下三个checkbox状态改变函数用来监听选择的雷达类型
+        /// 
+        /// </summary>
+   
+        private void dopplercheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            //checkbox 状态改变
+            if (this.dopplercheckBox.CheckState == CheckState.Checked)
+            {
+                //MessageBox.Show("lllll");
+                if (hasChoosedRadar < 2)
+                {
+                    hasChoosedRadar++;
+                    //显示雷达图片
+                    pictureBox3.BackgroundImage = global::radarsystem.Properties.Resources.duopule;
+                    pictureBox3.Visible = true;
+                    //显示添加噪音单选框
+                    this.groupBox4.Visible = true;
+                    this.groupBox4.Location = new System.Drawing.Point(870, 55);
+                }
+                
+
+            }
+            else
+            {
+                this.groupBox4.Visible = false;
+                pictureBox3.Visible = false;
+                hasChoosedRadar--;
+            }
+
+        }
+
+        private void multpBasecheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.multpBasecheckBox.CheckState == CheckState.Checked)
+            {
+                if (hasChoosedRadar < 2)
+                {
+                    hasChoosedRadar++;
+                    //MessageBox.Show("lllll");
+                    pictureBox4.BackgroundImage = global::radarsystem.Properties.Resources.radarpic;  //还没替换为多基地雷达图标
+                    pictureBox4.Visible = true;
+                    this.groupBox5.Visible = true;
+                    this.groupBox5.Location = new System.Drawing.Point(870, 150);
+                }
+                else
+                {
+                    MessageBox.Show("只能选择两个雷达");
+                }
+
+                
+            }
+            else
+            {
+                this.groupBox5.Visible = false;
+                pictureBox4.Visible = false;
+                hasChoosedRadar--;
+            }
+        }
+
+        private void bvrcheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if(this.bvrcheckBox.CheckState == CheckState.Checked)
+            {
+                if (hasChoosedRadar < 2)
+                {
+                    hasChoosedRadar++;
+                    pictureBox5.BackgroundImage = global::radarsystem.Properties.Resources.HVR;  //还没替换为多基地雷达图标
+                    pictureBox5.Visible = true;
+
+                    this.groupBox6.Visible = true;
+                    this.groupBox6.Location = new System.Drawing.Point(870, 245);
+                }
+               
+            }
+            else
+            {
+                this.groupBox6.Visible = false;
+                pictureBox5.Visible = false;
+                hasChoosedRadar--;
+            }
+        }
+       
+
+        private void pictureBox3_MouseDown(object sender, MouseEventArgs e)
+        {
+            isDragging = true;  //可以拖动
+            currentX = e.X;
+            currentY = e.Y;
+        }
+
+      
+        private void pictureBox3_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                pictureBox3.Top = pictureBox3.Top + (e.Y - currentY);
+                pictureBox3.Left = pictureBox3.Left + (e.X - currentX);
+                //  System.Threading.Thread.Sleep(1000);
+            }
+            isDragging = false;
+            constantSpeed();
+            constantAcceleration();
+            constantSlowDown();
+            //    circleMotion();
+            // drawtrace();
+            drawtrace_update();
+        }
+
+        private void pictureBox5_MouseDown(object sender, MouseEventArgs e)
+        {
+            isDragging = true;  //可以拖动
+            currentX = e.X;
+            currentY = e.Y;
+        }
+
+        private void pictureBox5_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                pictureBox5.Top = pictureBox5.Top + (e.Y - currentY);
+                pictureBox5.Left = pictureBox5.Left + (e.X - currentX);
+                //  System.Threading.Thread.Sleep(1000);
+            }
+            isDragging = false;
+            constantSpeed();
+            constantAcceleration();
+            constantSlowDown();
+            //    circleMotion();
+            // drawtrace();
+            drawtrace_update();
+        }
+
+        private void mixtrailButton_Click(object sender, EventArgs e)
+        {
+            //点击了轨迹融合按钮，之后
+        }
+        
       
     }
 }

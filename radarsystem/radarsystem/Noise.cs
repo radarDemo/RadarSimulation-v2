@@ -11,6 +11,8 @@ namespace radarsystem
     /// </summary>
     public class Noise
     {
+        //以系统时间为种子，生成伪随机数，这个函数不能放在for循环中，否则生成的是类似于 1，1，1，2，3，3，3.
+        static Random rand = new Random();
         /// <summary>
         /// 给轨迹添加高斯噪声
         /// </summary>
@@ -25,7 +27,7 @@ namespace radarsystem
             for (int i = 0; i < points.Length;i++ )
             {
                 noisePoint[i] = new PointD();
-                Random rand = new Random();
+               
                 double factor1 = rand.NextDouble();
                 double factor2 = rand.NextDouble();
                 //rand normal(0,1)
@@ -83,14 +85,14 @@ namespace radarsystem
         public static PointD[] addUniformNoise(PointD[] points,double XA,double XB,double YA,double YB)
         {
             PointD[] noisePoint = new PointD[points.Length];
-            Random r = new Random();   //以系统时间为种子，生成伪随机数，这个函数不能放在for循环中，否则生成的是类似于 1，1，1，2，3，3，3.
+           
             for (int i = 0; i < points.Length; i++)
             {
                
                 
                 noisePoint[i] = new PointD();
-                noisePoint[i].X = points[i].X + r.Next((int)XA,(int)XB);
-                noisePoint[i].Y = points[i].Y + r.Next((int)YA,(int)YB);
+                noisePoint[i].X = points[i].X + rand.Next((int)XA,(int)XB);
+                noisePoint[i].Y = points[i].Y + rand.Next((int)YA,(int)YB);
             }
 
             return noisePoint;
@@ -141,7 +143,7 @@ namespace radarsystem
         }
 
         /// <summary>
-        /// 下面的参数用于构建均匀分布
+        /// 下面的参数用于构建均匀分布,供上面的泊松分布使用
         /// </summary>
         private static uint m_z = 362436069;
         private static uint m_w = 521288629;

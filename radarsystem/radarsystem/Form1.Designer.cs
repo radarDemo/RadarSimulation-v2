@@ -1,4 +1,5 @@
-﻿namespace radarsystem
+﻿using System.Windows.Forms;
+namespace radarsystem
 {
     partial class Form1
     {
@@ -44,6 +45,24 @@
             this.label1 = new System.Windows.Forms.Label();
             this.featurecomboBox1 = new System.Windows.Forms.ComboBox();
             this.tbp_SceneSet = new System.Windows.Forms.TabPage();
+            this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.radioButton20 = new System.Windows.Forms.RadioButton();
+            this.radioButton21 = new System.Windows.Forms.RadioButton();
+            this.radioButton22 = new System.Windows.Forms.RadioButton();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.radioButton16 = new System.Windows.Forms.RadioButton();
+            this.radioButton15 = new System.Windows.Forms.RadioButton();
+            this.radioButton14 = new System.Windows.Forms.RadioButton();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.radioButton17 = new System.Windows.Forms.RadioButton();
+            this.radioButton18 = new System.Windows.Forms.RadioButton();
+            this.radioButton19 = new System.Windows.Forms.RadioButton();
+            this.label5 = new System.Windows.Forms.Label();
+            this.bvrcheckBox = new System.Windows.Forms.CheckBox();
+            this.multpBasecheckBox = new System.Windows.Forms.CheckBox();
+            this.dopplercheckBox = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.textBox_latitude = new System.Windows.Forms.TextBox();
             this.button_text_update = new System.Windows.Forms.Button();
@@ -84,11 +103,17 @@
             this.axMap1 = new AxMapXLib.AxMap();
             this.textBox_doppler = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.mixtrailButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tbp_CharacterAnalysis.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tbp_SceneSet.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            this.groupBox6.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -220,6 +245,16 @@
             // 
             // tbp_SceneSet
             // 
+            this.tbp_SceneSet.Controls.Add(this.mixtrailButton);
+            this.tbp_SceneSet.Controls.Add(this.pictureBox5);
+            this.tbp_SceneSet.Controls.Add(this.pictureBox3);
+            this.tbp_SceneSet.Controls.Add(this.groupBox6);
+            this.tbp_SceneSet.Controls.Add(this.groupBox4);
+            this.tbp_SceneSet.Controls.Add(this.groupBox5);
+            this.tbp_SceneSet.Controls.Add(this.label5);
+            this.tbp_SceneSet.Controls.Add(this.bvrcheckBox);
+            this.tbp_SceneSet.Controls.Add(this.multpBasecheckBox);
+            this.tbp_SceneSet.Controls.Add(this.dopplercheckBox);
             this.tbp_SceneSet.Controls.Add(this.label3);
             this.tbp_SceneSet.Controls.Add(this.textBox_latitude);
             this.tbp_SceneSet.Controls.Add(this.button_text_update);
@@ -251,6 +286,206 @@
             this.tbp_SceneSet.TabIndex = 0;
             this.tbp_SceneSet.Text = "岸基场景设置";
             this.tbp_SceneSet.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox5
+            // 
+            this.pictureBox5.InitialImage = null;
+            this.pictureBox5.Location = new System.Drawing.Point(580, 479);
+            this.pictureBox5.Name = "pictureBox5";
+            this.pictureBox5.Size = new System.Drawing.Size(60, 56);
+            this.pictureBox5.TabIndex = 36;
+            this.pictureBox5.TabStop = false;
+            this.pictureBox5.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox5_MouseDown);
+            this.pictureBox5.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox5_MouseUp);
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Image = global::radarsystem.Properties.Resources.duopule;
+            this.pictureBox3.InitialImage = null;
+            this.pictureBox3.Location = new System.Drawing.Point(645, 478);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(60, 56);
+            this.pictureBox3.TabIndex = 35;
+            this.pictureBox3.TabStop = false;
+            this.pictureBox3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox3_MouseDown);
+            this.pictureBox3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox3_MouseUp);
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.radioButton20);
+            this.groupBox6.Controls.Add(this.radioButton21);
+            this.groupBox6.Controls.Add(this.radioButton22);
+            this.groupBox6.Location = new System.Drawing.Point(471, 387);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(127, 84);
+            this.groupBox6.TabIndex = 34;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "请选择噪音";
+            // 
+            // radioButton20
+            // 
+            this.radioButton20.AutoSize = true;
+            this.radioButton20.Location = new System.Drawing.Point(16, 59);
+            this.radioButton20.Name = "radioButton20";
+            this.radioButton20.Size = new System.Drawing.Size(71, 16);
+            this.radioButton20.TabIndex = 2;
+            this.radioButton20.TabStop = true;
+            this.radioButton20.Text = "均匀噪音";
+            this.radioButton20.UseVisualStyleBackColor = true;
+            // 
+            // radioButton21
+            // 
+            this.radioButton21.AutoSize = true;
+            this.radioButton21.Location = new System.Drawing.Point(16, 40);
+            this.radioButton21.Name = "radioButton21";
+            this.radioButton21.Size = new System.Drawing.Size(71, 16);
+            this.radioButton21.TabIndex = 1;
+            this.radioButton21.TabStop = true;
+            this.radioButton21.Text = "泊松噪音";
+            this.radioButton21.UseVisualStyleBackColor = true;
+            // 
+            // radioButton22
+            // 
+            this.radioButton22.AutoSize = true;
+            this.radioButton22.Location = new System.Drawing.Point(16, 21);
+            this.radioButton22.Name = "radioButton22";
+            this.radioButton22.Size = new System.Drawing.Size(71, 16);
+            this.radioButton22.TabIndex = 0;
+            this.radioButton22.TabStop = true;
+            this.radioButton22.Text = "高斯噪音";
+            this.radioButton22.UseVisualStyleBackColor = true;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.radioButton16);
+            this.groupBox4.Controls.Add(this.radioButton15);
+            this.groupBox4.Controls.Add(this.radioButton14);
+            this.groupBox4.Location = new System.Drawing.Point(842, 396);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(127, 84);
+            this.groupBox4.TabIndex = 33;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "请选择噪音";
+            // 
+            // radioButton16
+            // 
+            this.radioButton16.AutoSize = true;
+            this.radioButton16.Location = new System.Drawing.Point(16, 59);
+            this.radioButton16.Name = "radioButton16";
+            this.radioButton16.Size = new System.Drawing.Size(71, 16);
+            this.radioButton16.TabIndex = 2;
+            this.radioButton16.TabStop = true;
+            this.radioButton16.Text = "均匀噪音";
+            this.radioButton16.UseVisualStyleBackColor = true;
+            // 
+            // radioButton15
+            // 
+            this.radioButton15.AutoSize = true;
+            this.radioButton15.Location = new System.Drawing.Point(16, 40);
+            this.radioButton15.Name = "radioButton15";
+            this.radioButton15.Size = new System.Drawing.Size(71, 16);
+            this.radioButton15.TabIndex = 1;
+            this.radioButton15.TabStop = true;
+            this.radioButton15.Text = "泊松噪音";
+            this.radioButton15.UseVisualStyleBackColor = true;
+            // 
+            // radioButton14
+            // 
+            this.radioButton14.AutoSize = true;
+            this.radioButton14.Location = new System.Drawing.Point(16, 21);
+            this.radioButton14.Name = "radioButton14";
+            this.radioButton14.Size = new System.Drawing.Size(71, 16);
+            this.radioButton14.TabIndex = 0;
+            this.radioButton14.TabStop = true;
+            this.radioButton14.Text = "高斯噪音";
+            this.radioButton14.UseVisualStyleBackColor = true;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.radioButton17);
+            this.groupBox5.Controls.Add(this.radioButton18);
+            this.groupBox5.Controls.Add(this.radioButton19);
+            this.groupBox5.Location = new System.Drawing.Point(604, 387);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(127, 84);
+            this.groupBox5.TabIndex = 34;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "请选择噪音";
+            // 
+            // radioButton17
+            // 
+            this.radioButton17.AutoSize = true;
+            this.radioButton17.Location = new System.Drawing.Point(16, 59);
+            this.radioButton17.Name = "radioButton17";
+            this.radioButton17.Size = new System.Drawing.Size(71, 16);
+            this.radioButton17.TabIndex = 2;
+            this.radioButton17.TabStop = true;
+            this.radioButton17.Text = "均匀噪音";
+            this.radioButton17.UseVisualStyleBackColor = true;
+            // 
+            // radioButton18
+            // 
+            this.radioButton18.AutoSize = true;
+            this.radioButton18.Location = new System.Drawing.Point(16, 40);
+            this.radioButton18.Name = "radioButton18";
+            this.radioButton18.Size = new System.Drawing.Size(71, 16);
+            this.radioButton18.TabIndex = 1;
+            this.radioButton18.TabStop = true;
+            this.radioButton18.Text = "泊松噪音";
+            this.radioButton18.UseVisualStyleBackColor = true;
+            // 
+            // radioButton19
+            // 
+            this.radioButton19.AutoSize = true;
+            this.radioButton19.Location = new System.Drawing.Point(16, 21);
+            this.radioButton19.Name = "radioButton19";
+            this.radioButton19.Size = new System.Drawing.Size(71, 16);
+            this.radioButton19.TabIndex = 0;
+            this.radioButton19.TabStop = true;
+            this.radioButton19.Text = "高斯噪音";
+            this.radioButton19.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(776, 16);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(89, 12);
+            this.label5.TabIndex = 32;
+            this.label5.Text = "请选择两种雷达";
+            // 
+            // bvrcheckBox
+            // 
+            this.bvrcheckBox.AutoSize = true;
+            this.bvrcheckBox.Location = new System.Drawing.Point(776, 497);
+            this.bvrcheckBox.Name = "bvrcheckBox";
+            this.bvrcheckBox.Size = new System.Drawing.Size(84, 16);
+            this.bvrcheckBox.TabIndex = 31;
+            this.bvrcheckBox.Text = "超视距雷达";
+            this.bvrcheckBox.UseVisualStyleBackColor = true;
+            this.bvrcheckBox.CheckedChanged += new System.EventHandler(this.bvrcheckBox_CheckedChanged);
+            // 
+            // multpBasecheckBox
+            // 
+            this.multpBasecheckBox.AutoSize = true;
+            this.multpBasecheckBox.Location = new System.Drawing.Point(776, 475);
+            this.multpBasecheckBox.Name = "multpBasecheckBox";
+            this.multpBasecheckBox.Size = new System.Drawing.Size(84, 16);
+            this.multpBasecheckBox.TabIndex = 30;
+            this.multpBasecheckBox.Text = "多基地雷达";
+            this.multpBasecheckBox.UseVisualStyleBackColor = true;
+            this.multpBasecheckBox.CheckedChanged += new System.EventHandler(this.multpBasecheckBox_CheckedChanged);
+            // 
+            // dopplercheckBox
+            // 
+            this.dopplercheckBox.AutoSize = true;
+            this.dopplercheckBox.Location = new System.Drawing.Point(776, 455);
+            this.dopplercheckBox.Name = "dopplercheckBox";
+            this.dopplercheckBox.Size = new System.Drawing.Size(84, 16);
+            this.dopplercheckBox.TabIndex = 29;
+            this.dopplercheckBox.Text = "多普勒雷达";
+            this.dopplercheckBox.UseVisualStyleBackColor = true;
+            this.dopplercheckBox.CheckedChanged += new System.EventHandler(this.dopplercheckBox_CheckedChanged);
             // 
             // label3
             // 
@@ -663,6 +898,16 @@
             this.tabControl1.TabIndex = 3;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.Feature_SelectedIndexChanged);
             // 
+            // mixtrailButton
+            // 
+            this.mixtrailButton.Location = new System.Drawing.Point(778, 281);
+            this.mixtrailButton.Name = "mixtrailButton";
+            this.mixtrailButton.Size = new System.Drawing.Size(75, 23);
+            this.mixtrailButton.TabIndex = 37;
+            this.mixtrailButton.Text = "轨迹融合";
+            this.mixtrailButton.UseVisualStyleBackColor = true;
+            this.mixtrailButton.Click += new System.EventHandler(this.mixtrailButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -685,6 +930,14 @@
             this.panel1.PerformLayout();
             this.tbp_SceneSet.ResumeLayout(false);
             this.tbp_SceneSet.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -756,6 +1009,28 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox_latitude;
         private System.Windows.Forms.Label label4;
+       
+        //添加checkbox控件
+       
+        private CheckBox bvrcheckBox;
+        private CheckBox multpBasecheckBox;
+        private CheckBox dopplercheckBox;
+        private Label label5;
+        private GroupBox groupBox4;
+        private GroupBox groupBox6;
+        private RadioButton radioButton20;
+        private RadioButton radioButton21;
+        private RadioButton radioButton22;
+        private GroupBox groupBox5;
+        private RadioButton radioButton17;
+        private RadioButton radioButton18;
+        private RadioButton radioButton19;
+        private RadioButton radioButton16;
+        private RadioButton radioButton15;
+        private RadioButton radioButton14;
+        private PictureBox pictureBox3;
+        private PictureBox pictureBox5;
+        private Button mixtrailButton;
     }
 }
 
