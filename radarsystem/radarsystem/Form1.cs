@@ -24,21 +24,21 @@ namespace radarsystem
             public Point trail_Point;
             public long time;
         };
-        List<Point>[] list_trace = new List<Point>[50];
+        //List<Point>[] list_trace = new List<Point>[50];
 
         List<Point>[] list_trace_update = new List<Point>[20];  //剧情设置有变化，运动类型包括匀加速，匀速，匀减速，
         //圆周运动等典型运动，目标最多20个，_update指的是10月20号以后的版本
      //   List<PointD>[] list = new List<PointD>[50];
 
 
-        List<PointD>[] list_detect_distance = new List<PointD>[50];  //list数组 元素数据类型为PointD，最后用于存储判断了雷达扫描距离的 数据点，仅仅是为了
+        //List<PointD>[] list_detect_distance = new List<PointD>[50];  //list数组 元素数据类型为PointD，最后用于存储判断了雷达扫描距离的 数据点，仅仅是为了
         //计算精度要求，
 
-        List<PointD>[] list_detect_distance_update = new List<PointD>[20];
+        List<PointD>[] list_detect_distance_update = new List<PointD>[20];//波形图上画真实轨迹来源
 
-        List<PointD>[] list_detect_distance_final = new List<PointD>[50];   //最终用这个数组,用这个数组添加噪声，画波形图上噪音轨迹，以及特征分析
+        //List<PointD>[] list_detect_distance_final = new List<PointD>[50];   //最终用这个数组,用这个数组添加噪声，画波形图上噪音轨迹，以及特征分析
 
-        List<PointD>[] list_detect_distance_final_update = new List<PointD>[20]; 
+        List<PointD>[] list_detect_distance_final_update = new List<PointD>[20];//波形图上画噪声轨迹来源 
         //List<PointD> list = new List<PointD>();
         //List<Point> list_trace = new List<Point>();
         ArrayList arr_tar=new ArrayList() ;  //目标ID数组
@@ -52,7 +52,7 @@ namespace radarsystem
         List<PointD>[] poissonList = new List<PointD>[50];
         List<PointD>[] uniformList = new List<PointD>[50];
 
-        //存储添加噪音并且判断了距离的轨迹点
+        ////存储添加噪音并且判断了距离的轨迹点
         List<PointD>[] guassianList_final = new List<PointD>[50];
         List<PointD>[] poissonList_final = new List<PointD>[50];
         List<PointD>[] uniformList_final = new List<PointD>[50];
@@ -141,61 +141,68 @@ namespace radarsystem
 
             DataSet ds = dbInterface.query(conStr, "select * from TargetTrailPoints", "目标轨迹");
 
-            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)//获取目标个数
-            {
-                trace s1 = new trace();
-                s1.tar_ID = Convert.ToInt64(ds.Tables[0].Rows[i]["TGT_ID"]);
-                id = s1.tar_ID;
-                if (!arr_tar.Contains(id))
-                    arr_tar.Add(id);
-            }
-            for (int i = 0; i < arr_tar.Count; i++)//申请list和list_trace空间
-            {
-                list_trace[i] = new List<Point>();
-                list_detect_distance[i] = new List<PointD>();
-                list_detect_distance_final[i] = new List<PointD>();
-                color[i] = System.Drawing.Color.FromArgb((220 * i) % 255, (20 * i) % 255, (150 * i) % 255);
-                guassianList[i] = new List<PointD>();
-                poissonList[i] = new List<PointD>();
-                uniformList[i] = new List<PointD>();
-                guassianList_final[i] = new List<PointD>();
-                poissonList_final[i] = new List<PointD>();
-                uniformList_final[i] = new List<PointD>();
+            //for (int i = 0; i < ds.Tables[0].Rows.Count; i++)//获取目标个数
+            //{
+            //    trace s1 = new trace();
+            //    s1.tar_ID = Convert.ToInt64(ds.Tables[0].Rows[i]["TGT_ID"]);
+            //    id = s1.tar_ID;
+            //    if (!arr_tar.Contains(id))
+            //        arr_tar.Add(id);
+            //}
+            //for (int i = 0; i < arr_tar.Count; i++)//申请list和list_trace空间
+            //{
+            //    list_trace[i] = new List<Point>();
+            //    list_detect_distance[i] = new List<PointD>();
+            //    list_detect_distance_final[i] = new List<PointD>();
+            //    color[i] = System.Drawing.Color.FromArgb((220 * i) % 255, (20 * i) % 255, (150 * i) % 255);
+            //    guassianList[i] = new List<PointD>();
+            //    poissonList[i] = new List<PointD>();
+            //    uniformList[i] = new List<PointD>();
+            //    guassianList_final[i] = new List<PointD>();
+            //    poissonList_final[i] = new List<PointD>();
+            //    uniformList_final[i] = new List<PointD>();
                 
-            }
+            //}
 
             for (int i = 0; i < 20;i++ )
             {
                 list_trace_update[i] = new List<Point>();
                 list_detect_distance_update[i] = new List<PointD>();
                 list_detect_distance_final_update[i] = new List<PointD>();
+                color[i] = System.Drawing.Color.FromArgb((220 * i) % 255, (20 * i) % 255, (150 * i) % 255);
+                guassianList[i] = new List<PointD>();
+                guassianList_final[i] = new List<PointD>();
+                poissonList[i] = new List<PointD>();
+                poissonList_final[i] = new List<PointD>();
+                uniformList[i] = new List<PointD>();
+                uniformList_final[i] = new List<PointD>();
             }
                 //   for (int k = 0; k < arr_tar.Count; k++)
                 //      Console.WriteLine(arr_tar[k]);
 
-                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)          //循环取出ds.table中的值
-                {
-                    //trace s = new trace();
-                    Point p = new Point();
-                    tar_ID = Convert.ToInt64(ds.Tables[0].Rows[i]["TGT_ID"]);
-                    //id = s.tar_ID;
-                    //s.track_ID = Convert.ToInt64(ds.Tables[0].Rows[i]["TrailID"]);
-                    p.X = Convert.ToInt32(ds.Tables[0].Rows[i]["X"]);
-                    p.Y = Convert.ToInt32(ds.Tables[0].Rows[i]["Y"]);
-                    //s.trail_Point = p;
-                    //s.time = Convert.ToInt64(ds.Tables[0].Rows[i]["moveTime"]);
-                    index = arr_tar.IndexOf(tar_ID);
-                    list_trace[index].Add(p);
-                }
-            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)          //循环取出ds.table中的值
-            {
-                PointD p = new PointD();
-                tar_ID = Convert.ToInt64(ds.Tables[0].Rows[i]["TGT_ID"]);
-                p.X = Convert.ToDouble(ds.Tables[0].Rows[i]["X"]);
-                p.Y = Convert.ToDouble(ds.Tables[0].Rows[i]["Y"]);
-                index = arr_tar.IndexOf(tar_ID);
-                list_detect_distance[index].Add(p);
-            }
+                //for (int i = 0; i < ds.Tables[0].Rows.Count; i++)          //循环取出ds.table中的值
+                //{
+                //    //trace s = new trace();
+                //    Point p = new Point();
+                //    tar_ID = Convert.ToInt64(ds.Tables[0].Rows[i]["TGT_ID"]);
+                //    //id = s.tar_ID;
+                //    //s.track_ID = Convert.ToInt64(ds.Tables[0].Rows[i]["TrailID"]);
+                //    p.X = Convert.ToInt32(ds.Tables[0].Rows[i]["X"]);
+                //    p.Y = Convert.ToInt32(ds.Tables[0].Rows[i]["Y"]);
+                //    //s.trail_Point = p;
+                //    //s.time = Convert.ToInt64(ds.Tables[0].Rows[i]["moveTime"]);
+                //    index = arr_tar.IndexOf(tar_ID);
+                //    list_trace[index].Add(p);
+                //}
+            //for (int i = 0; i < ds.Tables[0].Rows.Count; i++)          //循环取出ds.table中的值
+            //{
+            //    PointD p = new PointD();
+            //    tar_ID = Convert.ToInt64(ds.Tables[0].Rows[i]["TGT_ID"]);
+            //    p.X = Convert.ToDouble(ds.Tables[0].Rows[i]["X"]);
+            //    p.Y = Convert.ToDouble(ds.Tables[0].Rows[i]["Y"]);
+            //    index = arr_tar.IndexOf(tar_ID);
+            //    list_detect_distance[index].Add(p);
+            //}
             //for (int i = 0; i < ds.Tables[0].Rows.Count; i++)          //循环取出ds.table中的值
             //{
 
@@ -229,19 +236,19 @@ namespace radarsystem
             Console.WriteLine(screenpoint_pic4.Y);
            
         }
-        private void drawtrace()
-        {
+        //private void drawtrace()
+        //{
         //    System.Threading.Tasks.Parallel.For(0, arr_tar.Count, i =>
        //         {
         //            TestMethod(i);
         //        });
-            for (int i = 0; i <arr_tar.Count; i++)
-            {
-                //QueueUserWorkItem()方法：将工作任务排入线程池。
-                ThreadPool.QueueUserWorkItem(new WaitCallback(TestMethod), i);
-                // TestMethod 表示要执行的方法(与WaitCallback委托的声明必须一致)。
-                // i   为传递给Fun方法的参数(obj将接受)。
-            }
+            //for (int i = 0; i <arr_tar.Count; i++)
+            //{
+            //    //QueueUserWorkItem()方法：将工作任务排入线程池。
+            //    ThreadPool.QueueUserWorkItem(new WaitCallback(TestMethod), i);
+            //    // TestMethod 表示要执行的方法(与WaitCallback委托的声明必须一致)。
+            //    // i   为传递给Fun方法的参数(obj将接受)。
+            //}
 
             //if (!flag_thread1)
             //{             
@@ -261,25 +268,25 @@ namespace radarsystem
             //   t2.Start();
 
            
-        }
-        public  void TestMethod(object obj)
-        {
-            Graphics g;
-            int flag = (int)obj;
-            g =axMap1.CreateGraphics();
-            Pen p = new Pen(color[flag], 2);         
+        //}
+        //public  void TestMethod(object obj)
+        //{
+        //    Graphics g;
+        //    int flag = (int)obj;
+        //    g =axMap1.CreateGraphics();
+        //    Pen p = new Pen(color[flag], 2);         
            
-            Point one, two;
-            for (int i = 0; i < list_trace[flag].Count-1; i++)
-            {
-                one = list_trace[flag][i];
-                two = list_trace[flag][i + 1];
-                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                g.DrawLine(p, one, two);
-                System.Threading.Thread.Sleep(200);
-            } 
-            g.Dispose();
-        }
+        //    Point one, two;
+        //    for (int i = 0; i < list_trace[flag].Count-1; i++)
+        //    {
+        //        one = list_trace[flag][i];
+        //        two = list_trace[flag][i + 1];
+        //        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+        //        g.DrawLine(p, one, two);
+        //        System.Threading.Thread.Sleep(200);
+        //    } 
+        //    g.Dispose();
+        //}
    //     private void draw_monitor_trace(List<PointD> points)
         private void draw_monitor_trace()
         {
@@ -317,6 +324,7 @@ namespace radarsystem
             double distance1, distance2;
             distance1 = 7 * panel1.Width / 20;
             Graphics g;
+            SolidBrush myBrush = new SolidBrush(color[flag]);//画刷
             Pen p = new Pen(color[flag], 2);
             g = panel1.CreateGraphics();
             Point point;
@@ -327,50 +335,49 @@ namespace radarsystem
             cir_Point.X = panel1.Width / 10 * 5;
             cir_Point.Y = panel1.Height / 10 * 5;
 
-
             //  for (int i = 0; i < list_trace[flag].Count-1; i++)
             //{
             //    one = list_trace[flag][i];
             //    two = list_trace[flag][i + 1];
             if (radioButton7.Checked == true)       //高斯噪声
             {
-                for (int i = 0; i < guassianList[flag].Count ; i++)
+                for (int i = 0; i < guassianList_final[flag].Count ; i++)
                 {
                     //double类型的坐标转换成int
-                    list_trace.Add(new Point((int)guassianList[flag][i].X, (int)guassianList[flag][i].Y));
+                    list_trace.Add(new Point((int)guassianList_final[flag][i].X, (int)guassianList_final[flag][i].Y));
                     //g.DrawString();
                 }
             }
             else if (radioButton8.Checked == true) //泊松噪声
             {
-                for (int i = 0; i < poissonList[flag].Count ; i++)
+                for (int i = 0; i < poissonList_final[flag].Count ; i++)
                 {
                     //double类型的坐标转换成int
-                    list_trace.Add(new Point((int)poissonList[flag][i].X, (int)poissonList[flag][i].Y));
+                    list_trace.Add(new Point((int)poissonList_final[flag][i].X, (int)poissonList_final[flag][i].Y));
                     //g.DrawString();
                 }
             }
 
             else if (radioButton9.Checked == true) //平均噪声
             {
-                for (int i = 0; i <uniformList[flag].Count ; i++)
+                for (int i = 0; i <uniformList_final[flag].Count ; i++)
                 {
                     //double类型的坐标转换成int
-                    list_trace.Add(new Point((int)uniformList[flag][i].X, (int)uniformList[flag][i].Y));
+                    list_trace.Add(new Point((int)uniformList_final[flag][i].X, (int)uniformList_final[flag][i].Y));
                     //g.DrawString();
                 }
             }          
 
             for (int i = 0; i < list_trace.Count - 1; i++)
             {
+                
                 point = list_trace[i];
                 point_diff = point;
                 point_diff.X = point.X - pictureBox4.Left;
                 point_diff.Y = point.Y - pictureBox4.Top;
-                distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
+               distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
                 if (distance2 - distance1 > 0)
                     continue;
-                SolidBrush myBrush = new SolidBrush(color[flag]);//画刷
         //        g.FillEllipse(myBrush, new Rectangle(cir_Point.X + point_diff.X - 3, cir_Point.Y + point_diff.Y - 3, 3, 3));//画实心椭圆
                 //    g.DrawLine(new Pen(Color.Red), point_diff.X, point_diff.Y, point_diff.X, point_diff.Y);
                 //    g.DrawLine(new Pen(Color.Red), 200, 200,210, 210);
@@ -389,6 +396,13 @@ namespace radarsystem
                 g.DrawLine(p, one, two);
                 System.Threading.Thread.Sleep(200);
             }
+            if (list_trace.Count == 1)
+            {
+                one.X = list_trace[0].X - pictureBox4.Left+cir_Point.X;
+                one.Y = list_trace[0].Y - pictureBox4.Left + cir_Point.Y;
+                g.FillEllipse(myBrush, new Rectangle(one.X - 3,
+                  one.Y - 3, 6, 6));//画实心椭圆
+            }
         //    double x1=116.41667;
         //    double y1 =39.91667;   //beijing经纬度
         //    double x2=114.31667;
@@ -396,6 +410,7 @@ namespace radarsystem
         //    double dis=axMap1.Distance(x1,y1,x2,y2)*2;
         ////    textBox_longitude.Text = dis.ToString();
         }
+
 
         private void draw_monitor_trace_realtrace()         //专门画雷达波形图上真实轨迹的，，类似于地图上的轨迹用线程testmethod
         {
@@ -412,8 +427,8 @@ namespace radarsystem
         {
             int flag = (int)obj;
             List<Point> list_trace = new List<Point>();
-            double distance1, distance2;
-            distance1 = 7 * panel1.Width / 20;
+            //double distance1, distance2;
+            //distance1 = 7 * panel1.Width / 20;
             Graphics g;
             Pen p = new Pen(color[flag], 2);
             g = panel1.CreateGraphics();
@@ -425,11 +440,11 @@ namespace radarsystem
             cir_Point.X = panel1.Width / 10 * 5;
             cir_Point.Y = panel1.Height / 10 * 5;
 
-            for (int i = 0; i < list_detect_distance_final[flag].Count ; i++)
+            for (int i = 0; i < list_detect_distance_update[flag].Count ; i++)
             {
                 //double类型的坐标转换成int
-                list_trace.Add(new Point((int)list_detect_distance_final[flag][i].X, 
-                    (int)list_detect_distance_final[flag][i].Y));
+                list_trace.Add(new Point((int)list_detect_distance_update[flag][i].X,
+                    (int)list_detect_distance_update[flag][i].Y));
                 //g.DrawString();
             }
 
@@ -439,9 +454,10 @@ namespace radarsystem
                 point_diff = point;
                 point_diff.X = point.X - pictureBox4.Left;
                 point_diff.Y = point.Y - pictureBox4.Top;
-                distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
-                if (distance2 - distance1 > 0)
-                    continue;
+                //distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
+                //if (distance2 - distance1 > 0)
+                //    continue;
+                
                 SolidBrush myBrush = new SolidBrush(color[flag]);//画刷
           //      g.FillEllipse(myBrush, new Rectangle(cir_Point.X + point_diff.X - 3, cir_Point.Y + point_diff.Y - 3, 3, 3));//画实心椭圆
                 //    g.DrawLine(new Pen(Color.Red), point_diff.X, point_diff.Y, point_diff.X, point_diff.Y);
@@ -514,7 +530,8 @@ namespace radarsystem
             //int showIndex = featurecomboBox1.SelectedIndex;
             string selectedText = featurecomboBox1.SelectedItem.ToString();
             long selectedId = Convert.ToInt64(selectedText);
-            int index = arr_tar.IndexOf(selectedId);
+     //       int index = arr_tar.IndexOf(selectedId);
+            int index =(int) selectedId;
             FeatureModel feature = new FeatureModel();
             Dictionary<String, double> featDicX;
             Dictionary<String, double> featDicY; 
@@ -523,16 +540,32 @@ namespace radarsystem
                 return;
            
                 //当前选中了时域和空域特征分析(X)
-            if (noiseFlag == NoiseEnum.GUASSIAN){
+            //if (noiseFlag == NoiseEnum.GUASSIAN){
+            //    featDicX = feature.getTimeAndSpaceFeatureX(guassianList_final[index], 13);
+            //    featDicY = feature.getTimeAndSpaceFeatureY(guassianList_final[index], 13);
+            //} 
+            //else if(noiseFlag == NoiseEnum.POISSON){
+            //    featDicX = feature.getTimeAndSpaceFeatureX(poissonList_final[index], 13);
+            //    featDicY = feature.getTimeAndSpaceFeatureY(poissonList_final[index], 13);
+            //}
+                   
+            //else{
+            //    featDicX = feature.getTimeAndSpaceFeatureX(uniformList_final[index], 13);
+            //    featDicY = feature.getTimeAndSpaceFeatureY(uniformList_final[index], 13);
+            //}
+            if (noiseFlag == NoiseEnum.GUASSIAN)
+            {
                 featDicX = feature.getTimeAndSpaceFeatureX(guassianList_final[index], 13);
                 featDicY = feature.getTimeAndSpaceFeatureY(guassianList_final[index], 13);
-            } 
-            else if(noiseFlag == NoiseEnum.POISSON){
+            }
+            else if (noiseFlag == NoiseEnum.POISSON)
+            {
                 featDicX = feature.getTimeAndSpaceFeatureX(poissonList_final[index], 13);
                 featDicY = feature.getTimeAndSpaceFeatureY(poissonList_final[index], 13);
             }
-                   
-            else{
+
+            else
+            {
                 featDicX = feature.getTimeAndSpaceFeatureX(uniformList_final[index], 13);
                 featDicY = feature.getTimeAndSpaceFeatureY(uniformList_final[index], 13);
             }
@@ -578,6 +611,7 @@ namespace radarsystem
 
             }
 
+<<<<<<< HEAD
             //如果场景是声呐（主动）
             if (scene == Scene.ACT_SONAR)  
             {
@@ -636,6 +670,8 @@ namespace radarsystem
             }
 
 
+=======
+>>>>>>> origin/master
             featurelistView.View = System.Windows.Forms.View.Details;
             featurelistView.GridLines = true;
             featurelistView.EndUpdate();
@@ -675,7 +711,7 @@ namespace radarsystem
             {
                 for (int i = 0; i < arr_tar.Count; i++)
                 {
-                    if (guassianList_final[i].Count != 0)
+                    if (guassianList[i].Count != 0)
                     {
                         Pen p = new Pen(color[i], 1 / 2);
 
@@ -691,7 +727,7 @@ namespace radarsystem
             {
                 for (int i = 0; i < arr_tar.Count; i++)
                 {
-                    if (poissonList_final[i].Count != 0)
+                    if (poissonList[i].Count != 0)
                     {
                         Pen p = new Pen(color[i], 1 / 2);
 
@@ -707,7 +743,7 @@ namespace radarsystem
             {
                 for (int i = 0; i < arr_tar.Count; i++)
                 {
-                    if (uniformList_final[i].Count != 0)
+                    if (uniformList[i].Count != 0)
                     {
                         Pen p = new Pen(color[i], 1 / 2);
 
@@ -753,7 +789,7 @@ namespace radarsystem
         private void drawtrace_update()     //
         {
            
-            for (int i = 0; i < 4; i++)    //直接生成4个线程，匀加，匀减，匀速，圆周运动
+            for (int i = 0; i < 3; i++)    //直接生成4个线程，匀加，匀减，匀速，圆周运动
             {
                 //QueueUserWorkItem()方法：将工作任务排入线程池。
                 ThreadPool.QueueUserWorkItem(new WaitCallback(thread_drawtrace), i);
@@ -790,10 +826,14 @@ namespace radarsystem
         }
         private void constantSpeed()    //匀速运动类型，起点为100，30，方向角为顺时针0 rad，最好多生成一些点
         {
+            list_trace_update[0].Clear();
+            arr_tar.Clear();
             Point p=new Point();
             p.X=100;        
             p.Y=30;    //匀速运动起点,经纬度 各为100，30
             list_trace_update[0].Add(p);
+            //list_detect_distance_update[0].Add(new PointD ((double)p.X,(double)p.Y));
+            arr_tar.Add(0);
             for (int i = 1; i < 30; i++)
             {
                 Point p1 = new Point();
@@ -810,25 +850,20 @@ namespace radarsystem
                 list_trace_update[0].Add(p1);
 
             }
-            for (int i = 1; i < 30; i++)
-            {
-                PointD p1 = new PointD();       //纯粹为了精度
-                p1.X += p.X + i * 20;
-                p1.Y = p.Y;              
-                list_detect_distance_update[0].Add(p1);
 
-
-            }
         //    drawConstantSpeed(0);
 
         }
         private void constantAcceleration()     //匀加速运动，保存到list_trace_update[1],方向角为顺时针x度
         {
+            list_trace_update[1].Clear();
             Point p=new Point();
             p.X=120;        
             p.Y=50;    //匀加速运动起点,经纬度 各为120，50
             int a=4;  //加速度为12
             list_trace_update[1].Add(p);
+            //list_detect_distance_update[1].Add(new PointD((double)p.X, (double)p.Y));
+            arr_tar.Add(1);
             for (int i = 1; i < 30; i++)
             {
                 Point p1 = new Point();
@@ -837,9 +872,11 @@ namespace radarsystem
                 list_trace_update[1].Add(p1);
 
             }
+
         }
         private void constantSlowDown()     //匀减速运动，保存到list_trace_update[2],方向角为顺时针53度
         {
+            list_trace_update[2].Clear();
             Point p = new Point();
             p.X = 100;
             p.Y = 70;    //匀减速运动起点,经纬度 各为120，70
@@ -847,6 +884,8 @@ namespace radarsystem
             int v0 = 50;
             int vt = v0;
             list_trace_update[2].Add(p);
+            //list_detect_distance_update[2].Add(new PointD((double)p.X, (double)p.Y));
+            arr_tar.Add(2);
             for (int i = 1; i < 12; i++)
             {
 
@@ -856,12 +895,13 @@ namespace radarsystem
                 vt = v0 - 2 * i;
                 if(vt>=0)
                     list_trace_update[2].Add(p1);
-
             }
+
         }
 
         private void circleMotion()         //圆周运动，周期为PI，保存到list_trace_update[3]
         {
+            list_trace_update[3].Clear();
             Point p = new Point();
             p.X = 200;
             p.Y = 200;    //圆周运动起点,经纬度 各为200，200
@@ -869,18 +909,97 @@ namespace radarsystem
             int T=20;    //周期为20
             int r = 50;
             double pi=3.1415;
-            list_trace_update[3].Add(p);
-            for (int i = 1; i < 20; i++)
-            {
+            //list_trace_update[3].Add(p);
+            //list_detect_distance_update[3].Add(new PointD((double)p.X, (double)p.Y));
+            arr_tar.Add(3);
+            Graphics g;
+            SolidBrush myBrush = new SolidBrush(color[3]);//画刷
+            Pen pen = new Pen(color[3],2);
+            g = panel1.CreateGraphics();
+        //    Rect rect;
+         //   g.DrawEllipse();
+            g = axMap1.CreateGraphics();
+            g.DrawEllipse(pen,150,100,200,200);
 
-                Point p1 = new Point();
-              //  p1.X = r*(int)Math.Sin(2 * pi / T * i);
-              //  p1.Y = r*(int)Math.Cos(2 * pi / T * i);
-                p1.X = (int)(r * 0.5 + p.X);
-                p1.Y = (int)(r * 0.5 + p.Y);
-                list_trace_update[3].Add(p1);
+            Point []p1 = new Point[9];
+
+            p1[0].X=  250; p1[0].Y=  100;
+            p1[1].X = 300; p1[1].Y = 115;
+            p1[2].X = 350; p1[2].Y = 200;            
+            p1[3].X = 300; p1[3].Y = 285;
+            p1[4].X = 250; p1[4].Y = 300;
+            p1[5].X = 200; p1[5].Y = 285;
+            p1[6].X = 150; p1[6].Y = 200;
+            p1[7].X = 190; p1[7].Y = 115;
+            p1[8].X = p1[0].X; p1[8].Y = p1[0].Y;
+            for (int i = 0; i < 9; i++)
+            {
+                list_trace_update[3].Add(p1[i]);
+                //System.Threading.Thread.Sleep(50);
+            }
+                
+
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+            for (int j = 0; j < 8;j++ )
+                g.FillEllipse(myBrush, new Rectangle(p1[j].X - 3,
+                   p1[j].Y - 3, 6, 6));//画实心椭圆
+            //for (int i = 1; i < 20; i++)
+            //{
+            //    Point p1 = new Point();
+            //  //  p1.X = r*(int)Math.Sin(2 * pi / T * i);
+            //  //  p1.Y = r*(int)Math.Cos(2 * pi / T * i);
+            //    p1.X = (int)(r * 0.5 + p.X);
+            //    p1.Y = (int)(r * 0.5 + p.Y);
+            //    list_trace_update[3].Add(p1);
+            //}
+
+        }
+
+        private void prepareforListDetectDis()
+        {
+            for (int i = 0; i < arr_tar.Count; i++)
+                list_detect_distance_update[i].Clear();
+            double distance1, distance2;
+            distance1 = 7 * panel1.Width / 20;
+            PointD point = new PointD();
+            PointD point_diff = new PointD();
+
+            for (int i = 0; i < arr_tar.Count; i++)
+            {
+                for (int j = 0; j < list_trace_update[i].Count; j++)
+                {
+                    point.X = list_trace_update[i][j].X;
+                    point.Y = list_trace_update[i][j].Y;
+
+                    point_diff.X = point.X;
+                    point_diff.Y = point.Y;
+                    double x, y;
+                    x = System.Math.Abs(point.X - pictureBox4.Left);
+                    y = System.Math.Abs(point.Y - pictureBox4.Top);
+                    //point_diff.X = System.Math.Abs(point.X - pictureBox4.Left);
+                    //point_diff.Y = System.Math.Abs(point.Y - pictureBox4.Top);
+                    point_diff.X = x;
+                    point_diff.Y = y;
+                    distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
+                    if (distance2 - distance1 <= 0)   //相当于判断雷达的最大扫描范围
+                    {
+                        // list_trace.
+                        PointD point_save = new PointD();
+                        point_save.X = point.X;
+                        point_save.Y = point.Y;
+                        list_detect_distance_update[i].Add(point_save);
+                        // continue;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
 
             }
+            for (int k = 0; k < 4; k++)
+                Console.WriteLine(list_detect_distance_final_update[k].Count);
         }
         private void OnMouseUp(object sender, MouseEventArgs e)
         {
@@ -891,11 +1010,12 @@ namespace radarsystem
                 pictureBox4.Left = pictureBox4.Left + (e.X - currentX);
               //  System.Threading.Thread.Sleep(1000);
             }
+            
             isDragging = false;
             constantSpeed();
             constantAcceleration();
             constantSlowDown();
-        //    circleMotion();
+            circleMotion();
            // drawtrace();
             drawtrace_update();
         }
@@ -928,9 +1048,12 @@ namespace radarsystem
                       draw_monitor_trace();
                       for (int i = 0; i < arr_tar.Count; i++)
                       {
-                          if (guassianList_final[i].Count != 0)
+                          if (guassianList[i].Count != 0)
                               if (this.featurecomboBox1.FindString(arr_tar[i].ToString()) == -1)  //去重
                                   this.featurecomboBox1.Items.Add("" + arr_tar[i]);
+                          //if (guassianList_final[i].Count != 0)
+                          //    if (this.featurecomboBox1.FindString(arr_tar[i].ToString()) == -1)  //去重
+                          //        this.featurecomboBox1.Items.Add("" + arr_tar[i]);
                       }
                  //       });
                 }
@@ -945,9 +1068,12 @@ namespace radarsystem
                     draw_monitor_trace();
                     for (int i = 0; i < arr_tar.Count; i++)
                     {
-                        if (poissonList_final[i].Count != 0)
+                        if (poissonList[i].Count != 0)
                             if (this.featurecomboBox1.FindString(arr_tar[i].ToString()) == -1)
                                 this.featurecomboBox1.Items.Add("" + arr_tar[i]);
+                        //if (poissonList_final[i].Count != 0)
+                        //    if (this.featurecomboBox1.FindString(arr_tar[i].ToString()) == -1)
+                        //        this.featurecomboBox1.Items.Add("" + arr_tar[i]);
                     }
                 }
                 else if (noiseFlag == NoiseEnum.UNIFORM)
@@ -959,9 +1085,12 @@ namespace radarsystem
                     draw_monitor_trace();
                     for (int i = 0; i < arr_tar.Count; i++)
                     {
-                        if (uniformList_final[i].Count != 0)
+                        if (uniformList[i].Count != 0)
                             if (this.featurecomboBox1.FindString(arr_tar[i].ToString()) == -1)
                                 this.featurecomboBox1.Items.Add("" + arr_tar[i]);
+                        //if (uniformList_final[i].Count != 0)
+                        //    if (this.featurecomboBox1.FindString(arr_tar[i].ToString()) == -1)
+                        //        this.featurecomboBox1.Items.Add("" + arr_tar[i]);
                     }
                 }
                 else
@@ -1013,14 +1142,20 @@ namespace radarsystem
         private void clearforListDetectDis()        //清空list_detect_distance_final数组
         {
             for (int i = 0; i < arr_tar.Count; i++)
-                list_detect_distance_final[i].Clear();
+            {
+                list_trace_update[i].Clear();
+                list_detect_distance_update[i].Clear();
+            }
         }
 
         private void clearfornoiseListfinal()        //清空guassList_final,poissionList_final,uniformList_final数组
         {
             for (int i = 0; i < arr_tar.Count; i++)
             {
+                list_detect_distance_final_update[i].Clear();
                 guassianList[i].Clear();
+                poissonList[i].Clear();
+                uniformList[i].Clear();
                 guassianList_final[i].Clear();
                 poissonList_final[i].Clear();
                 uniformList_final[i].Clear();
@@ -1033,6 +1168,7 @@ namespace radarsystem
         {
             clearforListDetectDis();  //切换到不同雷达，清空list_detect_distance_final 数组
             clearfornoiseListfinal(); //切换到不同雷达， 清空guassList,guassList_final,
+            arr_tar.Clear();
             //poissionList_final,uniformList_final数组
             if (radioButton1.Checked == true || radioButton2.Checked == true || radioButton3.Checked == true)
             {
@@ -1386,27 +1522,29 @@ namespace radarsystem
             yVariance = Math.Pow(yVariance, 1 / 2);
         }
 
-        private void prepareforListDetectDis()      //准备数据，即填充list_detect_distance_final[] 数组
+        private void prepareforListDetectDisFin()      //准备数据，即填充list_detect_distance_final_update[] 数组
         {
-            //    List<Point> list_trace = new List<Point>();
+            for (int i = 0; i < arr_tar.Count; i++)
+                list_detect_distance_final_update[i].Clear();
+            //List<Point> list_trace = new List<Point>();
             double distance1, distance2;
             distance1 = 7 * panel1.Width / 20;          
             PointD point = new PointD();
             PointD point_diff = new PointD();      
 
-            for (int i = 0; i < arr_tar.Count; i++)
+            for (int i = 0; i < arr_tar.Count-1; i++)
             {   
                 
-                for (int j = 0; j < list_detect_distance[i].Count; j++)
+                for (int j = 0; j < list_detect_distance_update[i].Count; j++)
                 {
-                    point.X = list_detect_distance[i][j].X;
-                    point.Y = list_detect_distance[i][j].Y;
+                    point.X = list_detect_distance_update[i][j].X;
+                    point.Y = list_detect_distance_update[i][j].Y;
 
                     point_diff.X = point.X;
                     point_diff.Y = point.Y;
 
-                    point_diff.X = point.X - pictureBox4.Left;
-                    point_diff.Y = point.Y - pictureBox4.Top;
+                    point_diff.X = System.Math.Abs(point.X - pictureBox4.Left);
+                    point_diff.Y = System.Math.Abs(point.Y - pictureBox4.Top);
                     distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
                     if (distance2 - distance1 <= 0)   //相当于判断雷达的最大扫描范围
                     {
@@ -1414,7 +1552,7 @@ namespace radarsystem
                         PointD point_save = new PointD();
                         point_save.X = point.X;
                         point_save.Y = point.Y;
-                        list_detect_distance_final[i].Add(point_save);
+                        list_detect_distance_final_update[i].Add(point_save);
                         // continue;
                     }
                     else
@@ -1425,11 +1563,13 @@ namespace radarsystem
 
             }
             for (int k = 0; k < 4; k++)
-                Console.WriteLine(list_detect_distance_final[k].Count);
+                Console.WriteLine(list_detect_distance_final_update[k].Count);
         }
 
         private void prepareforguassListFinal()     //为guassList_final,poissonList_final,uniformList_final准备数据
         {
+            for (int i = 0; i < arr_tar.Count; i++)
+                guassianList_final[i].Clear();
             double distance1, distance2;
             distance1 = 7 * panel1.Width / 20;
             PointD point = new PointD();
@@ -1453,6 +1593,7 @@ namespace radarsystem
                         PointD point_save = new PointD();
                         point_save.X = point.X;
                         point_save.Y = point.Y;
+                        //guassianList[i][j] = point_save;
                         guassianList_final[i].Add(point_save);
                         // continue;
                     }
@@ -1466,6 +1607,8 @@ namespace radarsystem
 
         private void prepareforpoissonListFinal()     //为guassList_final,poissonList_final,uniformList_final准备数据
         {
+            for (int i = 0; i < arr_tar.Count; i++)
+                poissonList_final[i].Clear();
             double distance1, distance2;
             distance1 = 7 * panel1.Width / 20;
             PointD point = new PointD();
@@ -1489,6 +1632,7 @@ namespace radarsystem
                         PointD point_save = new PointD();
                         point_save.X = point.X;
                         point_save.Y = point.Y;
+                        //poissonList[i][j] = point_save;
                         poissonList_final[i].Add(point_save);
                         // continue;
                     }
@@ -1503,6 +1647,8 @@ namespace radarsystem
 
         private void prepareforuniformListfinal()
         {
+            for (int i = 0; i < arr_tar.Count; i++)
+                uniformList_final[i].Clear();
             double distance1, distance2;
             distance1 = 7 * panel1.Width / 20;
             PointD point = new PointD();
@@ -1526,6 +1672,7 @@ namespace radarsystem
                         PointD point_save = new PointD();
                         point_save.X = point.X;
                         point_save.Y = point.Y;
+                        //uniformList[i][j] = point_save;
                         uniformList_final[i].Add(point_save);
                         // continue;
                     }
@@ -1539,8 +1686,8 @@ namespace radarsystem
         }
         private void OnButtonModelDone(object sender, EventArgs e)
         {
-            
-            prepareforListDetectDis();   //准备数据，为数组list_detect_distance_final,注意：每次切换一种雷达时候，
+            prepareforListDetectDis();
+            prepareforListDetectDisFin();   //准备数据，为数组list_detect_distance_final,注意：每次切换一种雷达时候，
            
             
             //需要先清空list_detect_distance_final
@@ -1555,8 +1702,8 @@ namespace radarsystem
                     //计算均值和方差
                     for (int i = 0; i < arr_tar.Count; i++)     //得到guassList数组
                     {
-                        computeMeanVar(list_detect_distance_final[i], out xMean, out xVariance, out yMean, out yVariance);
-                        guassianList[i] = new List<PointD>(Noise.addGuassianNoise(list_detect_distance_final[i].ToArray(), 
+                        computeMeanVar(list_detect_distance_final_update[i], out xMean, out xVariance, out yMean, out yVariance);
+                        guassianList[i] = new List<PointD>(Noise.addGuassianNoise(list_detect_distance_final_update[i].ToArray(), 
                             xMean, xVariance, yMean, yVariance));
 
                      
@@ -1579,7 +1726,7 @@ namespace radarsystem
                     //添加泊松噪音
                     for (int i = 0; i < arr_tar.Count; i++)
                     {
-                        poissonList[i] = new List<PointD>(Noise.addPoissonNoise(list_detect_distance_final[i].ToArray(),
+                        poissonList[i] = new List<PointD>(Noise.addPoissonNoise(list_detect_distance_final_update[i].ToArray(),
                             (panel1.Width / 10) * 7, (panel1.Width / 10) * 7));
                         
                      }
@@ -1608,13 +1755,13 @@ namespace radarsystem
                     double YA = 0, YB = 0;
                     for (int i = 0; i < arr_tar.Count; i++)
                     {
-                        computeMeanVar(list_detect_distance_final[i], out xMean, out xVariance, out yMean, out yVariance);
+                        computeMeanVar(list_detect_distance_final_update[i], out xMean, out xVariance, out yMean, out yVariance);
                         XA = xMean - Math.Pow(3, 1 / 2) * Math.Pow(xVariance, 2);
                         XB = xMean + Math.Pow(3, 1 / 2) * Math.Pow(xVariance, 2);
                         YA = yMean - Math.Pow(3, 1 / 2) * Math.Pow(yVariance, 2);
                         YB = yMean + Math.Pow(3, 1 / 2) * Math.Pow(yVariance, 2);
 
-                        uniformList[i] = new List<PointD>(Noise.addUniformNoise(list_detect_distance_final[i].ToArray(),
+                        uniformList[i] = new List<PointD>(Noise.addUniformNoise(list_detect_distance_final_update[i].ToArray(),
                             XA, XB, YA, YB));
                        
                         //button_goback.Enabled = true;

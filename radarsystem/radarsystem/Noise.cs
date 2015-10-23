@@ -85,10 +85,14 @@ namespace radarsystem
         public static PointD[] addUniformNoise(PointD[] points,double XA,double XB,double YA,double YB)
         {
             PointD[] noisePoint = new PointD[points.Length];
+<<<<<<< HEAD
            
+=======
+            Random r;
+>>>>>>> origin/master
             for (int i = 0; i < points.Length; i++)
             {
-               
+                r = new Random();
                 
                 noisePoint[i] = new PointD();
                 noisePoint[i].X = points[i].X + rand.Next((int)XA,(int)XB);
