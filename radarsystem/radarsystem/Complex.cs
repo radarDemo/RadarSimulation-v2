@@ -45,6 +45,10 @@ namespace radarsystem
             set { image = value; }
         }
 
+        public static Complex transferToComplex(PointD p)
+        {
+            return new Complex(p.X, p.Y);
+        }
         //重载方法
         public static Complex operator +(Complex c1, Complex c2)
         {

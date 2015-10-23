@@ -166,6 +166,7 @@ C:\Users\Administrator\Desktop\10-23\radarsystem-v2\radarsystem\radarsystem\obj\
 C:\Users\Administrator\Desktop\10-23\radarsystem-v2\radarsystem\radarsystem\obj\x86\Debug\radarsystem.Form1.resources
 C:\Users\Administrator\Desktop\10-23\radarsystem-v2\radarsystem\radarsystem\obj\x86\Debug\radarsystem.Properties.Resources.resources
 C:\Users\Administrator\Desktop\10-23\radarsystem-v2\radarsystem\radarsystem\obj\x86\Debug\radarsystem.csproj.GenerateResource.Cache
+<<<<<<< HEAD
 F:\RadarSimulation\RadarSimulation-v2\radarsystem\radarsystem\obj\x86\Debug\Interop.MapXLib.dll
 F:\RadarSimulation\RadarSimulation-v2\radarsystem\radarsystem\obj\x86\Debug\AxInterop.MapXLib.dll
 F:\RadarSimulation\RadarSimulation-v2\radarsystem\radarsystem\obj\x86\Debug\radarsystem.csproj.ResolveComReference.cache
@@ -179,3 +180,8 @@ F:\RadarSimulation\RadarSimulation-v2\radarsystem\radarsystem\obj\x86\Debug\rada
 F:\RadarSimulation\RadarSimulation-v2\radarsystem\radarsystem\obj\x86\Debug\radarsystem.Form1.resources
 F:\RadarSimulation\RadarSimulation-v2\radarsystem\radarsystem\obj\x86\Debug\radarsystem.Properties.Resources.resources
 F:\RadarSimulation\RadarSimulation-v2\radarsystem\radarsystem\obj\x86\Debug\radarsystem.csproj.GenerateResource.Cache
+=======
+C:\Users\Administrator\Documents\GitHub\RadarSimulation-v2\radarsystem\radarsystem\obj\x86\Debug\Interop.MapXLib.dll
+C:\Users\Administrator\Documents\GitHub\RadarSimulation-v2\radarsystem\radarsystem\obj\x86\Debug\AxInterop.MapXLib.dll
+C:\Users\Administrator\Documents\GitHub\RadarSimulation-v2\radarsystem\radarsystem\obj\x86\Debug\radarsystem.csproj.ResolveComReference.cache
+>>>>>>> 9874081400f962cd896e8bb6b284844e8200f117
