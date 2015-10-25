@@ -331,6 +331,107 @@ namespace radarsystem
             //}
             //t2.Start();
         }
+        //频率分析后再图中画轨迹,index 用来对应轨迹颜色
+        private void draw_frequency_trace(int index)
+        {
+            ThreadPool.QueueUserWorkItem(new WaitCallback(frequentThread), index);
+        }
+
+        //频率分析画轨迹线程函数
+        public void frequentThread(object obj)
+        {
+            int index = (int)obj;
+            List<Point> list_trace = new List<Point>();     
+            double distance1, distance2;
+            distance1 = 7 * panel1.Width / 20;
+            Graphics g;
+            SolidBrush myBrush = new SolidBrush(color[index]);//画刷
+            Pen p = new Pen(color[index], 2);
+            g = panel1.CreateGraphics();
+            Point point;
+            Point point_diff;
+            Point cir_Point = new Point(0, 0);
+            Point one = new Point(0, 0);
+            Point two = new Point(0, 0);
+            cir_Point.X = panel1.Width / 10 * 5;
+            cir_Point.Y = panel1.Height / 10 * 5;
+
+            //傅立叶
+            for (int i = 0; i < fftList.Count - 1; i++)
+            {
+                point = fftList[i];
+                point_diff = point;
+                point_diff.X = point.X - pictureBox4.Left;
+                point_diff.Y = point.Y - pictureBox4.Top;
+                distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
+                if (distance2 - distance1 > 0)
+                    continue;
+                //        g.FillEllipse(myBrush, new Rectangle(cir_Point.X + point_diff.X - 3, cir_Point.Y + point_diff.Y - 3, 3, 3));//画实心椭圆
+                //    g.DrawLine(new Pen(Color.Red), point_diff.X, point_diff.Y, point_diff.X, point_diff.Y);
+                //    g.DrawLine(new Pen(Color.Red), 200, 200,210, 210);
+                one.X = cir_Point.X + point_diff.X;
+                one.Y = cir_Point.Y + point_diff.Y;
+                two.X = fftList[i + 1].X - pictureBox4.Left + cir_Point.X;
+                two.Y = fftList[i + 1].Y - pictureBox4.Top + cir_Point.Y;
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+
+                g.FillEllipse(myBrush, new Rectangle(one.X - 3,
+                   one.Y - 3, 6, 6));//画实心椭圆
+                g.FillEllipse(myBrush, new Rectangle(two.X - 3,
+                  two.Y - 3, 6, 6));//画实心椭圆
+
+                g.DrawLine(p, one, two);
+                System.Threading.Thread.Sleep(200);
+            }
+
+            if (fftList.Count == 1)
+            {
+                one.X = fftList[0].X - pictureBox4.Left + cir_Point.X;
+                one.Y = fftList[0].Y - pictureBox4.Left + cir_Point.Y;
+                g.FillEllipse(myBrush, new Rectangle(one.X - 3,
+                  one.Y - 3, 6, 6));//画实心椭圆
+            }
+
+            //反傅立叶
+             for (int i = 0; i < ifftList.Count - 1; i++)
+             {
+                 point = ifftList[i];
+                 point_diff = point;
+                 point_diff.X = point.X - pictureBox4.Left;
+                 point_diff.Y = point.Y - pictureBox4.Top;
+                 distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
+                 if (distance2 - distance1 > 0)
+                     continue;
+                 //        g.FillEllipse(myBrush, new Rectangle(cir_Point.X + point_diff.X - 3, cir_Point.Y + point_diff.Y - 3, 3, 3));//画实心椭圆
+                 //    g.DrawLine(new Pen(Color.Red), point_diff.X, point_diff.Y, point_diff.X, point_diff.Y);
+                 //    g.DrawLine(new Pen(Color.Red), 200, 200,210, 210);
+                 one.X = cir_Point.X + point_diff.X;
+                 one.Y = cir_Point.Y + point_diff.Y;
+                 two.X = ifftList[i + 1].X - pictureBox4.Left + cir_Point.X;
+                 two.Y = ifftList[i + 1].Y - pictureBox4.Top + cir_Point.Y;
+                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+
+                 g.FillEllipse(myBrush, new Rectangle(one.X - 3,
+                    one.Y - 3, 6, 6));//画实心椭圆
+                 g.FillEllipse(myBrush, new Rectangle(two.X - 3,
+                   two.Y - 3, 6, 6));//画实心椭圆
+
+                 g.DrawLine(p, one, two);
+                 System.Threading.Thread.Sleep(200);
+             }
+
+             if (ifftList.Count == 1)
+             {
+                 one.X = fftList[0].X - pictureBox4.Left + cir_Point.X;
+                 one.Y = fftList[0].Y - pictureBox4.Left + cir_Point.Y;
+                 g.FillEllipse(myBrush, new Rectangle(one.X - 3,
+                   one.Y - 3, 6, 6));//画实心椭圆
+             }
+
+        }
+
         public void thread2(object obj)
         {
             
@@ -555,6 +656,58 @@ namespace radarsystem
             else MessageBox.Show("您选择添加了" + strCollected, "提示");
         }
 
+        //当时电子对抗的时候，给listview中添加如下额外的特征量
+        private void addfeature_to_listview(int position)
+        {
+            //从输入框中读取配置特征量       
+            featurelistView.Items.Add("探测距离");
+            if (textBox_juli.Text == "")
+                textBox_juli.Text = "220";
+            featurelistView.Items[++position].SubItems.Add(textBox_juli.Text );
+            featurelistView.Items[position].SubItems.Add(textBox_juli.Text );
+
+            featurelistView.Items.Add("载频");
+            if (textBox_zaipin.Text == "")
+                textBox_zaipin.Text = "100";
+            featurelistView.Items[++position].SubItems.Add(textBox_zaipin.Text );
+            featurelistView.Items[position].SubItems.Add(textBox_zaipin.Text );
+
+            featurelistView.Items.Add("重频");
+            if (textBox_chongpin.Text == "")
+                textBox_chongpin.Text = "50";
+            featurelistView.Items[++position].SubItems.Add(textBox_chongpin.Text );
+            featurelistView.Items[position].SubItems.Add(textBox_chongpin.Text );
+
+            featurelistView.Items.Add("脉宽");
+            if (textBox_maikuan.Text == "")
+                textBox_maikuan.Text = "20";
+            featurelistView.Items[++position].SubItems.Add(textBox_maikuan.Text );
+            featurelistView.Items[position].SubItems.Add(textBox_maikuan.Text );
+
+            featurelistView.Items.Add("脉幅");
+            if (textBox_maifu.Text == "")
+                textBox_maifu.Text = "50";
+            featurelistView.Items[++position].SubItems.Add(textBox_maifu.Text);
+            featurelistView.Items[position].SubItems.Add(textBox_maifu.Text);
+
+            featurelistView.Items.Add("天线扫描周期");
+            if (textBox_saomiao.Text == "")
+                textBox_saomiao.Text = "2.50";
+            featurelistView.Items[++position].SubItems.Add(textBox_saomiao.Text);
+            featurelistView.Items[position].SubItems.Add(textBox_saomiao.Text);
+
+            featurelistView.Items.Add("载频捷变量");
+            if (textBox_jiebianliang.Text == "")
+                textBox_jiebianliang.Text = "0.5";
+            featurelistView.Items[++position].SubItems.Add(textBox_jiebianliang.Text);
+            featurelistView.Items[position].SubItems.Add(textBox_jiebianliang.Text);
+
+            featurelistView.Items.Add("重频抖变量");
+            if (textBox_doudongliang.Text == "")
+                textBox_doudongliang.Text = "±1%~±20%";
+            featurelistView.Items[++position].SubItems.Add(textBox_doudongliang.Text);
+            featurelistView.Items[position].SubItems.Add(textBox_doudongliang.Text);
+        }
        
         //特性分析中下拉框状态改变响应函数
         private void featurecomboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -634,14 +787,10 @@ namespace radarsystem
             for (i = 0; i < 13; i++)
             {
                 featurelistView.Items.Add("" + featName[i]);
-                //ListViewItem listItem = new ListViewItem();
-                //listItem.SubItems.Add(""+featDic[featName[i]]);
                 featurelistView.Items[i+1].SubItems.Add("" + featDicX[featName[i]]);
                 featurelistView.Items[i + 1].SubItems.Add("" + featDicY[featName[i]]);
 
             }
-
-
             //如果场景是声呐（主动）
             if (scene == Scene.ACT_SONAR)  
             {
@@ -653,7 +802,7 @@ namespace radarsystem
                 featurelistView.Items[++i].SubItems.Add("0~2*pi");
                 featurelistView.Items[i].SubItems.Add("0~2*pi");
             }
-            else if (scene == Scene.PAS_SONAR)
+            else if (scene == Scene.PAS_SONAR)   //声呐被动
             {
                 featurelistView.Items.Add("探测距离");
                 featurelistView.Items[++i].SubItems.Add("<20km");
@@ -663,56 +812,9 @@ namespace radarsystem
                 featurelistView.Items[++i].SubItems.Add("0~2*pi");
                 featurelistView.Items[i].SubItems.Add("0~2*pi");
             }
-            else if (scene == Scene.ELEC_VS)
+            else if (scene == Scene.ELEC_VS)    //电子对抗
             {
-                //从输入框中读取配置特征量       
-                featurelistView.Items.Add("探测距离");
-                if (textBox_juli.Text == null)
-                    textBox_juli.Text = "220";
-                featurelistView.Items[++i].SubItems.Add(textBox_juli.Text+"km");
-                featurelistView.Items[i].SubItems.Add(textBox_juli.Text+"km");
-
-                featurelistView.Items.Add("载频");
-                if (textBox_zaipin.Text == null)
-                    textBox_zaipin.Text = "100";
-                featurelistView.Items[++i].SubItems.Add(textBox_zaipin.Text+"GHZ");
-                featurelistView.Items[i].SubItems.Add(textBox_zaipin.Text+"GHZ");
-
-                featurelistView.Items.Add("重频");
-                if (textBox_chongpin.Text == null)
-                    textBox_chongpin.Text = "50";
-                featurelistView.Items[++i].SubItems.Add(textBox_chongpin.Text+"GHZ");
-                featurelistView.Items[i].SubItems.Add(textBox_chongpin.Text+"GHZ");
-
-                featurelistView.Items.Add("脉宽");
-                if (textBox_maikuan.Text == null)
-                    textBox_maikuan.Text = "20";
-                featurelistView.Items[++i].SubItems.Add(textBox_maikuan.Text+"us");
-                featurelistView.Items[i].SubItems.Add(textBox_maikuan.Text+"us");
-
-                featurelistView.Items.Add("脉幅");
-                if (textBox_maifu.Text == null)
-                    textBox_maifu.Text = "50";
-                featurelistView.Items[++i].SubItems.Add(textBox_maifu.Text);
-                featurelistView.Items[i].SubItems.Add(textBox_maifu.Text);
-
-                featurelistView.Items.Add("天线扫描周期");
-                if (textBox_saomiao.Text == null)
-                    textBox_saomiao.Text = "2.50";
-                featurelistView.Items[++i].SubItems.Add(textBox_saomiao.Text);
-                featurelistView.Items[i].SubItems.Add(textBox_saomiao.Text);
-
-                featurelistView.Items.Add("载频捷变量");
-                if (textBox_jiebianliang.Text == null)
-                    textBox_jiebianliang.Text = "0.5";
-                featurelistView.Items[++i].SubItems.Add(textBox_jiebianliang.Text);
-                featurelistView.Items[i].SubItems.Add(textBox_jiebianliang.Text);
-
-                featurelistView.Items.Add("重频抖变量");
-                if (textBox_doudongliang.Text == null)
-                    textBox_doudongliang.Text = "±1%~±20%";
-                featurelistView.Items[++i].SubItems.Add(textBox_doudongliang.Text);
-                featurelistView.Items[i].SubItems.Add(textBox_doudongliang.Text);
+                addfeature_to_listview(i);
             }
 
             featurelistView.View = System.Windows.Forms.View.Details;
@@ -720,94 +822,9 @@ namespace radarsystem
             featurelistView.EndUpdate();
 
             //画出频率分析轨迹
-   
-            List<Point> list_trace = new List<Point>();
-            double distance1, distance2;
-            distance1 = 7 * panel1.Width / 20;
-            Graphics g;
-            SolidBrush myBrush = new SolidBrush(color[index]);//画刷
-            Pen p = new Pen(color[index], 2);
-            g = panel1.CreateGraphics();
-            Point point;
-            Point point_diff;
-            Point cir_Point = new Point(0, 0);
-            Point one = new Point(0, 0);
-            Point two = new Point(0, 0);
-            cir_Point.X = panel1.Width / 10 * 5;
-            cir_Point.Y = panel1.Height / 10 * 5;
-
-            //傅立叶
-            for (i = 0; i < fftList.Count - 1; i++)
-            {
-                point = fftList[i];
-                point_diff = point;
-                point_diff.X = point.X - pictureBox4.Left;
-                point_diff.Y = point.Y - pictureBox4.Top;
-                distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
-                if (distance2 - distance1 > 0)
-                    continue;
-                //        g.FillEllipse(myBrush, new Rectangle(cir_Point.X + point_diff.X - 3, cir_Point.Y + point_diff.Y - 3, 3, 3));//画实心椭圆
-                //    g.DrawLine(new Pen(Color.Red), point_diff.X, point_diff.Y, point_diff.X, point_diff.Y);
-                //    g.DrawLine(new Pen(Color.Red), 200, 200,210, 210);
-                one.X = cir_Point.X + point_diff.X;
-                one.Y = cir_Point.Y + point_diff.Y;
-                two.X = fftList[i + 1].X - pictureBox4.Left + cir_Point.X;
-                two.Y = fftList[i + 1].Y - pictureBox4.Top + cir_Point.Y;
-                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-
-                g.FillEllipse(myBrush, new Rectangle(one.X - 3,
-                   one.Y - 3, 6, 6));//画实心椭圆
-                g.FillEllipse(myBrush, new Rectangle(two.X - 3,
-                  two.Y - 3, 6, 6));//画实心椭圆
-
-                g.DrawLine(p, one, two);
-                System.Threading.Thread.Sleep(200);
-            }
-
-            if (fftList.Count == 1)
-            {
-                one.X = fftList[0].X - pictureBox4.Left + cir_Point.X;
-                one.Y = fftList[0].Y - pictureBox4.Left + cir_Point.Y;
-                g.FillEllipse(myBrush, new Rectangle(one.X - 3,
-                  one.Y - 3, 6, 6));//画实心椭圆
-            }
-            //反傅立叶
-            for (i = 0; i < ifftList.Count - 1; i++)
-            {
-                point = ifftList[i];
-                point_diff = point;
-                point_diff.X = point.X - pictureBox4.Left;
-                point_diff.Y = point.Y - pictureBox4.Top;
-                distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
-                if (distance2 - distance1 > 0)
-                    continue;
-                //        g.FillEllipse(myBrush, new Rectangle(cir_Point.X + point_diff.X - 3, cir_Point.Y + point_diff.Y - 3, 3, 3));//画实心椭圆
-                //    g.DrawLine(new Pen(Color.Red), point_diff.X, point_diff.Y, point_diff.X, point_diff.Y);
-                //    g.DrawLine(new Pen(Color.Red), 200, 200,210, 210);
-                one.X = cir_Point.X + point_diff.X;
-                one.Y = cir_Point.Y + point_diff.Y;
-                two.X = ifftList[i + 1].X - pictureBox4.Left + cir_Point.X;
-                two.Y = ifftList[i + 1].Y - pictureBox4.Top + cir_Point.Y;
-                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-
-                g.FillEllipse(myBrush, new Rectangle(one.X - 3,
-                   one.Y - 3, 6, 6));//画实心椭圆
-                g.FillEllipse(myBrush, new Rectangle(two.X - 3,
-                  two.Y - 3, 6, 6));//画实心椭圆
-
-                g.DrawLine(p, one, two);
-                System.Threading.Thread.Sleep(200);
-            }
-
-            if (ifftList.Count == 1)
-            {
-                one.X = fftList[0].X - pictureBox4.Left + cir_Point.X;
-                one.Y = fftList[0].Y - pictureBox4.Left + cir_Point.Y;
-                g.FillEllipse(myBrush, new Rectangle(one.X - 3,
-                  one.Y - 3, 6, 6));//画实心椭圆
-            }
+            draw_frequency_trace(index);
+           
+            
           
         }
 

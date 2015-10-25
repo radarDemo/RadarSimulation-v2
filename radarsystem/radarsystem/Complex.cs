@@ -71,6 +71,12 @@ namespace radarsystem
             return Math.Sqrt(real * real + image * image);
         }
 
+        //
+        public Complex Conjugate()
+        {
+            return new Complex(this.real, -this.image);
+        }
+
         //重载toString方法
          public override string ToString()
         {
