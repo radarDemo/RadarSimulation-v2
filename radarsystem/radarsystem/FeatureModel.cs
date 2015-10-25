@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -23,6 +24,7 @@ namespace radarsystem
                 featDic["标准差"] = 0; featDic["波形指标"] = 0; featDic["脉冲指标"] = 0; featDic["方根幅值"] = 0;
                 featDic["裕度指标"] = 0; featDic["峭度指标"] = 0; featDic["自相关函数"] = 0; featDic["峰值指标"] = 0;
                 featDic["互相关函数"] = 0;
+                return featDic;
             }
 
             PointD[] p1 = new PointD[list.Count];
@@ -158,6 +160,7 @@ namespace radarsystem
                 featDic["标准差"] = 0; featDic["波形指标"] = 0; featDic["脉冲指标"] = 0; featDic["方根幅值"] = 0;
                 featDic["裕度指标"] = 0; featDic["峭度指标"] = 0; featDic["自相关函数"] = 0; featDic["峰值指标"] = 0;
                 featDic["互相关函数"] = 0;
+                return featDic;
             }
             PointD[] p1 = new PointD[list.Count];
             for (int i = 0; i < list.Count; i++)
@@ -283,9 +286,9 @@ namespace radarsystem
         /**
          * 计算频域特性：傅立叶
          **/
-        public List<PointD> getFrequentFFTFeature(List<PointD> list)
+        public List<Point> getFrequentFFTFeature(List<PointD> list)
         {
-            List<PointD> fftList = new List<PointD>();
+            List<Point> fftList = new List<Point>();
            
             //首先将实数转为复数数组，接着进行傅立叶变换，之后将复数变换成实数
             fftList = complexToReal(FFT(realToComplex(list),false));
@@ -297,9 +300,9 @@ namespace radarsystem
         }
 
         //反傅立叶变换
-        public List<PointD> getFrequentIFFTFeature(List<PointD> list)
+        public List<Point> getFrequentIFFTFeature(List<PointD> list)
         {
-            List<PointD> ifftList = new List<PointD>();
+            List<Point> ifftList = new List<Point>();
         
               //首先将实数转为复数数组，接着进行傅立叶变换，之后将复数变换成实数
               ifftList = complexToReal(FFT(realToComplex(list), true));
@@ -313,7 +316,7 @@ namespace radarsystem
         public Complex[] realToComplex(List<PointD> list)
         {
             Complex[] c = new Complex[list.Count];
-            for(int i=0;i<list.Count;i++)
+            for (int i = 0; i < list.Count; i++)
             {
                 c[i] = Complex.transferToComplex(list[i]);
             }
@@ -321,13 +324,17 @@ namespace radarsystem
             return c;
         }
 
-        public List<PointD> complexToReal(Complex[] complex)
+        public List<Point> complexToReal(Complex[] complex)
         {
-            List<PointD> pointList = new List<PointD>();
-
+            List<Point> pointList = new List<Point>();
+            Point p;
             for (int i = 0; i < complex.Length; i++)
             {
-                PointD p = new PointD(complex[i].Real, complex[i].Image);
+                if (complex[i] == null)
+                {
+                    continue;
+                }
+                p = new Point((int)complex[i].Real, (int)complex[i].Image);
                 pointList.Add(p);
             }
 
