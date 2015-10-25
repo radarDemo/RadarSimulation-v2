@@ -318,6 +318,8 @@ namespace radarsystem
             Complex[] c = new Complex[list.Count];
             for (int i = 0; i < list.Count; i++)
             {
+                if (list[i] == null)
+                    continue;
                 c[i] = Complex.transferToComplex(list[i]);
             }
 

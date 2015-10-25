@@ -535,6 +535,7 @@ namespace radarsystem
             button_text_update.Visible = false;
 
             //从指挥控制中返回
+            this.label5.Visible = false;
             this.dopplercheckBox.Visible = false;
             this.multpBasecheckBox.Visible = false;
             this.bvrcheckBox.Visible = false;
@@ -664,38 +665,54 @@ namespace radarsystem
             }
             else if (scene == Scene.ELEC_VS)
             {
-                //暂时在程序中写死，应该从文本框中获得值！！！
+                //从输入框中读取配置特征量       
                 featurelistView.Items.Add("探测距离");
-                featurelistView.Items[++i].SubItems.Add("220km");
-                featurelistView.Items[i].SubItems.Add("220km");
+                if (textBox_juli.Text == null)
+                    textBox_juli.Text = "220";
+                featurelistView.Items[++i].SubItems.Add(textBox_juli.Text+"km");
+                featurelistView.Items[i].SubItems.Add(textBox_juli.Text+"km");
 
                 featurelistView.Items.Add("载频");
-                featurelistView.Items[++i].SubItems.Add("100GHZ");
-                featurelistView.Items[i].SubItems.Add("100GHZ");
+                if (textBox_zaipin.Text == null)
+                    textBox_zaipin.Text = "100";
+                featurelistView.Items[++i].SubItems.Add(textBox_zaipin.Text+"GHZ");
+                featurelistView.Items[i].SubItems.Add(textBox_zaipin.Text+"GHZ");
 
                 featurelistView.Items.Add("重频");
-                featurelistView.Items[++i].SubItems.Add("50GHZ");
-                featurelistView.Items[i].SubItems.Add("50GHZ");
+                if (textBox_chongpin.Text == null)
+                    textBox_chongpin.Text = "50";
+                featurelistView.Items[++i].SubItems.Add(textBox_chongpin.Text+"GHZ");
+                featurelistView.Items[i].SubItems.Add(textBox_chongpin.Text+"GHZ");
 
                 featurelistView.Items.Add("脉宽");
-                featurelistView.Items[++i].SubItems.Add("20us");
-                featurelistView.Items[i].SubItems.Add("20us");
+                if (textBox_maikuan.Text == null)
+                    textBox_maikuan.Text = "20";
+                featurelistView.Items[++i].SubItems.Add(textBox_maikuan.Text+"us");
+                featurelistView.Items[i].SubItems.Add(textBox_maikuan.Text+"us");
 
                 featurelistView.Items.Add("脉幅");
-                featurelistView.Items[++i].SubItems.Add("50");
-                featurelistView.Items[i].SubItems.Add("50");
+                if (textBox_maifu.Text == null)
+                    textBox_maifu.Text = "50";
+                featurelistView.Items[++i].SubItems.Add(textBox_maifu.Text);
+                featurelistView.Items[i].SubItems.Add(textBox_maifu.Text);
 
                 featurelistView.Items.Add("天线扫描周期");
-                featurelistView.Items[++i].SubItems.Add("2.50");
-                featurelistView.Items[i].SubItems.Add("2.50");
+                if (textBox_saomiao.Text == null)
+                    textBox_saomiao.Text = "2.50";
+                featurelistView.Items[++i].SubItems.Add(textBox_saomiao.Text);
+                featurelistView.Items[i].SubItems.Add(textBox_saomiao.Text);
 
                 featurelistView.Items.Add("载频捷变量");
-                featurelistView.Items[++i].SubItems.Add("0.5");
-                featurelistView.Items[i].SubItems.Add("0.5");
+                if (textBox_jiebianliang.Text == null)
+                    textBox_jiebianliang.Text = "0.5";
+                featurelistView.Items[++i].SubItems.Add(textBox_jiebianliang.Text);
+                featurelistView.Items[i].SubItems.Add(textBox_jiebianliang.Text);
 
                 featurelistView.Items.Add("重频抖变量");
-                featurelistView.Items[++i].SubItems.Add("±1%~±20%");
-                featurelistView.Items[i].SubItems.Add("±1%~±20%");
+                if (textBox_doudongliang.Text == null)
+                    textBox_doudongliang.Text = "±1%~±20%";
+                featurelistView.Items[++i].SubItems.Add(textBox_doudongliang.Text);
+                featurelistView.Items[i].SubItems.Add(textBox_doudongliang.Text);
             }
 
             featurelistView.View = System.Windows.Forms.View.Details;
@@ -1589,7 +1606,7 @@ namespace radarsystem
                 groupBox2.Visible = true;
                 buttonModelDone.Visible = true;
                 button_goback.Visible = true;     //需要在程序最前面 说明每个控件的名字代表的意义，方便阅读代码
-                button_goback.Enabled = false;
+                button_goback.Enabled = true;
                 radioButton7.Checked = false;     //清除单选按钮选中状态
                 radioButton8.Checked = false;
                 radioButton9.Checked = false;
@@ -2238,8 +2255,6 @@ namespace radarsystem
             {
                 //添加高斯噪声
                 //均值
-
-
 
                 //计算均值和方差
                 for (int i = 0; i < arr_tar.Count; i++)     //得到guassList数组
