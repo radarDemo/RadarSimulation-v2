@@ -18,7 +18,7 @@ namespace radarsystem
             //计算时域空域特征分析
             double[] features = new double[count];
 
-            if (list.Count == 0)
+            if (list.Count == 0 || list == null)
             {
                 featDic["算术平均值"] = 0; featDic["几何平均值"] = 0; featDic["均方根值"] = 0; featDic["方差"] = 0;
                 featDic["标准差"] = 0; featDic["波形指标"] = 0; featDic["脉冲指标"] = 0; featDic["方根幅值"] = 0;
@@ -76,7 +76,10 @@ namespace radarsystem
             {
                 features[3] += Math.Pow(p1[i].X - features[0], 2);
             }
-            features[3] /= list.Count - 1;
+            if (list.Count == 1)
+                features[3] = 0;
+            else
+                features[3] /= list.Count - 1;
             features[3] = Math.Round(features[3], 2);
             featDic.Add("方差", features[3]);
 
@@ -154,7 +157,7 @@ namespace radarsystem
             //计算时域空域特征分析
             double[] features = new double[count];
 
-            if (list.Count == 0)
+            if (list.Count == 0 || list == null)
             {
                 featDic["算术平均值"] = 0; featDic["几何平均值"] = 0; featDic["均方根值"] = 0; featDic["方差"] = 0;
                 featDic["标准差"] = 0; featDic["波形指标"] = 0; featDic["脉冲指标"] = 0; featDic["方根幅值"] = 0;
@@ -289,9 +292,31 @@ namespace radarsystem
         public List<Point> getFrequentFFTFeature(List<PointD> list)
         {
             List<Point> fftList = new List<Point>();
+            List<PointD> tempList = new List<PointD>();
            
             //首先将实数转为复数数组，接着进行傅立叶变换，之后将复数变换成实数
-            fftList = complexToReal(fft_frequency(realToComplex(list),list.Count-1));
+            if (list.Count == 0)
+                return null;
+            if (list.Count == 1)
+            {
+                //fftList.Add(new Point())
+                for (int i = 0; i < list.Count; i++)
+                    if (list[i] != null)
+                        fftList.Add(new Point((int)list[i].X, (int)list[i].Y));
+            }
+            else     //只找到参数list中有数据的对象
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i] != null)
+                    {
+                        tempList.Add(list[i]);
+                    }
+                }
+                fftList = complexToReal(fft_frequency(realToComplex(tempList), list.Count - 1));
+            }
+                
+            
             
 
             return fftList;
@@ -303,9 +328,31 @@ namespace radarsystem
         public List<Point> getFrequentIFFTFeature(List<PointD> list)
         {
             List<Point> ifftList = new List<Point>();
+            List<PointD> tempList = new List<PointD>();
         
               //首先将实数转为复数数组，接着进行傅立叶变换，之后将复数变换成实数
-              ifftList = complexToReal(ifft_frequency(realToComplex(list), list.Count-1));
+            if (list.Count == 0)
+                return null;
+            if (list.Count == 1)
+            {
+                //fftList.Add(new Point())
+                for (int i = 0; i < list.Count; i++)
+                    if (list[i] != null)
+                        ifftList.Add(new Point((int)list[i].X, (int)list[i].Y));
+            }
+            else     //只找到参数list中有数据的对象
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i] != null)
+                    {
+                        tempList.Add(list[i]);
+                    }
+                }
+                ifftList = complexToReal(ifft_frequency(realToComplex(tempList), list.Count - 1));
+            }
+                
+             
            
 
             return ifftList;
@@ -355,7 +402,9 @@ namespace radarsystem
         private Complex[] fft_frequency(Complex[] sourceData, int countN)
         {
             //2的r次幂为N，求出r.r能代表fft算法的迭代次数
-            int r = Convert.ToInt16(Math.Log(countN, 2));
+            if (countN == 0)
+                return null;
+            int r = Convert.ToInt32(Math.Log(countN, 2));
 
 
             //分别存储蝶形运算过程中左右两列的结果
@@ -442,7 +491,8 @@ namespace radarsystem
         private Complex[] ifft_frequency(Complex[] sourceData, int countN)
         {
             //将待逆变换序列取共轭，再调用正变换得到结果，对结果统一再除以变换序列的长度N
-
+            if (countN == 0)
+                return null;
             for (int i = 0; i < countN; i++)
             {
                 sourceData[i] = sourceData[i].Conjugate();
@@ -454,7 +504,8 @@ namespace radarsystem
 
             for (int i = 0; i < countN; i++)
             {
-                interVar[i] = new Complex(interVar[i].Real / countN, -interVar[i].Image / countN);
+                if(interVar[i] != null)
+                    interVar[i] = new Complex(interVar[i].Real / countN, -interVar[i].Image / countN);
             }
 
             return interVar;
