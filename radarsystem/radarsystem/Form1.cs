@@ -724,6 +724,25 @@ namespace radarsystem
             pictureBox3.Visible = false;
             pictureBox4.Visible = false;
             pictureBox5.Visible = false;
+            //返回到最开始，什么都没选择
+            this.radioButton1.Checked = false;
+            this.radioButton2.Checked = false;
+            this.radioButton3.Checked = false;
+            this.radioButton4.Checked = false;
+            this.radioButton5.Checked = false;
+            this.radioButton6.Checked = false;
+            this.radioButton13.Checked = false;
+            this.radioButton14.Checked = false;
+            this.radioButton15.Checked = false;
+            this.radioButton16.Checked = false;
+            this.radioButton17.Checked = false;
+            this.radioButton18.Checked = false;
+            this.radioButton19.Checked = false;
+            this.radioButton20.Checked = false;
+            this.radioButton21.Checked = false;
+            this.radioButton22.Checked = false;
+
+
             
         }
      
