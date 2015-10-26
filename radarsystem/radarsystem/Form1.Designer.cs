@@ -170,7 +170,7 @@ namespace radarsystem
             // 
             this.Ypanel.Location = new System.Drawing.Point(24, 23);
             this.Ypanel.Name = "Ypanel";
-            this.Ypanel.Size = new System.Drawing.Size(41, 442);
+            this.Ypanel.Size = new System.Drawing.Size(41, 460);
             this.Ypanel.TabIndex = 7;
             this.Ypanel.Paint += new System.Windows.Forms.PaintEventHandler(this.Ypanel_Paint);
             // 
