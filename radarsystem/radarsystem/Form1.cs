@@ -859,7 +859,7 @@ namespace radarsystem
                 if (noiseFlag == NoiseEnum.NoNoise)
                     return;
 
-<<<<<<< HEAD
+
                 if (noiseFlag == NoiseEnum.GUASSIAN)
                 {
                     featDicX = feature.getTimeAndSpaceFeatureX(guassianList_final[index], 13);
@@ -873,7 +873,7 @@ namespace radarsystem
                 {
                     featDicX = feature.getTimeAndSpaceFeatureX(poissonList_final[index], 13);
                     featDicY = feature.getTimeAndSpaceFeatureY(poissonList_final[index], 13);
-=======
+
                 //频率分析
                 fftList = feature.getFrequentFFTFeature(poissonList_final[index]);
                 ifftList = feature.getFrequentIFFTFeature(poissonList_final[index]);
@@ -883,7 +883,7 @@ namespace radarsystem
             {
                 featDicX = feature.getTimeAndSpaceFeatureX(uniformList_final[index], 13);
                 featDicY = feature.getTimeAndSpaceFeatureY(uniformList_final[index], 13);
->>>>>>> origin/master
+
 
                     //频率分析
                     fftList = feature.getFrequentFFTFeature(poissonList_final[index]);
