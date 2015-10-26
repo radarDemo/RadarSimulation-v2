@@ -590,7 +590,7 @@ namespace radarsystem
                 fftList = feature.getFrequentFFTFeature(poissonList_final[index]);
                 ifftList = feature.getFrequentIFFTFeature(poissonList_final[index]);
             }
-
+            
             else
             {
                 featDicX = feature.getTimeAndSpaceFeatureX(uniformList_final[index], 13);
@@ -1128,6 +1128,8 @@ namespace radarsystem
             isDragging = false;
             
            // drawtrace();
+            if (checkBox_udpSocket.Checked == false)
+                circleMotion();
             drawtrace_update();
         }
 
@@ -1280,6 +1282,16 @@ namespace radarsystem
             clearforListDetectDis();  //切换到不同雷达，清空list_detect_distance_final 数组
             clearfornoiseListfinal(); //切换到不同雷达， 清空guassList,guassList_final,
             arr_tar.Clear();
+            if (checkBox_udpSocket.Checked == false)
+            {
+                constantSpeed();
+                constantAcceleration();
+                constantSlowDown();
+                circleMotion();
+                // draw_monitor_trace();
+                drawtrace_update();
+               
+            }
         //    flag_command = false;
             //poissionList_final,uniformList_final数组
             if (radioButton1.Checked == true || radioButton2.Checked == true || radioButton3.Checked == true)
@@ -1296,6 +1308,11 @@ namespace radarsystem
                 textBox_doudongliang.Visible = true;
                 button_text_update.Visible = true;
             }
+            double MapX = 103, mapY = 36;  //精度 ，纬度
+            float screenX = 0, screenY = 0; //屏幕坐标
+            axMap1.ConvertCoord(ref screenX, ref screenY, ref MapX, ref mapY,
+                                MapXLib.ConversionConstants.miMapToScreen);  //已知经纬度 转换为屏幕坐标
+            //    Graphics g = axMap1.CreateGraphics();
             if (radioButton1.Checked == true)  //选中了第一个单选按钮，即选择了多普勒雷达
             {
                 
@@ -1313,11 +1330,7 @@ namespace radarsystem
                 //清空combobox的值
                 this.featurecomboBox1.Items.Clear();
 
-                double MapX = 103, mapY = 36;  //精度 ，纬度
-                float screenX = 0, screenY = 0; //屏幕坐标
-                axMap1.ConvertCoord(ref screenX, ref screenY, ref MapX, ref mapY,
-                                    MapXLib.ConversionConstants.miMapToScreen);  //已知经纬度 转换为屏幕坐标
-            //    Graphics g = axMap1.CreateGraphics();
+              
                 pictureBox4.Left =(int) screenX;
                 pictureBox4.Top = (int)screenY;                        
               
@@ -1339,6 +1352,8 @@ namespace radarsystem
                 scene = Scene.MUTLIBASE;
                 //清空combobox的值
                 this.featurecomboBox1.Items.Clear();
+                pictureBox4.Left = (int)screenX;
+                pictureBox4.Top = (int)screenY;  
               //  drawtrace();
                 readTxt();
 
@@ -1355,6 +1370,8 @@ namespace radarsystem
                 scene = Scene.BVR;
                 //清空combobox的值
                 this.featurecomboBox1.Items.Clear();
+                pictureBox4.Left = (int)screenX;
+                pictureBox4.Top = (int)screenY; 
                // drawtrace();
                 readTxt();
 
@@ -1373,6 +1390,8 @@ namespace radarsystem
                 scene = Scene.ACT_SONAR;
                 //清空combobox的值
                 this.featurecomboBox1.Items.Clear();
+                pictureBox4.Left = (int)screenX;
+                pictureBox4.Top = (int)screenY; 
                // drawtrace();
             //    readTxt();
 
@@ -1388,6 +1407,8 @@ namespace radarsystem
                 scene = Scene.ELEC_VS;
                 //清空combobox的值
                 this.featurecomboBox1.Items.Clear();
+                pictureBox4.Left = (int)screenX;
+                pictureBox4.Top = (int)screenY; 
 
                // drawtrace();
             //    readTxt();
@@ -2325,6 +2346,8 @@ namespace radarsystem
                 constantAcceleration();
                 constantSlowDown();
                 circleMotion();
+               // draw_monitor_trace();
+                drawtrace_update();
             }
         }
 
@@ -2333,19 +2356,20 @@ namespace radarsystem
             radarsystem.udpSocket.StructDemo struct_df = new radarsystem.udpSocket.StructDemo();
             
             int port = 10000;
+            IPAddress HostIP = IPAddress.Parse("127.0.0.1");
+            IPEndPoint host;
+            while (PortInUse(port))
+            {
+                port++;
+            }
+            host = new IPEndPoint(HostIP, port);
+            UdpClient udpClient = new UdpClient(host);
             while (true)
             {
                 //   IPEndPoint iep = new IPEndPoint(Dns.GetHostAddresses(Dns.GetHostName())[3], 18001);
 
 
-                IPAddress HostIP = IPAddress.Parse("127.0.0.1");
-                IPEndPoint host;
-                while (PortInUse(port))
-                {
-                    port++;
-                }
-                host = new IPEndPoint(HostIP, port);
-                UdpClient udpClient = new UdpClient(host);
+               
                 //      UdpClient.Send("发送的字节", "发送的字节长度", host);  
                 //      IPEndPoint remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
                 try
@@ -2371,14 +2395,15 @@ namespace radarsystem
                     //Console.WriteLine("从结构体中获得" + sf.srcTgtTrk.dLat);
                     Console.WriteLine("从结构体中获得" + struct_df.srcTgtTrk.dLon);
                     //MessageBox.Show("接收到信息：" + struct_df.srcTgtTrk.dLon);
-                    udpClient.Close();
+                    
                 }
                 catch (Exception e)
                 { 
                     MessageBox.Show(e.ToString());
                 }
-                
-            }
+
+            } 
+            udpClient.Close();
 
         }
 
