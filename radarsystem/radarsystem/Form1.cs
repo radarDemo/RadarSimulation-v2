@@ -877,7 +877,7 @@ namespace radarsystem
                 //频率分析
                 fftList = feature.getFrequentFFTFeature(poissonList_final[index]);
                 ifftList = feature.getFrequentIFFTFeature(poissonList_final[index]);
-            }
+               }
             
             else
             {
@@ -888,16 +888,7 @@ namespace radarsystem
                     //频率分析
                     fftList = feature.getFrequentFFTFeature(poissonList_final[index]);
                     ifftList = feature.getFrequentIFFTFeature(poissonList_final[index]);
-                }
-
-                else
-                {
-                    featDicX = feature.getTimeAndSpaceFeatureX(uniformList_final[index], 13);
-                    featDicY = feature.getTimeAndSpaceFeatureY(uniformList_final[index], 13);
-
-                    fftList = feature.getFrequentFFTFeature(uniformList_final[index]);
-                    ifftList = feature.getFrequentIFFTFeature(uniformList_final[index]);
-                }
+            }
 
                
             }
