@@ -10,26 +10,27 @@ using System.Threading;
 using System.Data.OleDb;
 using System.Collections;
 using System.IO;
-
+using System.Net.Sockets;
+using System.Net;
+using System.Net.NetworkInformation;
 //　　System.Text;
 namespace radarsystem
 {
     public partial class Form1 : Form
     {
         //多目标轨迹
-        public struct trace
-        {
-            public long tar_ID;
-            public long track_ID;
-            public Point trail_Point;
-            public long time;
-        };
+        //public struct trace
+        //{
+        //    public long tar_ID;
+        //    public long track_ID;
+        //    public Point trail_Point;
+        //    public long time;
+        //};
         //List<Point>[] list_trace = new List<Point>[50];
 
         List<Point>[] list_trace_update = new List<Point>[20];  //剧情设置有变化，运动类型包括匀加速，匀速，匀减速，
         //圆周运动等典型运动，目标最多20个，_update指的是10月20号以后的版本
      //   List<PointD>[] list = new List<PointD>[50];
-
 
         //List<PointD>[] list_detect_distance = new List<PointD>[50];  //list数组 元素数据类型为PointD，最后用于存储判断了雷达扫描距离的 数据点，仅仅是为了
         //计算精度要求，
@@ -1125,10 +1126,7 @@ namespace radarsystem
             }
             
             isDragging = false;
-            constantSpeed();
-            constantAcceleration();
-            constantSlowDown();
-            circleMotion();
+            
            // drawtrace();
             drawtrace_update();
         }
@@ -1646,7 +1644,7 @@ namespace radarsystem
             PointD point = new PointD();
             PointD point_diff = new PointD();      
 
-            for (int i = 0; i < arr_tar.Count-1; i++)
+            for (int i = 0; i < arr_tar.Count; i++)
             {   
                 
                 for (int j = 0; j < list_detect_distance_update[i].Count; j++)
@@ -2308,7 +2306,98 @@ namespace radarsystem
                 MessageBox.Show("限定选择两个雷达");
             }
         }
-        
-      
+
+        private void checkBox_udpSocket_CheckedChanged(object sender, EventArgs e)
+        {
+           // udpSocket udpsocket = new udpSocket();
+            if (checkBox_udpSocket.Checked == true)
+            {
+                for (int i = 0; i < 4; i++)
+                    list_trace_update[i].Clear();
+                Thread myThread = new Thread(new ThreadStart(ReceiveData));
+                //    //将线程设为后台运行   
+                // //   myThread.IsBackground = true;
+                myThread.Start();
+            }
+            else
+            {
+                constantSpeed();
+                constantAcceleration();
+                constantSlowDown();
+                circleMotion();
+            }
+        }
+
+        public void ReceiveData()
+        {
+            radarsystem.udpSocket.StructDemo struct_df = new radarsystem.udpSocket.StructDemo();
+            
+            int port = 10000;
+            while (true)
+            {
+                //   IPEndPoint iep = new IPEndPoint(Dns.GetHostAddresses(Dns.GetHostName())[3], 18001);
+
+
+                IPAddress HostIP = IPAddress.Parse("127.0.0.1");
+                IPEndPoint host;
+                while (PortInUse(port))
+                {
+                    port++;
+                }
+                host = new IPEndPoint(HostIP, port);
+                UdpClient udpClient = new UdpClient(host);
+                //      UdpClient.Send("发送的字节", "发送的字节长度", host);  
+                //      IPEndPoint remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                try
+                {
+                    Byte[] receiveBytes = udpClient.Receive(ref host);
+                    //  string receiveData = Encoding.Unicode.GetString(receiveBytes);
+
+                    //    Console.WriteLine("接收到信息：" + receiveData);
+                    //Console.WriteLine("接收到信息：" + BitConverter.ToString(receiveBytes));
+                    struct_df = (radarsystem.udpSocket.StructDemo)radarsystem.udpSocket.ByteToStruct(receiveBytes, typeof(radarsystem.udpSocket.StructDemo));
+                    if (struct_df.scsmhead.unit_flag != 0x76)
+                        continue;
+                    if (!arr_tar.Contains(struct_df.srcTgtTrk.nType))
+                        arr_tar.Add(struct_df.srcTgtTrk.nType);
+                    Point point = new Point();
+                    point.X = (int)struct_df.srcTgtTrk.dLat;
+                    point.Y = (int)struct_df.srcTgtTrk.dLon;
+                    list_trace_update[arr_tar.IndexOf(struct_df.srcTgtTrk.nType)].Add(point);
+                    drawtrace_update();
+                    //Console.WriteLine("从结构体中获得" + receiveBytes[1]);
+                    //Console.WriteLine("从结构体中获得" + sf.scsmhead.length);
+                    //Console.WriteLine("从结构体中获得" + sf.scsmhead.recv);
+                    //Console.WriteLine("从结构体中获得" + sf.srcTgtTrk.dLat);
+                    Console.WriteLine("从结构体中获得" + struct_df.srcTgtTrk.dLon);
+                    //MessageBox.Show("接收到信息：" + struct_df.srcTgtTrk.dLon);
+                    udpClient.Close();
+                }
+                catch (Exception e)
+                { 
+                    MessageBox.Show(e.ToString());
+                }
+                
+            }
+
+        }
+
+        public static bool PortInUse(int port)
+        {
+            bool inUse = false;
+
+            IPGlobalProperties ipProperties = IPGlobalProperties.GetIPGlobalProperties();
+            IPEndPoint[] ipEndPoints = ipProperties.GetActiveUdpListeners();
+
+            foreach (IPEndPoint endPoint in ipEndPoints)
+            {
+                if (endPoint.Port == port)
+                {
+                    inUse = true;
+                    break;
+                }
+            }
+            return inUse;
+        }
     }
 }

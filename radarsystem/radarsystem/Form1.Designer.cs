@@ -104,6 +104,7 @@ namespace radarsystem
             this.axMap1 = new AxMapXLib.AxMap();
             this.textBox_doppler = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.checkBox_udpSocket = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tbp_CharacterAnalysis.SuspendLayout();
@@ -245,6 +246,7 @@ namespace radarsystem
             // 
             // tbp_SceneSet
             // 
+            this.tbp_SceneSet.Controls.Add(this.checkBox_udpSocket);
             this.tbp_SceneSet.Controls.Add(this.mixtrailButton);
             this.tbp_SceneSet.Controls.Add(this.pictureBox5);
             this.tbp_SceneSet.Controls.Add(this.pictureBox3);
@@ -908,6 +910,17 @@ namespace radarsystem
             this.tabControl1.TabIndex = 3;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.Feature_SelectedIndexChanged);
             // 
+            // checkBox_udpSocket
+            // 
+            this.checkBox_udpSocket.AutoSize = true;
+            this.checkBox_udpSocket.Location = new System.Drawing.Point(646, 3);
+            this.checkBox_udpSocket.Name = "checkBox_udpSocket";
+            this.checkBox_udpSocket.Size = new System.Drawing.Size(78, 16);
+            this.checkBox_udpSocket.TabIndex = 38;
+            this.checkBox_udpSocket.Text = "checkBox2";
+            this.checkBox_udpSocket.UseVisualStyleBackColor = true;
+            this.checkBox_udpSocket.CheckedChanged += new System.EventHandler(this.checkBox_udpSocket_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1031,6 +1044,7 @@ namespace radarsystem
         private PictureBox pictureBox3;
         private PictureBox pictureBox5;
         private Button mixtrailButton;
+        private CheckBox checkBox_udpSocket;
     }
 }
 
