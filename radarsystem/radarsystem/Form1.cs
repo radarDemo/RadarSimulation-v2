@@ -188,14 +188,11 @@ namespace radarsystem
             for (int i = 0; i < 20;i++ )
             {
                 list_trace_update[i] = new List<Point>();
-                list_detect_distance_update[i] = new List<PointD>();
-<<<<<<< HEAD
+                //list_detect_distance_update[i] = new List<PointD>();
+
                 list_detect_distance_final_update[i] = new List<PointD>();
                 color[i] = System.Drawing.Color.FromArgb((227 * i) % 255, (45 * i) % 255, (153 * i) % 255);
-=======
-                //list_detect_distance_final_update[i] = new List<PointD>();
-                color[i] = System.Drawing.Color.FromArgb((220 * i) % 255, (20 * i) % 255, (150 * i) % 255);
->>>>>>> origin/master
+
                 guassianList[i] = new List<PointD>();
                 guassianList_final[i] = new List<PointD>();
                 poissonList[i] = new List<PointD>();
