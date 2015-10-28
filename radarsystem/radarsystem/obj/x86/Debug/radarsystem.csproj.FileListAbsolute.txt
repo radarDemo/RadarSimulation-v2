@@ -204,3 +204,4 @@ C:\Users\Administrator\Desktop\10-25backup\radarsystem\radarsystem\obj\x86\Debug
 C:\Users\Administrator\Desktop\10-25backup\radarsystem\radarsystem\obj\x86\Debug\radarsystem.exe
 C:\Users\Administrator\Desktop\10-25backup\radarsystem\radarsystem\obj\x86\Debug\radarsystem.pdb
 C:\Users\Administrator\Desktop\10-25backup\radarsystem\radarsystem\obj\x86\Debug\radarsystem.csprojResolveAssemblyReference.cache
+Z:\共享文件夹\git\RadarSimulation-v2\radarsystem\radarsystem\obj\x86\Debug\radarsystem.csprojResolveAssemblyReference.cache

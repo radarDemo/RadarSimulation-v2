@@ -104,7 +104,6 @@ namespace radarsystem
             this.axMap1 = new AxMapXLib.AxMap();
             this.textBox_doppler = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-           // this.panel2 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tbp_CharacterAnalysis.SuspendLayout();
@@ -146,7 +145,6 @@ namespace radarsystem
             this.tbp_CharacterAnalysis.Controls.Add(this.label4);
             this.tbp_CharacterAnalysis.Controls.Add(this.Ypanel);
             this.tbp_CharacterAnalysis.Controls.Add(this.Xpanel);
-           // this.tbp_CharacterAnalysis.Controls.Add(this.panel2);
             this.tbp_CharacterAnalysis.Controls.Add(this.panel1);
             this.tbp_CharacterAnalysis.Controls.Add(this.featurelistView);
             this.tbp_CharacterAnalysis.Controls.Add(this.label1);
@@ -888,6 +886,7 @@ namespace radarsystem
             this.radioButton7.TabStop = true;
             this.radioButton7.Text = "高斯白噪声";
             this.radioButton7.UseVisualStyleBackColor = true;
+            this.radioButton7.CheckedChanged += new System.EventHandler(this.radioButton7_CheckedChanged);
             // 
             // axMap1
             // 
@@ -917,17 +916,6 @@ namespace radarsystem
             this.tabControl1.Size = new System.Drawing.Size(977, 576);
             this.tabControl1.TabIndex = 3;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.Feature_SelectedIndexChanged);
-            // 
-            // panel2
-            // 
-            /*
-            this.panel2.BackColor = System.Drawing.Color.White;
-            this.panel2.Location = new System.Drawing.Point(3, 411);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(90, 65);
-            this.panel2.TabIndex = 5;
-            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
-             * */
             // 
             // Form1
             // 
