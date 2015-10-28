@@ -400,15 +400,16 @@ namespace radarsystem
                     System.Threading.Thread.Sleep(200);
                 }
             }
-            
 
-           
+
+            one = new Point(0, 0);
+            two = new Point(0, 0);
 
             //反傅立叶
             if (ifftList.Count == 1)
             {
-                one.X = fftList[0].X - pictureBox4.Left + cir_Point.X;
-                one.Y = fftList[0].Y - pictureBox4.Left + cir_Point.Y;
+                one.X = ifftList[0].X - pictureBox4.Left + cir_Point.X;
+                one.Y = ifftList[0].Y - pictureBox4.Left + cir_Point.Y;
                 g.FillEllipse(myBrush, new Rectangle(one.X - 3,
                   one.Y - 3, 6, 6));//画实心椭圆
             }
