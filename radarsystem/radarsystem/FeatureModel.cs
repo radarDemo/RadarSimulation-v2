@@ -306,14 +306,14 @@ namespace radarsystem
             }
             else     //只找到参数list中有数据的对象
             {
-                for (int i = 0; i < list.Count; i++)
+                /*for (int i = 0; i < list.Count; i++)
                 {
                     if (list[i] != null)
                     {
                         tempList.Add(list[i]);
                     }
-                }
-                fftList = complexToReal(fft_frequency(realToComplex(tempList), list.Count - 1));
+                }*/
+                fftList = complexToReal(fft_frequency(realToComplex(list), list.Count - 1));
             }
                 
             
@@ -342,14 +342,14 @@ namespace radarsystem
             }
             else     //只找到参数list中有数据的对象
             {
-                for (int i = 0; i < list.Count; i++)
+                /*for (int i = 0; i < list.Count; i++)
                 {
                     if (list[i] != null)
                     {
                         tempList.Add(list[i]);
                     }
-                }
-                ifftList = complexToReal(ifft_frequency(realToComplex(tempList), list.Count - 1));
+                }*/
+                ifftList = complexToReal(ifft_frequency(realToComplex(list), list.Count - 1));
             }
                 
              
@@ -362,6 +362,9 @@ namespace radarsystem
 
         public Complex[] realToComplex(List<PointD> list)
         {
+            if (list == null)
+                return null;
+
             Complex[] c = new Complex[list.Count];
             for (int i = 0; i < list.Count; i++)
             {
@@ -375,6 +378,8 @@ namespace radarsystem
 
         public List<Point> complexToReal(Complex[] complex)
         {
+            if (complex == null)
+                return null;
             List<Point> pointList = new List<Point>();
             Point p;
             for (int i = 0; i < complex.Length; i++)
@@ -401,9 +406,13 @@ namespace radarsystem
         /// <returns>返回变换后的序列（复数数组）</returns>
         private Complex[] fft_frequency(Complex[] sourceData, int countN)
         {
-            //2的r次幂为N，求出r.r能代表fft算法的迭代次数
+            
             if (countN == 0)
                 return null;
+            if (sourceData == null)
+                return null;
+
+            //2的r次幂为N，求出r.r能代表fft算法的迭代次数
             int r = Convert.ToInt32(Math.Log(countN, 2));
 
 
@@ -446,9 +455,13 @@ namespace radarsystem
                     //gap=j*每组长度，代表着当前第j组的首元素的下标索引
                     int gap = j * halfN;
 
+                    
+
                     //进行蝶形运算
                     for (int k = 0; k < halfN / 2; k++)
                     {
+                        if (interVar1[k + gap] == null || interVar1[k + gap + halfN / 2] == null || w[k * interval] == null)
+                            continue;
                         interVar2[k + gap] = interVar1[k + gap] + interVar1[k + gap + halfN / 2];
                         interVar2[k + halfN / 2 + gap] = (interVar1[k + gap] - interVar1[k + gap + halfN / 2]) * w[k * interval];
                     }

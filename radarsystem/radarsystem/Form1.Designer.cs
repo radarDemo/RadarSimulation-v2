@@ -36,7 +36,6 @@ namespace radarsystem
             this.label4 = new System.Windows.Forms.Label();
             this.Ypanel = new System.Windows.Forms.Panel();
             this.Xpanel = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.featurelistView = new System.Windows.Forms.ListView();
@@ -105,6 +104,7 @@ namespace radarsystem
             this.axMap1 = new AxMapXLib.AxMap();
             this.textBox_doppler = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+           // this.panel2 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tbp_CharacterAnalysis.SuspendLayout();
@@ -146,7 +146,7 @@ namespace radarsystem
             this.tbp_CharacterAnalysis.Controls.Add(this.label4);
             this.tbp_CharacterAnalysis.Controls.Add(this.Ypanel);
             this.tbp_CharacterAnalysis.Controls.Add(this.Xpanel);
-            this.tbp_CharacterAnalysis.Controls.Add(this.panel2);
+           // this.tbp_CharacterAnalysis.Controls.Add(this.panel2);
             this.tbp_CharacterAnalysis.Controls.Add(this.panel1);
             this.tbp_CharacterAnalysis.Controls.Add(this.featurelistView);
             this.tbp_CharacterAnalysis.Controls.Add(this.label1);
@@ -182,15 +182,6 @@ namespace radarsystem
             this.Xpanel.Size = new System.Drawing.Size(502, 15);
             this.Xpanel.TabIndex = 6;
             this.Xpanel.Paint += new System.Windows.Forms.PaintEventHandler(this.Xpanel_Paint);
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.Color.White;
-            this.panel2.Location = new System.Drawing.Point(3, 411);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(90, 65);
-            this.panel2.TabIndex = 5;
-            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
             // panel1
             // 
@@ -921,6 +912,17 @@ namespace radarsystem
             this.tabControl1.TabIndex = 3;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.Feature_SelectedIndexChanged);
             // 
+            // panel2
+            // 
+            /*
+            this.panel2.BackColor = System.Drawing.Color.White;
+            this.panel2.Location = new System.Drawing.Point(3, 411);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(90, 65);
+            this.panel2.TabIndex = 5;
+            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
+             * */
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -972,7 +974,6 @@ namespace radarsystem
         private System.Windows.Forms.TabPage tbp_CharacterAnalysis;
         private System.Windows.Forms.Panel Ypanel;
         private System.Windows.Forms.Panel Xpanel;
-        private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ListView featurelistView;
         private System.Windows.Forms.ColumnHeader algorithmcolumn;
@@ -1045,6 +1046,7 @@ namespace radarsystem
         private PictureBox pictureBox5;
         private Button mixtrailButton;
         private CheckBox checkBox_udpSocket;
+       // private Panel panel2;
     }
 }
 
