@@ -71,7 +71,7 @@ namespace radarsystem
             return Math.Sqrt(real * real + image * image);
         }
 
-        //
+        //共轭复数
         public Complex Conjugate()
         {
             return new Complex(this.real, -this.image);

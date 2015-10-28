@@ -214,7 +214,10 @@ namespace radarsystem
             {
                 features[3] += Math.Pow(p1[i].Y - features[0], 2);
             }
-            features[3] /= list.Count - 1;
+            if (list.Count == 1)
+                features[3] = 0;
+            else
+                features[3] /= list.Count - 1;
             features[3] = Math.Round(features[3], 2);
             featDic.Add("方差", features[3]);
 
@@ -295,7 +298,7 @@ namespace radarsystem
             List<PointD> tempList = new List<PointD>();
            
             //首先将实数转为复数数组，接着进行傅立叶变换，之后将复数变换成实数
-            if (list.Count == 0)
+            if (list.Count == 0 || list == null)
                 return null;
             if (list.Count == 1)
             {
@@ -306,18 +309,9 @@ namespace radarsystem
             }
             else     //只找到参数list中有数据的对象
             {
-                /*for (int i = 0; i < list.Count; i++)
-                {
-                    if (list[i] != null)
-                    {
-                        tempList.Add(list[i]);
-                    }
-                }*/
-                fftList = complexToReal(fft_frequency(realToComplex(list), list.Count - 1));
-            }
                 
-            
-            
+                fftList = complexToReal(fft_frequency(realToComplex(list), list.Count));
+            }
 
             return fftList;
 
@@ -331,7 +325,7 @@ namespace radarsystem
             List<PointD> tempList = new List<PointD>();
         
               //首先将实数转为复数数组，接着进行傅立叶变换，之后将复数变换成实数
-            if (list.Count == 0)
+            if (list.Count == 0 || list == null)
                 return null;
             if (list.Count == 1)
             {
@@ -349,7 +343,7 @@ namespace radarsystem
                         tempList.Add(list[i]);
                     }
                 }*/
-                ifftList = complexToReal(ifft_frequency(realToComplex(list), list.Count - 1));
+                ifftList = complexToReal(ifft_frequency(realToComplex(list), list.Count));
             }
                 
              
@@ -413,13 +407,37 @@ namespace radarsystem
                 return null;
 
             //2的r次幂为N，求出r.r能代表fft算法的迭代次数
-            int r = Convert.ToInt32(Math.Log(countN, 2));
+            double dr = Math.Log(countN, 2);
+            //int r = Convert.ToInt32(dr);
+            int r = (int)Math.Ceiling(dr);   //向上取整
+            Complex[] resultData = new Complex[countN];
+
+            if (dr - r != 0)
+            {
+                countN = (int)Math.Pow(2, r);
+            }
 
 
             //分别存储蝶形运算过程中左右两列的结果
             Complex[] interVar1 = new Complex[countN];
             Complex[] interVar2 = new Complex[countN];
-            interVar1 = (Complex[])sourceData.Clone();
+
+            //interVar1 = (Complex[])sourceData.Clone();
+            int index = 0;
+            for (; index < sourceData.Length; index++)
+            {
+                interVar1[index] = sourceData[index];
+            }
+            if (sourceData.Length < countN)
+            {
+
+                while (index < countN)
+                {
+                    
+                    interVar1[index] = new Complex();
+                    index++;
+                }
+            }
 
             //w代表旋转因子
             Complex[] w = new Complex[countN / 2];
@@ -460,10 +478,9 @@ namespace radarsystem
                     //进行蝶形运算
                     for (int k = 0; k < halfN / 2; k++)
                     {
-                        if (interVar1[k + gap] == null || interVar1[k + gap + halfN / 2] == null || w[k * interval] == null)
-                            continue;
+                       
                         interVar2[k + gap] = interVar1[k + gap] + interVar1[k + gap + halfN / 2];
-                        interVar2[k + halfN / 2 + gap] = (interVar1[k + gap] - interVar1[k + gap + halfN / 2]) * w[k * interval];
+                        interVar2[k + (halfN / 2) + gap] = (interVar1[k + gap] - interVar1[k + gap + (halfN / 2)]) * w[k * interval];
                     }
                 }
 
@@ -491,7 +508,9 @@ namespace radarsystem
                 }
                 interVar2[rev] = interVar1[j];
             }
-            return interVar2;
+            for (int i = 0; i < resultData.Length; i++)
+                resultData[i] = interVar2[i];
+            return resultData;
 
         }
 

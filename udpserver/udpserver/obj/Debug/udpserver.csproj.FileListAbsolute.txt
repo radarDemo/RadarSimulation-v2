@@ -18,3 +18,8 @@ F:\RadarSimulation\RadarSimulation-v2\udpserver\udpserver\obj\Debug\udpserver.pd
 F:\RadarSimulation\RadarSimulation-v2\udpserver\udpserver\bin\Debug\udpserver.exe
 F:\RadarSimulation\RadarSimulation-v2\udpserver\udpserver\bin\Debug\udpserver.pdb
 F:\RadarSimulation\RadarSimulation-v2\udpserver\udpserver\obj\Debug\udpserver.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\GitHub\RadarSimulation-v2\udpserver\udpserver\obj\Debug\udpserver.exe
+C:\Users\Administrator\Documents\GitHub\RadarSimulation-v2\udpserver\udpserver\obj\Debug\udpserver.pdb
+C:\Users\Administrator\Documents\GitHub\RadarSimulation-v2\udpserver\udpserver\bin\Debug\udpserver.exe
+C:\Users\Administrator\Documents\GitHub\RadarSimulation-v2\udpserver\udpserver\bin\Debug\udpserver.pdb
+C:\Users\Administrator\Documents\GitHub\RadarSimulation-v2\udpserver\udpserver\obj\Debug\udpserver.csprojResolveAssemblyReference.cache

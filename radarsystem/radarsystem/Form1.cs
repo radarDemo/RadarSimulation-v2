@@ -2043,6 +2043,7 @@ namespace radarsystem
             prepareforListDetectDisFin();   //准备数据，为数组list_detect_distance_final,注意：每次切换一种雷达时候，
 
             this.featurecomboBox1.Items.Clear();//清空combobox内的值
+            this.featurelistView.Items.Clear();
             
             //需要先清空list_detect_distance_final
                 if (radioButton7.Checked == true)
@@ -2519,6 +2520,7 @@ namespace radarsystem
                     if (this.multpBasecheckBox.Checked == true)       //选择了多基地雷达和多普勒雷达
                     {
                         this.featurecomboBox1.Items.Clear();
+                        this.featurelistView.Items.Clear();
                         prepareforoption12();       //选择第1，2号雷达，即多普勒雷达和多基地雷达，为此填充数据
                      //   MessageBox.Show("12");
 
