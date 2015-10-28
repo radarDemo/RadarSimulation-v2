@@ -96,6 +96,7 @@ namespace radarsystem
         public Form1()
         {
             InitializeComponent();
+            comboBox_ToolList.SelectedIndex = 2;
             textBox_doppler.Visible = false;
             button_goback.Visible = false;
             pictureBox4.Visible = false;
@@ -133,14 +134,15 @@ namespace radarsystem
             this.mixtrailButton.Visible = false;
             ///end
 
-            ArrayList ToolList = new ArrayList();
-            ToolList.Add(MapXLib.ToolConstants.miZoomInTool);
-            ToolList.Add(MapXLib.ToolConstants.miZoomOutTool);
-            ToolList.Add(MapXLib.ToolConstants.miPanTool);
-            ToolList.Add(MapXLib.ToolConstants.miCenterTool);
-            ToolList.Add(MapXLib.ToolConstants.miLabelTool);
+            //ArrayList ToolList = new ArrayList();
+            //ToolList.Add(MapXLib.ToolConstants.miZoomInTool);
+            //ToolList.Add(MapXLib.ToolConstants.miZoomOutTool);
+            //ToolList.Add(MapXLib.ToolConstants.miPanTool);
+            //ToolList.Add(MapXLib.ToolConstants.miCenterTool);
+            //ToolList.Add(MapXLib.ToolConstants.miLabelTool);
 
-            comboBox_ToolList.DataSource = ToolList;
+            //comboBox_ToolList.DataSource = ToolList;
+            //comboBox_ToolList.SelectedIndex = 2;
             //CMapXFeature FtA
         }
 
@@ -2144,7 +2146,38 @@ namespace radarsystem
 
         private void comboBox_ToolList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            axMap1.CurrentTool = (MapXLib.ToolConstants)comboBox_ToolList.SelectedItem;
+            //if (comboBox_ToolList.SelectedText == "放大")
+            //    axMap1.CurrentTool = MapXLib.ToolConstants.miZoomInTool;
+            //if (comboBox_ToolList.TabIndex == 1)
+            //    axMap1.CurrentTool = MapXLib.ToolConstants.miZoomOutTool;
+            //if (comboBox_ToolList.TabIndex == 2)
+            //    axMap1.CurrentTool = MapXLib.ToolConstants.miPanTool;
+            //if (comboBox_ToolList.TabIndex == 3)
+            //    axMap1.CurrentTool = MapXLib.ToolConstants.miCenterTool;
+            //if (comboBox_ToolList.TabIndex == 4)
+            //    axMap1.CurrentTool = MapXLib.ToolConstants.miLabelTool;
+            switch (comboBox_ToolList.SelectedIndex)
+            {
+                case 0:
+                    axMap1.CurrentTool = MapXLib.ToolConstants.miZoomInTool;
+                    break;
+                case 1:
+                    axMap1.CurrentTool = MapXLib.ToolConstants.miZoomOutTool;
+                    break;
+                case 2:
+                    axMap1.CurrentTool = MapXLib.ToolConstants.miPanTool;
+                    break;
+                case 3:
+                    axMap1.CurrentTool = MapXLib.ToolConstants.miCenterTool;
+                    break;
+                case 4:
+                    axMap1.CurrentTool = MapXLib.ToolConstants.miLabelTool;
+                    break;
+                default:
+                    axMap1.CurrentTool = MapXLib.ToolConstants.miPanTool;
+                    break;
+            }
+            //axMap1.CurrentTool = (MapXLib.ToolConstants)comboBox_ToolList.SelectedItem;
         }
 
         private void TextChanged(object sender, EventArgs e)
@@ -2183,10 +2216,10 @@ namespace radarsystem
         }
 
         //在波形图右上角画出线条的标识
-        public void draw_trace_id(long id, Color c,int x,int y)
-        {
+        //public void draw_trace_id(long id, Color c,int x,int y)
+        //{
             
-        }
+        //}
         /// <summary>
         /// 如下三个checkbox状态改变函数用来监听选择的雷达类型
         /// 
@@ -2207,6 +2240,11 @@ namespace radarsystem
                     //显示添加噪音单选框
                     this.groupBox4.Visible = true;
                     this.groupBox4.Location = new System.Drawing.Point(870, 55);
+                }
+                else
+                {
+                    MessageBox.Show("只能选择两个雷达");
+                    hasChoosedRadar++;
                 }
                 
 
@@ -2236,6 +2274,7 @@ namespace radarsystem
                 else
                 {
                     MessageBox.Show("只能选择两个雷达");
+                    hasChoosedRadar++;
                 }
 
                 
@@ -2260,6 +2299,11 @@ namespace radarsystem
 
                     this.groupBox6.Visible = true;
                     this.groupBox6.Location = new System.Drawing.Point(870, 245);
+                }
+                else
+                {
+                    MessageBox.Show("只能选择两个雷达");
+                    hasChoosedRadar++;
                 }
                
             }
