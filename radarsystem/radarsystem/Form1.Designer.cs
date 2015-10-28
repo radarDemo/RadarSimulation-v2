@@ -613,9 +613,15 @@ namespace radarsystem
             // comboBox_ToolList
             // 
             this.comboBox_ToolList.FormattingEnabled = true;
+            this.comboBox_ToolList.Items.AddRange(new object[] {
+            "放大",
+            "缩小",
+            "平移",
+            "居中",
+            "设置标签"});
             this.comboBox_ToolList.Location = new System.Drawing.Point(6, 6);
             this.comboBox_ToolList.Name = "comboBox_ToolList";
-            this.comboBox_ToolList.Size = new System.Drawing.Size(119, 20);
+            this.comboBox_ToolList.Size = new System.Drawing.Size(88, 20);
             this.comboBox_ToolList.TabIndex = 15;
             this.comboBox_ToolList.SelectedIndexChanged += new System.EventHandler(this.comboBox_ToolList_SelectedIndexChanged);
             // 
