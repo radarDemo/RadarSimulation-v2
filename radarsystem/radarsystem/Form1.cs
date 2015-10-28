@@ -62,6 +62,9 @@ namespace radarsystem
         List<Point> fftList = new List<Point>();
         List<Point> ifftList = new List<Point>();
 
+        ///存储傅立叶和反傅立叶变换后在波形图范围内的点
+        List<Point> fftList_final = new List<Point>();
+
         //定义两个数组存储指挥控制中两个雷达检测的轨迹点
         List<PointD>[] command_listone = new List<PointD>[50];
         List<PointD>[] command_listtwo = new List<PointD>[50];
@@ -184,7 +187,7 @@ namespace radarsystem
                 list_trace_update[i] = new List<Point>();
                 list_detect_distance_update[i] = new List<PointD>();
                 list_detect_distance_final_update[i] = new List<PointD>();
-                color[i] = System.Drawing.Color.FromArgb((220 * i) % 255, (20 * i) % 255, (150 * i) % 255);
+                color[i] = System.Drawing.Color.FromArgb((227 * i) % 255, (45 * i) % 255, (153 * i) % 255);
                 guassianList[i] = new List<PointD>();
                 guassianList_final[i] = new List<PointD>();
                 poissonList[i] = new List<PointD>();
@@ -845,14 +848,23 @@ namespace radarsystem
             featurelistView.Items[position].SubItems.Add(textBox_doudongliang.Text);
         }
        
+
+        //检测傅立叶和反傅立叶变换后是否存在越界的点，并去掉
+        private void delete_fft_outside()
+        {
+            for(int i=0;i<fftList.Count;i++)
+            {
+
+            }
+        }
         //特性分析中下拉框状态改变响应函数
         private void featurecomboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             
             //int showIndex = featurecomboBox1.SelectedIndex;
             string selectedText = featurecomboBox1.SelectedItem.ToString();
-            int selectedId =(int) Convert.ToInt64(selectedText);
-            int index = arr_tar.IndexOf(selectedId);
+           // int selectedId =(int) Convert.ToInt64(selectedText);
+            int index = arr_tar.IndexOf(selectedText);
             //int index =(int) selectedId;
             FeatureModel feature = new FeatureModel();
             Dictionary<String, double> featDicX;
@@ -1016,7 +1028,7 @@ namespace radarsystem
                             continue;
                         if (command_listmix[i].Count != 0)
                         {
-                            Pen p = new Pen(color[i], 2);
+                            Pen p = new Pen(color[i], 3);
 
                             //画线
                             g.DrawLine(p, 430, 24 * (i + 1), 450, 24 * (i + 1));
@@ -1036,7 +1048,7 @@ namespace radarsystem
                     {
                         if (guassianList_final[i].Count != 0)
                         {
-                            Pen p = new Pen(color[i], 2);
+                            Pen p = new Pen(color[i], 3);
 
                             //画线
                             g.DrawLine(p, 430, 24 * (i + 1), 450, 24 * (i + 1));
@@ -1052,7 +1064,7 @@ namespace radarsystem
                     {
                         if (poissonList_final[i].Count != 0)
                         {
-                            Pen p = new Pen(color[i], 2);
+                            Pen p = new Pen(color[i], 3);
 
                             //画线
                             g.DrawLine(p, 430, 24 * (i + 1), 450, 24 * (i + 1));
@@ -1068,7 +1080,7 @@ namespace radarsystem
                     {
                         if (uniformList_final[i].Count != 0)
                         {
-                            Pen p = new Pen(color[i], 2);
+                            Pen p = new Pen(color[i], 3);
 
                             //画线
                             g.DrawLine(p, 430, 24 * (i + 1), 450, 24 * (i + 1));
@@ -1159,7 +1171,7 @@ namespace radarsystem
             p.Y=30;    //匀速运动起点,经纬度 各为100，30
             list_trace_update[0].Add(p);
             //list_detect_distance_update[0].Add(new PointD ((double)p.X,(double)p.Y));
-            arr_tar.Add(0);
+            arr_tar.Add("0");
             for (int i = 1; i < 30; i++)
             {
                 Point p1 = new Point();
@@ -1189,7 +1201,7 @@ namespace radarsystem
             int a=4;  //加速度为12
             list_trace_update[1].Add(p);
             //list_detect_distance_update[1].Add(new PointD((double)p.X, (double)p.Y));
-            arr_tar.Add(1);
+            arr_tar.Add("1");
             for (int i = 1; i < 30; i++)
             {
                 Point p1 = new Point();
@@ -1211,7 +1223,7 @@ namespace radarsystem
             int vt = v0;
             list_trace_update[2].Add(p);
             //list_detect_distance_update[2].Add(new PointD((double)p.X, (double)p.Y));
-            arr_tar.Add(2);
+            arr_tar.Add("2");
             for (int i = 1; i < 12; i++)
             {
 
@@ -1237,7 +1249,7 @@ namespace radarsystem
             double pi=3.1415;
             //list_trace_update[3].Add(p);
             //list_detect_distance_update[3].Add(new PointD((double)p.X, (double)p.Y));
-            arr_tar.Add(3);
+            arr_tar.Add("3");
             Graphics g;
             SolidBrush myBrush = new SolidBrush(color[3]);//画刷
             Pen pen = new Pen(color[3],2);
@@ -1362,7 +1374,11 @@ namespace radarsystem
         {
             //flag_thread2 = 1;
             //Control ctrl=tabControl1.GetControl(2);
-            if (tabControl1.SelectedIndex == 1)  
+            if (this.tabControl1.SelectedIndex == 0)
+            {
+                drawtrace_update();
+            }
+            else if (tabControl1.SelectedIndex == 1)  
             {
 
                 if (scene == Scene.COMMAND)
@@ -1433,7 +1449,8 @@ namespace radarsystem
                         MessageBox.Show("未添加任何噪声，请先建模！");
                     }
                 }
-               }
+            }
+            
             
         }
 
@@ -2633,6 +2650,7 @@ namespace radarsystem
             int port = 10000;
             IPAddress HostIP = IPAddress.Parse("127.0.0.1");
             IPEndPoint host;
+            int trail_type;
             while (PortInUse(port))
             {
                 port++;
@@ -2657,12 +2675,22 @@ namespace radarsystem
                     struct_df = (radarsystem.udpSocket.StructDemo)radarsystem.udpSocket.ByteToStruct(receiveBytes, typeof(radarsystem.udpSocket.StructDemo));
                     if (struct_df.scsmhead.unit_flag != 0x76)
                         continue;
-                    if (!arr_tar.Contains(struct_df.srcTgtTrk.nType))
-                        arr_tar.Add(struct_df.srcTgtTrk.nType);
+                    /*trail_type = int.Parse(struct_df.srcTgtTrk.nType.ToString());
+                    if (!arr_tar.Contains(trail_type))
+                        arr_tar.Add(trail_type);
+                        
                     Point point = new Point();
                     point.X = (int)struct_df.srcTgtTrk.dLat;
                     point.Y = (int)struct_df.srcTgtTrk.dLon;
-                    list_trace_update[arr_tar.IndexOf(struct_df.srcTgtTrk.nType)].Add(point);
+                    //list_trace_update[arr_tar.IndexOf(struct_df.srcTgtTrk.nType)].Add(point);
+                    list_trace_update[arr_tar.IndexOf(trail_type)].Add(point);*/
+                    if (!arr_tar.Contains(struct_df.srcTgtTrk.nType.ToString())) 
+                         arr_tar.Add(struct_df.srcTgtTrk.nType.ToString()); 
+                     Point point = new Point(); 
+                     point.X = (int)struct_df.srcTgtTrk.dLat; 
+                     point.Y = (int)struct_df.srcTgtTrk.dLon; 
+                     list_trace_update[arr_tar.IndexOf(struct_df.srcTgtTrk.nType.ToString())].Add(point); 
+                    
                     drawtrace_update();
                     //Console.WriteLine("从结构体中获得" + receiveBytes[1]);
                     //Console.WriteLine("从结构体中获得" + sf.scsmhead.length);

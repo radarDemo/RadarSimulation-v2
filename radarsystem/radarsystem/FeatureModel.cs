@@ -410,7 +410,7 @@ namespace radarsystem
             double dr = Math.Log(countN, 2);
             //int r = Convert.ToInt32(dr);
             int r = (int)Math.Ceiling(dr);   //向上取整
-            Complex[] resultData = new Complex[countN];
+            Complex[] resultData = new Complex[sourceData.Length];
 
             if (dr - r != 0)
             {
