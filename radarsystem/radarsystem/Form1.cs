@@ -39,7 +39,7 @@ namespace radarsystem
 
         //List<PointD>[] list_detect_distance_final = new List<PointD>[50];   //最终用这个数组,用这个数组添加噪声，画波形图上噪音轨迹，以及特征分析
 
-        List<PointD>[] list_detect_distance_final_update = new List<PointD>[20];//波形图上画噪声轨迹来源 
+        //List<PointD>[] list_detect_distance_final_update = new List<PointD>[20];//波形图上画噪声轨迹来源 
         //List<PointD> list = new List<PointD>();
         //List<Point> list_trace = new List<Point>();
         ArrayList arr_tar=new ArrayList() ;  //目标ID数组
@@ -47,6 +47,9 @@ namespace radarsystem
 
         //表示选中那个场景
         Scene scene;
+
+        //标志配置文件是否有更新
+        bool flag = false;
    
         //存储添加噪音后的轨迹点
         List<PointD>[] guassianList = new List<PointD>[50];
@@ -186,8 +189,13 @@ namespace radarsystem
             {
                 list_trace_update[i] = new List<Point>();
                 list_detect_distance_update[i] = new List<PointD>();
+<<<<<<< HEAD
                 list_detect_distance_final_update[i] = new List<PointD>();
                 color[i] = System.Drawing.Color.FromArgb((227 * i) % 255, (45 * i) % 255, (153 * i) % 255);
+=======
+                //list_detect_distance_final_update[i] = new List<PointD>();
+                color[i] = System.Drawing.Color.FromArgb((220 * i) % 255, (20 * i) % 255, (150 * i) % 255);
+>>>>>>> origin/master
                 guassianList[i] = new List<PointD>();
                 guassianList_final[i] = new List<PointD>();
                 poissonList[i] = new List<PointD>();
@@ -782,7 +790,7 @@ namespace radarsystem
             this.radioButton20.Checked = false;
             this.radioButton21.Checked = false;
             this.radioButton22.Checked = false;
-
+            this.button_goback.Visible = false;
 
             
         }
@@ -1504,7 +1512,7 @@ namespace radarsystem
         {
             for (int i = 0; i < arr_tar.Count; i++)
             {
-                list_detect_distance_final_update[i].Clear();
+                //list_detect_distance_final_update[i].Clear();
                 guassianList[i].Clear();
                 poissonList[i].Clear();
                 uniformList[i].Clear();
@@ -1703,6 +1711,10 @@ namespace radarsystem
              //   readTxt();
 
             }
+            if (flag)
+                buttonDectecModeling.Enabled = true;
+            else
+                buttonDectecModeling.Enabled = false;
             button_goback.Visible = true;
         }
 
@@ -1782,7 +1794,8 @@ namespace radarsystem
         }
 
         private void OnButtonUpdateConfigClick(object sender, EventArgs e)  //选择文件更新 按钮响应事件
-        {         
+        {
+            buttonDectecModeling.Enabled = true;
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 String path1 = Application.StartupPath + "\\configure.txt";
                 openFileDialog.InitialDirectory = path1;
@@ -1828,7 +1841,7 @@ namespace radarsystem
         }
         private void OnButtonDetectModeling(object sender, EventArgs e)  //探测建模按钮响应事件
         {
-
+            buttonModelDone.Enabled = false;
             textBox_juli.Visible = false;
             textBox_zaipin.Visible = false;
             textBox_chongpin.Visible = false;
@@ -1895,49 +1908,49 @@ namespace radarsystem
             yVariance = Math.Pow(yVariance, 1 / 2);
         }
 
-        private void prepareforListDetectDisFin()      //准备数据，即填充list_detect_distance_final_update[] 数组
-        {
-            for (int i = 0; i < arr_tar.Count; i++)
-                list_detect_distance_final_update[i].Clear();
-            //List<Point> list_trace = new List<Point>();
-            double distance1, distance2;
-            distance1 = 7 * panel1.Width / 20;          
-            PointD point = new PointD();
-            PointD point_diff = new PointD();      
+        //private void prepareforListDetectDisFin()      //准备数据，即填充list_detect_distance_final_update[] 数组
+        //{
+        //    for (int i = 0; i < arr_tar.Count; i++)
+        //        list_detect_distance_final_update[i].Clear();
+        //    //List<Point> list_trace = new List<Point>();
+        //    double distance1, distance2;
+        //    distance1 = 7 * panel1.Width / 20;          
+        //    PointD point = new PointD();
+        //    PointD point_diff = new PointD();      
 
-            for (int i = 0; i < arr_tar.Count; i++)
-            {   
+        //    for (int i = 0; i < arr_tar.Count; i++)
+        //    {   
                 
-                for (int j = 0; j < list_detect_distance_update[i].Count; j++)
-                {
-                    point.X = list_detect_distance_update[i][j].X;
-                    point.Y = list_detect_distance_update[i][j].Y;
+        //        for (int j = 0; j < list_detect_distance_update[i].Count; j++)
+        //        {
+        //            point.X = list_detect_distance_update[i][j].X;
+        //            point.Y = list_detect_distance_update[i][j].Y;
 
-                    point_diff.X = point.X;
-                    point_diff.Y = point.Y;
+        //            point_diff.X = point.X;
+        //            point_diff.Y = point.Y;
 
-                    point_diff.X = System.Math.Abs(point.X - pictureBox4.Left);
-                    point_diff.Y = System.Math.Abs(point.Y - pictureBox4.Top);
-                    distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
-                    if (distance2 - distance1 <= 0)   //相当于判断雷达的最大扫描范围
-                    {
-                        // list_trace.
-                        PointD point_save = new PointD();
-                        point_save.X = point.X;
-                        point_save.Y = point.Y;
-                        list_detect_distance_final_update[i].Add(point_save);
-                        // continue;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
+        //            point_diff.X = System.Math.Abs(point.X - pictureBox4.Left);
+        //            point_diff.Y = System.Math.Abs(point.Y - pictureBox4.Top);
+        //            distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
+        //            if (distance2 - distance1 <= 0)   //相当于判断雷达的最大扫描范围
+        //            {
+        //                // list_trace.
+        //                PointD point_save = new PointD();
+        //                point_save.X = point.X;
+        //                point_save.Y = point.Y;
+        //                list_detect_distance_final_update[i].Add(point_save);
+        //                // continue;
+        //            }
+        //            else
+        //            {
+        //                continue;
+        //            }
+        //        }
 
-            }
-            for (int k = 0; k < 4; k++)
-                Console.WriteLine(list_detect_distance_final_update[k].Count);
-        }
+        //    }
+        //    for (int k = 0; k < 4; k++)
+        //        Console.WriteLine(list_detect_distance_final_update[k].Count);
+        //}
 
         private void prepareforguassListFinal()     //为guassList_final,poissonList_final,uniformList_final准备数据
         {
@@ -2060,99 +2073,99 @@ namespace radarsystem
         private void OnButtonModelDone(object sender, EventArgs e)
         {
             prepareforListDetectDis();
-            prepareforListDetectDisFin();   //准备数据，为数组list_detect_distance_final,注意：每次切换一种雷达时候，
+            //prepareforListDetectDisFin();   //准备数据，为数组list_detect_distance_final,注意：每次切换一种雷达时候，
 
             this.featurecomboBox1.Items.Clear();//清空combobox内的值
             this.featurelistView.Items.Clear();
             
             //需要先清空list_detect_distance_final
-                if (radioButton7.Checked == true)
+            if (radioButton7.Checked == true)
+            {
+                //添加高斯噪声
+                //均值
+                double xMean = 0, xVariance = 0;
+                double yMean = 0, yVariance = 0;
+
+                //计算均值和方差
+                for (int i = 0; i < arr_tar.Count; i++)     //得到guassList数组
                 {
-                    //添加高斯噪声
-                    //均值
-
-                    double xMean = 0, xVariance = 0;
-                    double yMean = 0, yVariance = 0;
-
-                    //计算均值和方差
-                    for (int i = 0; i < arr_tar.Count; i++)     //得到guassList数组
-                    {
-                        computeMeanVar(list_detect_distance_final_update[i], out xMean, out xVariance, out yMean, out yVariance);
-                        guassianList[i] = new List<PointD>(Noise.addGuassianNoise(list_detect_distance_final_update[i].ToArray(), 
-                            xMean, xVariance, yMean, yVariance));
-
-                     
-                    }
-
-                    prepareforguassListFinal();
-                    button_goback.Enabled = true;
-                    if (DialogResult.OK == MessageBox.Show("congratulations! 添加噪声完毕，你选择添加了高斯白噪声"))
-                    {
-                        noiseFlag = NoiseEnum.GUASSIAN;
-                        //将当前选中的tab页设为特性分析
-                        this.tabControl1.SelectedIndex = 1;
-
-                    }
+                    computeMeanVar(list_detect_distance_update[i], out xMean, out xVariance, out yMean, out yVariance);
+                    guassianList[i] = new List<PointD>(Noise.addGuassianNoise(list_detect_distance_update[i].ToArray(),
+                        xMean, xVariance, yMean, yVariance));
 
 
                 }
-                else if (radioButton8.Checked == true)
-                {
-                    //添加泊松噪音
-                    for (int i = 0; i < arr_tar.Count; i++)
-                    {
-                        poissonList[i] = new List<PointD>(Noise.addPoissonNoise(list_detect_distance_final_update[i].ToArray(),
-                            (panel1.Width / 10) * 7, (panel1.Width / 10) * 7));
-                        
-                     }
-                    prepareforpoissonListFinal();
-                    
-                   
-                    button_goback.Enabled = true;
-                    if (DialogResult.OK == MessageBox.Show("congratulations! 添加噪声完毕，你选择添加了泊松噪声"))
-                    {
-                        //MessageBox.Show(""+(panel1.Width / 10) * 7);
-                        noiseFlag = NoiseEnum.POISSON;
-                        //将当前的页面切换成特性分析
-                        this.tabControl1.SelectedIndex = 1;
 
-                    }
+                prepareforguassListFinal();
+                button_goback.Enabled = true;
+                if (DialogResult.OK == MessageBox.Show("congratulations! 添加噪声完毕，你选择添加了高斯白噪声"))
+                {
+                    noiseFlag = NoiseEnum.GUASSIAN;
+                    //将当前选中的tab页设为特性分析
+                    this.tabControl1.SelectedIndex = 1;
+
+                }
+
+
+            }
+            else if (radioButton8.Checked == true)
+            {
+                //添加泊松噪音
+                for (int i = 0; i < arr_tar.Count; i++)
+                {
+                    poissonList[i] = new List<PointD>(Noise.addPoissonNoise(list_detect_distance_update[i].ToArray(),
+                        (panel1.Width / 10) * 7, (panel1.Width / 10) * 7));
+
+                }
+                prepareforpoissonListFinal();
+
+
+                button_goback.Enabled = true;
+                if (DialogResult.OK == MessageBox.Show("congratulations! 添加噪声完毕，你选择添加了泊松噪声"))
+                {
+                    //MessageBox.Show(""+(panel1.Width / 10) * 7);
+                    noiseFlag = NoiseEnum.POISSON;
+                    //将当前的页面切换成特性分析
+                    this.tabControl1.SelectedIndex = 1;
+
+                }
+
+                //button_goback.Enabled = true;
+            }
+            else if (radioButton9.Checked == true)
+            {
+                //添加均匀噪声
+                //计算均匀分布的a和b
+                double xMean = 0, xVariance = 0;
+                double yMean = 0, yVariance = 0;
+                double XA = 0, XB = 0;
+                double YA = 0, YB = 0;
+                for (int i = 0; i < arr_tar.Count; i++)
+                {
+                    computeMeanVar(list_detect_distance_update[i], out xMean, out xVariance, out yMean, out yVariance);
+                    XA = xMean - Math.Pow(3, 1 / 2) * Math.Pow(xVariance, 2);
+                    XB = xMean + Math.Pow(3, 1 / 2) * Math.Pow(xVariance, 2);
+                    YA = yMean - Math.Pow(3, 1 / 2) * Math.Pow(yVariance, 2);
+                    YB = yMean + Math.Pow(3, 1 / 2) * Math.Pow(yVariance, 2);
+
+                    uniformList[i] = new List<PointD>(Noise.addUniformNoise(list_detect_distance_update[i].ToArray(),
+                        XA, XB, YA, YB));
 
                     //button_goback.Enabled = true;
+
                 }
-                else if (radioButton9.Checked == true)
+                prepareforuniformListfinal();
+                button_goback.Enabled = true;
+                if (DialogResult.OK == MessageBox.Show("congratulations! 添加噪声完毕，你选择添加了平均噪声"))
                 {
-                    //添加均匀噪声
-                    //计算均匀分布的a和b
-                    double xMean = 0, xVariance = 0;
-                    double yMean = 0, yVariance = 0;
-                    double XA = 0, XB = 0;
-                    double YA = 0, YB = 0;
-                    for (int i = 0; i < arr_tar.Count; i++)
-                    {
-                        computeMeanVar(list_detect_distance_final_update[i], out xMean, out xVariance, out yMean, out yVariance);
-                        XA = xMean - Math.Pow(3, 1 / 2) * Math.Pow(xVariance, 2);
-                        XB = xMean + Math.Pow(3, 1 / 2) * Math.Pow(xVariance, 2);
-                        YA = yMean - Math.Pow(3, 1 / 2) * Math.Pow(yVariance, 2);
-                        YB = yMean + Math.Pow(3, 1 / 2) * Math.Pow(yVariance, 2);
-
-                        uniformList[i] = new List<PointD>(Noise.addUniformNoise(list_detect_distance_final_update[i].ToArray(),
-                            XA, XB, YA, YB));
-                       
-                        //button_goback.Enabled = true;
-
-                    }
-                    prepareforuniformListfinal();
-                    button_goback.Enabled = true;
-                    if (DialogResult.OK == MessageBox.Show("congratulations! 添加噪声完毕，你选择添加了平均噪声"))
-                    {
-                        noiseFlag = NoiseEnum.UNIFORM;
-                        this.tabControl1.SelectedIndex = 1;
-                    }
-                    //button_goback.Enabled = true;
+                    noiseFlag = NoiseEnum.UNIFORM;
+                    this.tabControl1.SelectedIndex = 1;
                 }
-                else
-                    MessageBox.Show("请选择添加一种噪声");
+                //button_goback.Enabled = true;
+            }
+            //else
+            //    buttonModelDone.Enabled = false;
+            //        //MessageBox.Show("请选择添加一种噪声");
             
         }
 
@@ -2217,6 +2230,7 @@ namespace radarsystem
 
         private void UpdateTextToTxt(object sender, EventArgs e)
         {
+            buttonDectecModeling.Enabled = true;
             wrTxt();
             readTxt();
             MessageBox.Show("配置文件更新完成");
@@ -2726,6 +2740,11 @@ namespace radarsystem
                 }
             }
             return inUse;
+        }
+
+        private void radioButton7_CheckedChanged(object sender, EventArgs e)
+        {
+            buttonModelDone.Enabled = true;
         }
     }
 }
