@@ -39,7 +39,7 @@ namespace radarsystem
 
         //List<PointD>[] list_detect_distance_final = new List<PointD>[50];   //最终用这个数组,用这个数组添加噪声，画波形图上噪音轨迹，以及特征分析
 
-        List<PointD>[] list_detect_distance_final_update = new List<PointD>[20];//波形图上画噪声轨迹来源 
+        //List<PointD>[] list_detect_distance_final_update = new List<PointD>[20];//波形图上画噪声轨迹来源 
         //List<PointD> list = new List<PointD>();
         //List<Point> list_trace = new List<Point>();
         ArrayList arr_tar=new ArrayList() ;  //目标ID数组
@@ -183,7 +183,7 @@ namespace radarsystem
             {
                 list_trace_update[i] = new List<Point>();
                 list_detect_distance_update[i] = new List<PointD>();
-                list_detect_distance_final_update[i] = new List<PointD>();
+                //list_detect_distance_final_update[i] = new List<PointD>();
                 color[i] = System.Drawing.Color.FromArgb((220 * i) % 255, (20 * i) % 255, (150 * i) % 255);
                 guassianList[i] = new List<PointD>();
                 guassianList_final[i] = new List<PointD>();
@@ -1486,7 +1486,7 @@ namespace radarsystem
         {
             for (int i = 0; i < arr_tar.Count; i++)
             {
-                list_detect_distance_final_update[i].Clear();
+                //list_detect_distance_final_update[i].Clear();
                 guassianList[i].Clear();
                 poissonList[i].Clear();
                 uniformList[i].Clear();
@@ -1877,49 +1877,49 @@ namespace radarsystem
             yVariance = Math.Pow(yVariance, 1 / 2);
         }
 
-        private void prepareforListDetectDisFin()      //准备数据，即填充list_detect_distance_final_update[] 数组
-        {
-            for (int i = 0; i < arr_tar.Count; i++)
-                list_detect_distance_final_update[i].Clear();
-            //List<Point> list_trace = new List<Point>();
-            double distance1, distance2;
-            distance1 = 7 * panel1.Width / 20;          
-            PointD point = new PointD();
-            PointD point_diff = new PointD();      
+        //private void prepareforListDetectDisFin()      //准备数据，即填充list_detect_distance_final_update[] 数组
+        //{
+        //    for (int i = 0; i < arr_tar.Count; i++)
+        //        list_detect_distance_final_update[i].Clear();
+        //    //List<Point> list_trace = new List<Point>();
+        //    double distance1, distance2;
+        //    distance1 = 7 * panel1.Width / 20;          
+        //    PointD point = new PointD();
+        //    PointD point_diff = new PointD();      
 
-            for (int i = 0; i < arr_tar.Count; i++)
-            {   
+        //    for (int i = 0; i < arr_tar.Count; i++)
+        //    {   
                 
-                for (int j = 0; j < list_detect_distance_update[i].Count; j++)
-                {
-                    point.X = list_detect_distance_update[i][j].X;
-                    point.Y = list_detect_distance_update[i][j].Y;
+        //        for (int j = 0; j < list_detect_distance_update[i].Count; j++)
+        //        {
+        //            point.X = list_detect_distance_update[i][j].X;
+        //            point.Y = list_detect_distance_update[i][j].Y;
 
-                    point_diff.X = point.X;
-                    point_diff.Y = point.Y;
+        //            point_diff.X = point.X;
+        //            point_diff.Y = point.Y;
 
-                    point_diff.X = System.Math.Abs(point.X - pictureBox4.Left);
-                    point_diff.Y = System.Math.Abs(point.Y - pictureBox4.Top);
-                    distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
-                    if (distance2 - distance1 <= 0)   //相当于判断雷达的最大扫描范围
-                    {
-                        // list_trace.
-                        PointD point_save = new PointD();
-                        point_save.X = point.X;
-                        point_save.Y = point.Y;
-                        list_detect_distance_final_update[i].Add(point_save);
-                        // continue;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
+        //            point_diff.X = System.Math.Abs(point.X - pictureBox4.Left);
+        //            point_diff.Y = System.Math.Abs(point.Y - pictureBox4.Top);
+        //            distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
+        //            if (distance2 - distance1 <= 0)   //相当于判断雷达的最大扫描范围
+        //            {
+        //                // list_trace.
+        //                PointD point_save = new PointD();
+        //                point_save.X = point.X;
+        //                point_save.Y = point.Y;
+        //                list_detect_distance_final_update[i].Add(point_save);
+        //                // continue;
+        //            }
+        //            else
+        //            {
+        //                continue;
+        //            }
+        //        }
 
-            }
-            for (int k = 0; k < 4; k++)
-                Console.WriteLine(list_detect_distance_final_update[k].Count);
-        }
+        //    }
+        //    for (int k = 0; k < 4; k++)
+        //        Console.WriteLine(list_detect_distance_final_update[k].Count);
+        //}
 
         private void prepareforguassListFinal()     //为guassList_final,poissonList_final,uniformList_final准备数据
         {
@@ -2042,7 +2042,7 @@ namespace radarsystem
         private void OnButtonModelDone(object sender, EventArgs e)
         {
             prepareforListDetectDis();
-            prepareforListDetectDisFin();   //准备数据，为数组list_detect_distance_final,注意：每次切换一种雷达时候，
+            //prepareforListDetectDisFin();   //准备数据，为数组list_detect_distance_final,注意：每次切换一种雷达时候，
 
             this.featurecomboBox1.Items.Clear();//清空combobox内的值
             this.featurelistView.Items.Clear();
@@ -2059,8 +2059,8 @@ namespace radarsystem
                     //计算均值和方差
                     for (int i = 0; i < arr_tar.Count; i++)     //得到guassList数组
                     {
-                        computeMeanVar(list_detect_distance_final_update[i], out xMean, out xVariance, out yMean, out yVariance);
-                        guassianList[i] = new List<PointD>(Noise.addGuassianNoise(list_detect_distance_final_update[i].ToArray(), 
+                        computeMeanVar(list_detect_distance_update[i], out xMean, out xVariance, out yMean, out yVariance);
+                        guassianList[i] = new List<PointD>(Noise.addGuassianNoise(list_detect_distance_update[i].ToArray(), 
                             xMean, xVariance, yMean, yVariance));
 
                      
@@ -2083,7 +2083,7 @@ namespace radarsystem
                     //添加泊松噪音
                     for (int i = 0; i < arr_tar.Count; i++)
                     {
-                        poissonList[i] = new List<PointD>(Noise.addPoissonNoise(list_detect_distance_final_update[i].ToArray(),
+                        poissonList[i] = new List<PointD>(Noise.addPoissonNoise(list_detect_distance_update[i].ToArray(),
                             (panel1.Width / 10) * 7, (panel1.Width / 10) * 7));
                         
                      }
@@ -2112,13 +2112,13 @@ namespace radarsystem
                     double YA = 0, YB = 0;
                     for (int i = 0; i < arr_tar.Count; i++)
                     {
-                        computeMeanVar(list_detect_distance_final_update[i], out xMean, out xVariance, out yMean, out yVariance);
+                        computeMeanVar(list_detect_distance_update[i], out xMean, out xVariance, out yMean, out yVariance);
                         XA = xMean - Math.Pow(3, 1 / 2) * Math.Pow(xVariance, 2);
                         XB = xMean + Math.Pow(3, 1 / 2) * Math.Pow(xVariance, 2);
                         YA = yMean - Math.Pow(3, 1 / 2) * Math.Pow(yVariance, 2);
                         YB = yMean + Math.Pow(3, 1 / 2) * Math.Pow(yVariance, 2);
 
-                        uniformList[i] = new List<PointD>(Noise.addUniformNoise(list_detect_distance_final_update[i].ToArray(),
+                        uniformList[i] = new List<PointD>(Noise.addUniformNoise(list_detect_distance_update[i].ToArray(),
                             XA, XB, YA, YB));
                        
                         //button_goback.Enabled = true;
