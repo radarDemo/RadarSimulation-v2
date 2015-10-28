@@ -363,34 +363,6 @@ namespace radarsystem
             cir_Point.Y = panel1.Height / 10 * 5;
 
             //傅立叶
-            for (int i = 0; i < fftList.Count - 1; i++)
-            {
-                point = fftList[i];
-                point_diff = point;
-                point_diff.X = point.X - pictureBox4.Left;
-                point_diff.Y = point.Y - pictureBox4.Top;
-                distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
-                if (distance2 - distance1 > 0)
-                    continue;
-                //        g.FillEllipse(myBrush, new Rectangle(cir_Point.X + point_diff.X - 3, cir_Point.Y + point_diff.Y - 3, 3, 3));//画实心椭圆
-                //    g.DrawLine(new Pen(Color.Red), point_diff.X, point_diff.Y, point_diff.X, point_diff.Y);
-                //    g.DrawLine(new Pen(Color.Red), 200, 200,210, 210);
-                one.X = cir_Point.X + point_diff.X;
-                one.Y = cir_Point.Y + point_diff.Y;
-                two.X = fftList[i + 1].X - pictureBox4.Left + cir_Point.X;
-                two.Y = fftList[i + 1].Y - pictureBox4.Top + cir_Point.Y;
-                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-
-                g.FillEllipse(myBrush, new Rectangle(one.X - 3,
-                   one.Y - 3, 6, 6));//画实心椭圆
-                g.FillEllipse(myBrush, new Rectangle(two.X - 3,
-                  two.Y - 3, 6, 6));//画实心椭圆
-
-                g.DrawLine(p, one, two);
-                System.Threading.Thread.Sleep(200);
-            }
-
             if (fftList.Count == 1)
             {
                 one.X = fftList[0].X - pictureBox4.Left + cir_Point.X;
@@ -398,43 +370,81 @@ namespace radarsystem
                 g.FillEllipse(myBrush, new Rectangle(one.X - 3,
                   one.Y - 3, 6, 6));//画实心椭圆
             }
+            else
+            {
+                for (int i = 0; i < fftList.Count - 1; i++)
+                {
+                    point = fftList[i];
+                    point_diff = point;
+                    point_diff.X = point.X - pictureBox4.Left;
+                    point_diff.Y = point.Y - pictureBox4.Top;
+                    distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
+                    if (distance2 - distance1 > 0)
+                        continue;
+                    //        g.FillEllipse(myBrush, new Rectangle(cir_Point.X + point_diff.X - 3, cir_Point.Y + point_diff.Y - 3, 3, 3));//画实心椭圆
+                    //    g.DrawLine(new Pen(Color.Red), point_diff.X, point_diff.Y, point_diff.X, point_diff.Y);
+                    //    g.DrawLine(new Pen(Color.Red), 200, 200,210, 210);
+                    one.X = cir_Point.X + point_diff.X;
+                    one.Y = cir_Point.Y + point_diff.Y;
+                    two.X = fftList[i + 1].X - pictureBox4.Left + cir_Point.X;
+                    two.Y = fftList[i + 1].Y - pictureBox4.Top + cir_Point.Y;
+                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+
+                    g.FillEllipse(myBrush, new Rectangle(one.X - 3,
+                       one.Y - 3, 6, 6));//画实心椭圆
+                    g.FillEllipse(myBrush, new Rectangle(two.X - 3,
+                      two.Y - 3, 6, 6));//画实心椭圆
+
+                    g.DrawLine(p, one, two);
+                    System.Threading.Thread.Sleep(200);
+                }
+            }
+            
+
+           
 
             //反傅立叶
-             for (int i = 0; i < ifftList.Count - 1; i++)
-             {
-                 point = ifftList[i];
-                 point_diff = point;
-                 point_diff.X = point.X - pictureBox4.Left;
-                 point_diff.Y = point.Y - pictureBox4.Top;
-                 distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
-                 if (distance2 - distance1 > 0)
-                     continue;
-                 //        g.FillEllipse(myBrush, new Rectangle(cir_Point.X + point_diff.X - 3, cir_Point.Y + point_diff.Y - 3, 3, 3));//画实心椭圆
-                 //    g.DrawLine(new Pen(Color.Red), point_diff.X, point_diff.Y, point_diff.X, point_diff.Y);
-                 //    g.DrawLine(new Pen(Color.Red), 200, 200,210, 210);
-                 one.X = cir_Point.X + point_diff.X;
-                 one.Y = cir_Point.Y + point_diff.Y;
-                 two.X = ifftList[i + 1].X - pictureBox4.Left + cir_Point.X;
-                 two.Y = ifftList[i + 1].Y - pictureBox4.Top + cir_Point.Y;
-                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            if (ifftList.Count == 1)
+            {
+                one.X = fftList[0].X - pictureBox4.Left + cir_Point.X;
+                one.Y = fftList[0].Y - pictureBox4.Left + cir_Point.Y;
+                g.FillEllipse(myBrush, new Rectangle(one.X - 3,
+                  one.Y - 3, 6, 6));//画实心椭圆
+            }
+            else
+            {
+                for (int i = 0; i < ifftList.Count - 1; i++)
+                {
+                    point = ifftList[i];
+                    point_diff = point;
+                    point_diff.X = point.X - pictureBox4.Left;
+                    point_diff.Y = point.Y - pictureBox4.Top;
+                    distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
+                    if (distance2 - distance1 > 0)
+                        continue;
+                    //        g.FillEllipse(myBrush, new Rectangle(cir_Point.X + point_diff.X - 3, cir_Point.Y + point_diff.Y - 3, 3, 3));//画实心椭圆
+                    //    g.DrawLine(new Pen(Color.Red), point_diff.X, point_diff.Y, point_diff.X, point_diff.Y);
+                    //    g.DrawLine(new Pen(Color.Red), 200, 200,210, 210);
+                    one.X = cir_Point.X + point_diff.X;
+                    one.Y = cir_Point.Y + point_diff.Y;
+                    two.X = ifftList[i + 1].X - pictureBox4.Left + cir_Point.X;
+                    two.Y = ifftList[i + 1].Y - pictureBox4.Top + cir_Point.Y;
+                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
 
-                 g.FillEllipse(myBrush, new Rectangle(one.X - 3,
-                    one.Y - 3, 6, 6));//画实心椭圆
-                 g.FillEllipse(myBrush, new Rectangle(two.X - 3,
-                   two.Y - 3, 6, 6));//画实心椭圆
+                    g.FillEllipse(myBrush, new Rectangle(one.X - 3,
+                       one.Y - 3, 6, 6));//画实心椭圆
+                    g.FillEllipse(myBrush, new Rectangle(two.X - 3,
+                      two.Y - 3, 6, 6));//画实心椭圆
 
-                 g.DrawLine(p, one, two);
-                 System.Threading.Thread.Sleep(200);
-             }
+                    g.DrawLine(p, one, two);
+                    System.Threading.Thread.Sleep(200);
+                }
 
-             if (ifftList.Count == 1)
-             {
-                 one.X = fftList[0].X - pictureBox4.Left + cir_Point.X;
-                 one.Y = fftList[0].Y - pictureBox4.Left + cir_Point.Y;
-                 g.FillEllipse(myBrush, new Rectangle(one.X - 3,
-                   one.Y - 3, 6, 6));//画实心椭圆
-             }
+            }
+            
+            
 
         }
 
@@ -587,7 +597,7 @@ namespace radarsystem
                 g.FillEllipse(myBrush, new Rectangle(one.X - 3,
                   one.Y - 3, 6, 6));//画实心椭圆
             }
-            else
+            else if(list_trace.Count>1)
             {
                 for (int i = 0; i < list_trace.Count - 1; i++)
                 {
@@ -876,9 +886,9 @@ namespace radarsystem
                     featDicX = feature.getTimeAndSpaceFeatureX(poissonList_final[index], 13);
                     featDicY = feature.getTimeAndSpaceFeatureY(poissonList_final[index], 13);
 
-                //频率分析
-                fftList = feature.getFrequentFFTFeature(poissonList_final[index]);
-                ifftList = feature.getFrequentIFFTFeature(poissonList_final[index]);
+                    //频率分析
+                    fftList = feature.getFrequentFFTFeature(poissonList_final[index]);
+                    ifftList = feature.getFrequentIFFTFeature(poissonList_final[index]);
                }
             
             else
@@ -887,9 +897,9 @@ namespace radarsystem
                 featDicY = feature.getTimeAndSpaceFeatureY(uniformList_final[index], 13);
 
 
-                    //频率分析
-                    fftList = feature.getFrequentFFTFeature(poissonList_final[index]);
-                    ifftList = feature.getFrequentIFFTFeature(poissonList_final[index]);
+                //频率分析
+                fftList = feature.getFrequentFFTFeature(poissonList_final[index]);
+                ifftList = feature.getFrequentIFFTFeature(poissonList_final[index]);
             }
 
                
@@ -1005,7 +1015,7 @@ namespace radarsystem
                             continue;
                         if (command_listmix[i].Count != 0)
                         {
-                            Pen p = new Pen(color[i], 1 / 2);
+                            Pen p = new Pen(color[i], 2);
 
                             //画线
                             g.DrawLine(p, 430, 24 * (i + 1), 450, 24 * (i + 1));
@@ -1025,7 +1035,7 @@ namespace radarsystem
                     {
                         if (guassianList_final[i].Count != 0)
                         {
-                            Pen p = new Pen(color[i], 1 / 2);
+                            Pen p = new Pen(color[i], 2);
 
                             //画线
                             g.DrawLine(p, 430, 24 * (i + 1), 450, 24 * (i + 1));
@@ -1041,7 +1051,7 @@ namespace radarsystem
                     {
                         if (poissonList_final[i].Count != 0)
                         {
-                            Pen p = new Pen(color[i], 1 / 2);
+                            Pen p = new Pen(color[i], 2);
 
                             //画线
                             g.DrawLine(p, 430, 24 * (i + 1), 450, 24 * (i + 1));
@@ -1057,7 +1067,7 @@ namespace radarsystem
                     {
                         if (uniformList_final[i].Count != 0)
                         {
-                            Pen p = new Pen(color[i], 1 / 2);
+                            Pen p = new Pen(color[i], 2);
 
                             //画线
                             g.DrawLine(p, 430, 24 * (i + 1), 450, 24 * (i + 1));
@@ -1072,6 +1082,7 @@ namespace radarsystem
            
         }
      
+        /*
 
         private void panel2_Paint(object sender, PaintEventArgs e)
         {
@@ -1083,7 +1094,7 @@ namespace radarsystem
                     g.DrawEllipse(pen, 25 - (j - 1) * 8, 25 - (j - 1) * 8, j * 16, j * 16);
                 }
             }
-        }
+        }*/
 
         //private void OnDargDrop(object sender, DragEventArgs e) //拖动雷达时候产生该事件
         //{
