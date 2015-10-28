@@ -45,6 +45,7 @@ namespace radarsystem
             this.label1 = new System.Windows.Forms.Label();
             this.featurecomboBox1 = new System.Windows.Forms.ComboBox();
             this.tbp_SceneSet = new System.Windows.Forms.TabPage();
+            this.checkBox_udpSocket = new System.Windows.Forms.CheckBox();
             this.mixtrailButton = new System.Windows.Forms.Button();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
@@ -104,7 +105,6 @@ namespace radarsystem
             this.axMap1 = new AxMapXLib.AxMap();
             this.textBox_doppler = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.checkBox_udpSocket = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tbp_CharacterAnalysis.SuspendLayout();
@@ -288,6 +288,17 @@ namespace radarsystem
             this.tbp_SceneSet.TabIndex = 0;
             this.tbp_SceneSet.Text = "岸基场景设置";
             this.tbp_SceneSet.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_udpSocket
+            // 
+            this.checkBox_udpSocket.AutoSize = true;
+            this.checkBox_udpSocket.Location = new System.Drawing.Point(646, 3);
+            this.checkBox_udpSocket.Name = "checkBox_udpSocket";
+            this.checkBox_udpSocket.Size = new System.Drawing.Size(72, 16);
+            this.checkBox_udpSocket.TabIndex = 38;
+            this.checkBox_udpSocket.Text = "UDP 报文";
+            this.checkBox_udpSocket.UseVisualStyleBackColor = true;
+            this.checkBox_udpSocket.CheckedChanged += new System.EventHandler(this.checkBox_udpSocket_CheckedChanged);
             // 
             // mixtrailButton
             // 
@@ -819,7 +830,7 @@ namespace radarsystem
             // 
             // button_goback
             // 
-            this.button_goback.Location = new System.Drawing.Point(774, 425);
+            this.button_goback.Location = new System.Drawing.Point(776, 425);
             this.button_goback.Name = "button_goback";
             this.button_goback.Size = new System.Drawing.Size(75, 23);
             this.button_goback.TabIndex = 5;
@@ -909,17 +920,6 @@ namespace radarsystem
             this.tabControl1.Size = new System.Drawing.Size(977, 576);
             this.tabControl1.TabIndex = 3;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.Feature_SelectedIndexChanged);
-            // 
-            // checkBox_udpSocket
-            // 
-            this.checkBox_udpSocket.AutoSize = true;
-            this.checkBox_udpSocket.Location = new System.Drawing.Point(646, 3);
-            this.checkBox_udpSocket.Name = "checkBox_udpSocket";
-            this.checkBox_udpSocket.Size = new System.Drawing.Size(78, 16);
-            this.checkBox_udpSocket.TabIndex = 38;
-            this.checkBox_udpSocket.Text = "checkBox2";
-            this.checkBox_udpSocket.UseVisualStyleBackColor = true;
-            this.checkBox_udpSocket.CheckedChanged += new System.EventHandler(this.checkBox_udpSocket_CheckedChanged);
             // 
             // Form1
             // 

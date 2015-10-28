@@ -1753,7 +1753,8 @@ namespace radarsystem
         private void OnButtonUpdateConfigClick(object sender, EventArgs e)  //选择文件更新 按钮响应事件
         {         
                 OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.InitialDirectory = "E:\\";
+                String path1 = Application.StartupPath + "\\configure.txt";
+                openFileDialog.InitialDirectory = path1;
                 openFileDialog.Filter = "文本文件(*.txt)|*.txt|所有文件(*.*)|*.*";
                 openFileDialog.RestoreDirectory = true;
                 openFileDialog.FilterIndex = 1;
@@ -1784,8 +1785,8 @@ namespace radarsystem
                 content[line_num * 1 + 2] = "载频(GHZ)"+"\t"+textBox_zaipin.Text;
                 content[line_num * 1 + 3] = "重频(GHZ)" + "\t" + textBox_chongpin.Text;
                 content[line_num * 1 + 4] = "脉宽(us)" + "\t" + textBox_maikuan.Text;
-                content[line_num * 1 + 5] = "脉幅" + "\t" + textBox_maifu.Text;
-                content[line_num * 1 + 6] = "天线扫描周期" + "\t" + textBox_saomiao.Text;
+                content[line_num * 1 + 5] = "脉幅（db）" + "\t" + textBox_maifu.Text;
+                content[line_num * 1 + 6] = "天线扫描周期（s）" + "\t" + textBox_saomiao.Text;
                 content[line_num * 1 + 7] = "载频捷变量" + "\t" + textBox_jiebianliang.Text;
                 content[line_num * 1 + 8] = "重频抖动量" + "\t" + textBox_doudongliang.Text;
             }
