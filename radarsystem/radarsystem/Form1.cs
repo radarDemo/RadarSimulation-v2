@@ -49,7 +49,7 @@ namespace radarsystem
         Scene scene;
 
         //标志配置文件是否有更新
-        bool flag = false;
+        //bool flag = false;
    
         //存储添加噪音后的轨迹点
         List<PointD>[] guassianList = new List<PointD>[50];
@@ -322,7 +322,7 @@ namespace radarsystem
         {
            // thread2(points);
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < arr_tar.Count; i++)
             {
                 //QueueUserWorkItem()方法：将工作任务排入线程池。
                 ThreadPool.QueueUserWorkItem(new WaitCallback(thread2), i);
@@ -1704,10 +1704,11 @@ namespace radarsystem
              //   readTxt();
 
             }
-            if (flag)
-                buttonDectecModeling.Enabled = true;
-            else
-                buttonDectecModeling.Enabled = false;
+            //if (flag)
+            //    buttonDectecModeling.Enabled = true;
+            //else
+            //    buttonDectecModeling.Enabled = false;
+            button_text_update.Enabled = false;
             button_goback.Visible = true;
         }
 
@@ -2218,6 +2219,7 @@ namespace radarsystem
 
         private void TextChanged(object sender, EventArgs e)
         {
+            button_text_update.Enabled = true;
             flag_editchange = true;
         }
 
@@ -2662,12 +2664,12 @@ namespace radarsystem
             {
                 port++;
             }
-            host = new IPEndPoint(HostIP, port);
-            UdpClient udpClient = new UdpClient(host);
+            
             while (true)
             {
                 //   IPEndPoint iep = new IPEndPoint(Dns.GetHostAddresses(Dns.GetHostName())[3], 18001);
-
+                host = new IPEndPoint(HostIP, port);
+                UdpClient udpClient = new UdpClient(host);
 
                
                 //      UdpClient.Send("发送的字节", "发送的字节长度", host);  
@@ -2699,6 +2701,7 @@ namespace radarsystem
                      list_trace_update[arr_tar.IndexOf(struct_df.srcTgtTrk.nType.ToString())].Add(point); 
                     
                     drawtrace_update();
+                    udpClient.Close();
                     //Console.WriteLine("从结构体中获得" + receiveBytes[1]);
                     //Console.WriteLine("从结构体中获得" + sf.scsmhead.length);
                     //Console.WriteLine("从结构体中获得" + sf.scsmhead.recv);
@@ -2713,7 +2716,7 @@ namespace radarsystem
                 }
 
             } 
-            udpClient.Close();
+            
 
         }
 
@@ -2736,6 +2739,22 @@ namespace radarsystem
         }
 
         private void radioButton7_CheckedChanged(object sender, EventArgs e)
+        {
+            buttonModelDone.Enabled = true;
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            //System.Windows.Forms.Application.Exit();
+            System.Diagnostics.Process.GetCurrentProcess().Kill(); 
+        }
+
+        private void radioButton8_Click(object sender, EventArgs e)
+        {
+            buttonModelDone.Enabled = true;
+        }
+
+        private void radioButton9_Click(object sender, EventArgs e)
         {
             buttonModelDone.Enabled = true;
         }
