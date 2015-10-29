@@ -49,7 +49,7 @@ namespace radarsystem
         Scene scene;
 
         //标志配置文件是否有更新
-        bool flag = false;
+        //bool flag = false;
    
         //存储添加噪音后的轨迹点
         List<PointD>[] guassianList = new List<PointD>[50];
@@ -188,9 +188,9 @@ namespace radarsystem
             for (int i = 0; i < 20;i++ )
             {
                 list_trace_update[i] = new List<Point>();
-                //list_detect_distance_update[i] = new List<PointD>();
+                list_detect_distance_update[i] = new List<PointD>();
 
-                list_detect_distance_final_update[i] = new List<PointD>();
+                //list_detect_distance_final_update[i] = new List<PointD>();
                 color[i] = System.Drawing.Color.FromArgb((227 * i) % 255, (45 * i) % 255, (153 * i) % 255);
 
                 guassianList[i] = new List<PointD>();
@@ -1708,10 +1708,11 @@ namespace radarsystem
              //   readTxt();
 
             }
-            if (flag)
-                buttonDectecModeling.Enabled = true;
-            else
-                buttonDectecModeling.Enabled = false;
+            //if (flag)
+            //    buttonDectecModeling.Enabled = true;
+            //else
+            //    buttonDectecModeling.Enabled = false;
+            button_text_update.Enabled = false;
             button_goback.Visible = true;
         }
 
@@ -2222,6 +2223,7 @@ namespace radarsystem
 
         private void TextChanged(object sender, EventArgs e)
         {
+            button_text_update.Enabled = true;
             flag_editchange = true;
         }
 
