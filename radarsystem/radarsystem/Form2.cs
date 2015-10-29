@@ -11,19 +11,22 @@ namespace radarsystem
 {
     public partial class FrequencyForm : Form
     {
+
+        private Color fft_color = System.Drawing.Color.FromArgb(160, 32, 240 );
+        private Color ifft_color = System.Drawing.Color.FromArgb(255,0,0);
         public FrequencyForm()
         {
             InitializeComponent();
         }
 
-        public void draw_fft_trail(List<Point> fftList,Color c)
+        public void draw_fft_trail(List<Point> fftList,string trail_id)
         {
-
+            this.Text = "轨迹" + trail_id + "的频率分析";
             List<Point> fft_trace = new List<Point>();
            
             Graphics g;
-            SolidBrush myBrush = new SolidBrush(c);//画刷
-            Pen p = new Pen(c, 2);
+            SolidBrush myBrush = new SolidBrush(fft_color);//画刷
+            Pen p = new Pen(fft_color, 2);
             g = frequentpanel.CreateGraphics();
 
             Point one = new Point(0, 0);
@@ -49,9 +52,18 @@ namespace radarsystem
                 one.Y = fft_trace[0].Y + 250;
                 g.FillEllipse(myBrush, new Rectangle(one.X - 3,
                     one.Y - 3, 6, 6));//画实心椭圆
+
+                g.DrawLine(p, 390, 24, 415, 24);
+                //写轨迹标识
+                g.DrawString("傅立叶", new Font(FontFamily.GenericMonospace, 11f), Brushes.Black, new PointF(430, 20));
+
             }
             else
             {
+                g.DrawLine(p, 390, 24, 415, 24);
+                //写轨迹标识
+                g.DrawString("傅立叶", new Font(FontFamily.GenericMonospace, 11f), Brushes.Black, new PointF(430, 20));
+
                 for (int i = 0; i < fft_trace.Count - 1; i++)
                 {
 
@@ -75,12 +87,14 @@ namespace radarsystem
             
         }
 
-        public void draw_ifft_trail(List<Point> ifftList, Color c)
+        public void draw_ifft_trail(List<Point> ifftList, String trail_id)
         {
+            this.Text = "轨迹" + trail_id + "的频率分析";
+
             List<Point> ifft_trace = new List<Point>();
             Graphics g;
-            SolidBrush myBrush = new SolidBrush(c);//画刷
-            Pen p = new Pen(c, 2);
+            SolidBrush myBrush = new SolidBrush(ifft_color);//画刷
+            Pen p = new Pen(ifft_color, 2);
             g = frequentpanel.CreateGraphics();
 
             Point one = new Point(0, 0);
@@ -105,9 +119,17 @@ namespace radarsystem
                 one.Y = ifft_trace[0].Y+250;
                 g.FillEllipse(myBrush, new Rectangle(one.X - 3,
                   one.Y - 3, 6, 6));//画实心椭圆
+                g.DrawLine(p, 390, 45, 415, 45);
+                //写轨迹标识
+                g.DrawString("反傅立叶", new Font(FontFamily.GenericMonospace, 11f), Brushes.Black, new PointF(430, 42));
+
             }
             else
             {
+                g.DrawLine(p, 390, 45, 415, 45);
+                //写轨迹标识
+                g.DrawString("反傅立叶", new Font(FontFamily.GenericMonospace, 11f), Brushes.Black, new PointF(430, 42));
+
                 for (int i = 0; i < ifft_trace.Count - 1; i++)
                 {
                     //坐标变换，图中中心变为坐标原点
