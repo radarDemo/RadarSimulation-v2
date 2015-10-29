@@ -322,7 +322,7 @@ namespace radarsystem
         {
            // thread2(points);
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < arr_tar.Count; i++)
             {
                 //QueueUserWorkItem()方法：将工作任务排入线程池。
                 ThreadPool.QueueUserWorkItem(new WaitCallback(thread2), i);
@@ -2666,12 +2666,12 @@ namespace radarsystem
             {
                 port++;
             }
-            host = new IPEndPoint(HostIP, port);
-            UdpClient udpClient = new UdpClient(host);
+            
             while (true)
             {
                 //   IPEndPoint iep = new IPEndPoint(Dns.GetHostAddresses(Dns.GetHostName())[3], 18001);
-
+                host = new IPEndPoint(HostIP, port);
+                UdpClient udpClient = new UdpClient(host);
 
                
                 //      UdpClient.Send("发送的字节", "发送的字节长度", host);  
@@ -2703,6 +2703,7 @@ namespace radarsystem
                      list_trace_update[arr_tar.IndexOf(struct_df.srcTgtTrk.nType.ToString())].Add(point); 
                     
                     drawtrace_update();
+                    udpClient.Close();
                     //Console.WriteLine("从结构体中获得" + receiveBytes[1]);
                     //Console.WriteLine("从结构体中获得" + sf.scsmhead.length);
                     //Console.WriteLine("从结构体中获得" + sf.scsmhead.recv);
@@ -2717,7 +2718,7 @@ namespace radarsystem
                 }
 
             } 
-            udpClient.Close();
+            
 
         }
 
@@ -2740,6 +2741,22 @@ namespace radarsystem
         }
 
         private void radioButton7_CheckedChanged(object sender, EventArgs e)
+        {
+            buttonModelDone.Enabled = true;
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            //System.Windows.Forms.Application.Exit();
+            System.Diagnostics.Process.GetCurrentProcess().Kill(); 
+        }
+
+        private void radioButton8_Click(object sender, EventArgs e)
+        {
+            buttonModelDone.Enabled = true;
+        }
+
+        private void radioButton9_Click(object sender, EventArgs e)
         {
             buttonModelDone.Enabled = true;
         }

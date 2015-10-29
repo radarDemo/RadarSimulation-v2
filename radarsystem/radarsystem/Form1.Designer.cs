@@ -238,6 +238,7 @@ namespace radarsystem
             this.tbp_SceneSet.Controls.Add(this.checkBox_udpSocket);
             this.tbp_SceneSet.Controls.Add(this.mixtrailButton);
             this.tbp_SceneSet.Controls.Add(this.pictureBox5);
+            this.tbp_SceneSet.Controls.Add(this.groupBox1);
             this.tbp_SceneSet.Controls.Add(this.pictureBox3);
             this.tbp_SceneSet.Controls.Add(this.groupBox6);
             this.tbp_SceneSet.Controls.Add(this.groupBox4);
@@ -264,7 +265,6 @@ namespace radarsystem
             this.tbp_SceneSet.Controls.Add(this.buttonModelDone);
             this.tbp_SceneSet.Controls.Add(this.buttonDectecModeling);
             this.tbp_SceneSet.Controls.Add(this.button_update_config);
-            this.tbp_SceneSet.Controls.Add(this.groupBox1);
             this.tbp_SceneSet.Controls.Add(this.button_goback);
             this.tbp_SceneSet.Controls.Add(this.label_state);
             this.tbp_SceneSet.Controls.Add(this.groupBox2);
@@ -864,6 +864,7 @@ namespace radarsystem
             this.radioButton9.TabStop = true;
             this.radioButton9.Text = "平均噪声";
             this.radioButton9.UseVisualStyleBackColor = true;
+            this.radioButton9.Click += new System.EventHandler(this.radioButton9_Click);
             // 
             // radioButton8
             // 
@@ -875,6 +876,7 @@ namespace radarsystem
             this.radioButton8.TabStop = true;
             this.radioButton8.Text = "泊松噪声";
             this.radioButton8.UseVisualStyleBackColor = true;
+            this.radioButton8.Click += new System.EventHandler(this.radioButton8_Click);
             // 
             // radioButton7
             // 
@@ -929,6 +931,7 @@ namespace radarsystem
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "岸基探测情报分析与模拟软件";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
