@@ -188,9 +188,9 @@ namespace radarsystem
             for (int i = 0; i < 20;i++ )
             {
                 list_trace_update[i] = new List<Point>();
-                //list_detect_distance_update[i] = new List<PointD>();
+                list_detect_distance_update[i] = new List<PointD>();
 
-                list_detect_distance_final_update[i] = new List<PointD>();
+                //list_detect_distance_final_update[i] = new List<PointD>();
                 color[i] = System.Drawing.Color.FromArgb((227 * i) % 255, (45 * i) % 255, (153 * i) % 255);
 
                 guassianList[i] = new List<PointD>();
@@ -854,14 +854,6 @@ namespace radarsystem
         }
        
 
-        //检测傅立叶和反傅立叶变换后是否存在越界的点，并去掉
-        private void delete_fft_outside()
-        {
-            for(int i=0;i<fftList.Count;i++)
-            {
-
-            }
-        }
         //特性分析中下拉框状态改变响应函数
         private void featurecomboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -991,7 +983,11 @@ namespace radarsystem
             featurelistView.EndUpdate();
 
             //画出频率分析轨迹
-            draw_frequency_trace(index);
+            //draw_frequency_trace(index);
+            //弹出新窗口，绘制频率曲线
+            FrequencyForm frequentForm = new FrequencyForm();
+            frequentForm.Show();
+            frequentForm.draw_fft_trail(fftList, ifftList, color[index]);
                 
           
         }

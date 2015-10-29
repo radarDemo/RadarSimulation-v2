@@ -522,7 +522,7 @@ namespace radarsystem
             this.button_text_update.Name = "button_text_update";
             this.button_text_update.Size = new System.Drawing.Size(125, 23);
             this.button_text_update.TabIndex = 26;
-            this.button_text_update.Text = "文本框更新（2）";
+            this.button_text_update.Text = "文本框更新";
             this.button_text_update.UseVisualStyleBackColor = true;
             this.button_text_update.Click += new System.EventHandler(this.UpdateTextToTxt);
             // 
@@ -663,7 +663,7 @@ namespace radarsystem
             this.button_update_config.Name = "button_update_config";
             this.button_update_config.Size = new System.Drawing.Size(125, 23);
             this.button_update_config.TabIndex = 8;
-            this.button_update_config.Text = "选择文件更新（1）";
+            this.button_update_config.Text = "选择文件更新";
             this.button_update_config.UseVisualStyleBackColor = true;
             this.button_update_config.Click += new System.EventHandler(this.OnButtonUpdateConfigClick);
             // 
