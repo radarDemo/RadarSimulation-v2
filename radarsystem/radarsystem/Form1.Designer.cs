@@ -897,7 +897,7 @@ namespace radarsystem
             this.axMap1.Location = new System.Drawing.Point(0, 0);
             this.axMap1.Name = "axMap1";
             this.axMap1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axMap1.OcxState")));
-            this.axMap1.Size = new System.Drawing.Size(768, 534);
+            this.axMap1.Size = new System.Drawing.Size(731, 547);
             this.axMap1.TabIndex = 13;
             // 
             // textBox_doppler

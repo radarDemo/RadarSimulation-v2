@@ -257,7 +257,7 @@ namespace udpserver
             sd.srcTgtTrk.nTgtNum = '1';
             sd.srcTgtTrk.nArmyCivil = '1';
             sd.srcTgtTrk.nAttr = '1';
-            sd.srcTgtTrk.nType = '1';
+            sd.srcTgtTrk.nType = '5';
             sd.srcTgtTrk.nKind = 1;
             sd.srcTgtTrk.nNation = 1;
             sd.srcTgtTrk.nModel = 1;

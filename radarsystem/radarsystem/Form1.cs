@@ -13,11 +13,14 @@ using System.IO;
 using System.Net.Sockets;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Runtime.InteropServices;
+using System.Drawing;
 //　　System.Text;
 namespace radarsystem
 {
+    
     public partial class Form1 : Form
-    {
+    {     
         //多目标轨迹
         //public struct trace
         //{
@@ -95,8 +98,7 @@ namespace radarsystem
      //用pictureBox4 的左上角坐标表示雷达的中心点坐标
    
         //在指挥控制中确定已经选择了雷达的个数
-        int hasChoosedRadar = 0;
-      
+        int hasChoosedRadar = 0;    
         public Form1()
         {
             InitializeComponent();
@@ -1221,12 +1223,27 @@ namespace radarsystem
                 pictureBox4.Left = pictureBox4.Left + (e.X - currentX);
               //  System.Threading.Thread.Sleep(1000);
             }
-            
+            if (pictureBox4.Top >= (tabControl1.Size.Height - 50) || 
+                pictureBox4.Left >= (tabControl1.Size.Width - 270)||pictureBox4.Top<-20
+                ||pictureBox4.Left<-20)
+            {
+                double MapX = 103, mapY = 36;  //精度 ，纬度
+                float screenX = 0, screenY = 0; //屏幕坐标
+                axMap1.ConvertCoord(ref screenX, ref screenY, ref MapX, ref mapY,
+                                    MapXLib.ConversionConstants.miMapToScreen);  //已知经纬度 转换为屏幕坐标
+                pictureBox4.Top = (int)screenY;
+                pictureBox4.Left =(int) screenX;
+            }
             isDragging = false;
             
            // drawtrace();
             if (checkBox_udpSocket.Checked == false)
-                circleMotion();
+            {
+                
+                circleMotion(); 
+                
+            }
+            
             drawtrace_update();
         }
 
@@ -1239,9 +1256,26 @@ namespace radarsystem
             double mapX1 = 0, mapY1 = 0;
             axMap1.ConvertCoord(ref X, ref Y, ref mapX1, ref mapY1, MapXLib.ConversionConstants.miScreenToMap);
             textBox_longitude.Text = mapX1.ToString();  
-            textBox_latitude.Text = mapY1.ToString();       
+            textBox_latitude.Text = mapY1.ToString();
+            //int titleHeight = System.Windows.Forms.SystemInformation.CaptionHeight;
+            //Point myFormPoint = this.PointToScreen(new Point(0, 0 - titleHeight));
+            //Rectangle rect = new Rectangle(myFormPoint, new Size(this.ClientRectangle.Width, this.ClientRectangle.Height + titleHeight));
+            //System.Windows.Forms.Cursor.Clip = rect;
+         //   LockCursor();
         }
 
+        //void LockCursor()           //限定鼠标在某个范围内移动
+        //{
+        //    this.Cursor = new Cursor(Cursor.Current.Handle);
+        //    Cursor.Position = new Point(Cursor.Position.X, Cursor.Position.Y);
+        //    Point p1 = new Point();
+        //    Size p2 = new Size();
+        //    p1.X = tabControl1.Location.X+10;
+        //    p1.Y = tabControl1.Location.Y + 10;
+        //    p2.Height = tabControl1.Size.Height - 10;
+        //    p2.Width = tabControl1.Size.Width - 10;
+        //    Cursor.Clip = new Rectangle(p1, p2);
+        //}
         //tab切换响应
         private void Feature_SelectedIndexChanged(object sender, EventArgs e)   //这段代码是有冗余的，
         {
@@ -1249,11 +1283,15 @@ namespace radarsystem
             //Control ctrl=tabControl1.GetControl(2);
             if (this.tabControl1.SelectedIndex == 0)
             {
+
+              //  MessageBox.Show("circle");
+               
                 drawtrace_update();
+               // circleMotion();
             }
             else if (tabControl1.SelectedIndex == 1)  
             {
-
+                checkBox1.Checked = false;
                 if (scene == Scene.COMMAND)
                 {
                     draw_mix_trail();
@@ -2516,12 +2554,12 @@ namespace radarsystem
         }
 
         private void checkBox_udpSocket_CheckedChanged(object sender, EventArgs e)
-        {
+        {           
            // udpSocket udpsocket = new udpSocket();
             if (checkBox_udpSocket.Checked == true)
             {
                 for (int i = 0; i < 4; i++)
-                    list_trace_update[i].Clear();
+                    list_trace_update[i].Clear();            
                 Thread myThread = new Thread(new ThreadStart(ReceiveData));
                 //    //将线程设为后台运行   
                 // //   myThread.IsBackground = true;
@@ -2529,6 +2567,8 @@ namespace radarsystem
             }
             else
             {
+                
+                //myThread.Abort();
                 constantSpeed();
                 constantAcceleration();
                 constantSlowDown();
@@ -2550,8 +2590,8 @@ namespace radarsystem
             {
                 port++;
             }
-            
-            while (true)
+
+            while (checkBox_udpSocket.Checked == true)
             {
                 //   IPEndPoint iep = new IPEndPoint(Dns.GetHostAddresses(Dns.GetHostName())[3], 18001);
                 host = new IPEndPoint(HostIP, port);
@@ -2581,10 +2621,10 @@ namespace radarsystem
                     list_trace_update[arr_tar.IndexOf(trail_type)].Add(point);*/
                     if (!arr_tar.Contains(struct_df.srcTgtTrk.nType.ToString())) 
                          arr_tar.Add(struct_df.srcTgtTrk.nType.ToString()); 
-                     Point point = new Point(); 
-                     point.X = (int)struct_df.srcTgtTrk.dLat; 
-                     point.Y = (int)struct_df.srcTgtTrk.dLon; 
-                     list_trace_update[arr_tar.IndexOf(struct_df.srcTgtTrk.nType.ToString())].Add(point); 
+                    Point point = new Point(); 
+                    point.X = (int)struct_df.srcTgtTrk.dLat; 
+                    point.Y = (int)struct_df.srcTgtTrk.dLon; 
+                    list_trace_update[arr_tar.IndexOf(struct_df.srcTgtTrk.nType.ToString())].Add(point); 
                     
                     drawtrace_update();
                     udpClient.Close();
