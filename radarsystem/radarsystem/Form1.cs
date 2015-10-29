@@ -858,8 +858,8 @@ namespace radarsystem
             //弹出新窗口，绘制频率分析轨迹
             FrequencyForm frequentForm = new FrequencyForm();
             frequentForm.Show();
-            frequentForm.draw_fft_trail(fftList, color[index]);
-            frequentForm.draw_ifft_trail(ifftList, color[index]);
+            frequentForm.draw_fft_trail(fftList, selectedText);
+            frequentForm.draw_ifft_trail(ifftList, selectedText);
                 
           
         }

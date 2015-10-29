@@ -295,7 +295,6 @@ namespace radarsystem
         public List<Point> getFrequentFFTFeature(List<PointD> list)
         {
             List<Point> fftList = new List<Point>();
-            List<PointD> tempList = new List<PointD>();
            
             //首先将实数转为复数数组，接着进行傅立叶变换，之后将复数变换成实数
             if (list.Count == 0 || list == null)
@@ -322,7 +321,6 @@ namespace radarsystem
         public List<Point> getFrequentIFFTFeature(List<PointD> list)
         {
             List<Point> ifftList = new List<Point>();
-            List<PointD> tempList = new List<PointD>();
         
               //首先将实数转为复数数组，接着进行傅立叶变换，之后将复数变换成实数
             if (list.Count == 0 || list == null)
@@ -336,18 +334,9 @@ namespace radarsystem
             }
             else     //只找到参数list中有数据的对象
             {
-                /*for (int i = 0; i < list.Count; i++)
-                {
-                    if (list[i] != null)
-                    {
-                        tempList.Add(list[i]);
-                    }
-                }*/
+             
                 ifftList = complexToReal(ifft_frequency(realToComplex(list), list.Count));
             }
-                
-             
-           
 
             return ifftList;
 
