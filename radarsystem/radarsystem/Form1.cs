@@ -65,8 +65,6 @@ namespace radarsystem
         List<Point> fftList = new List<Point>();
         List<Point> ifftList = new List<Point>();
 
-        ///存储傅立叶和反傅立叶变换后在波形图范围内的点
-        List<Point> fftList_final = new List<Point>();
 
         //定义两个数组存储指挥控制中两个雷达检测的轨迹点
         List<PointD>[] command_listone = new List<PointD>[50];
@@ -345,117 +343,6 @@ namespace radarsystem
             //}
             //t2.Start();
         }
-        //频率分析后再图中画轨迹,index 用来对应轨迹颜色
-        private void draw_frequency_trace(int index)
-        {
-            ThreadPool.QueueUserWorkItem(new WaitCallback(frequentThread), index);
-        }
-
-        //频率分析画轨迹线程函数
-        public void frequentThread(object obj)
-        {
-            int index = (int)obj;
-            List<Point> list_trace = new List<Point>();     
-            double distance1, distance2;
-            distance1 = 7 * panel1.Width / 20;
-            Graphics g;
-            SolidBrush myBrush = new SolidBrush(color[index]);//画刷
-            Pen p = new Pen(color[index], 2);
-            g = panel1.CreateGraphics();
-            Point point;
-            Point point_diff;
-            Point cir_Point = new Point(0, 0);
-            Point one = new Point(0, 0);
-            Point two = new Point(0, 0);
-            cir_Point.X = panel1.Width / 10 * 5;
-            cir_Point.Y = panel1.Height / 10 * 5;
-
-            //傅立叶
-            if (fftList.Count == 1)
-            {
-                one.X = fftList[0].X - pictureBox4.Left + cir_Point.X;
-                one.Y = fftList[0].Y - pictureBox4.Left + cir_Point.Y;
-                g.FillEllipse(myBrush, new Rectangle(one.X - 3,
-                  one.Y - 3, 6, 6));//画实心椭圆
-            }
-            else
-            {
-                for (int i = 0; i < fftList.Count - 1; i++)
-                {
-                    point = fftList[i];
-                    point_diff = point;
-                    point_diff.X = point.X - pictureBox4.Left;
-                    point_diff.Y = point.Y - pictureBox4.Top;
-                    distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
-                    if (distance2 - distance1 > 0)
-                        continue;
-                    //        g.FillEllipse(myBrush, new Rectangle(cir_Point.X + point_diff.X - 3, cir_Point.Y + point_diff.Y - 3, 3, 3));//画实心椭圆
-                    //    g.DrawLine(new Pen(Color.Red), point_diff.X, point_diff.Y, point_diff.X, point_diff.Y);
-                    //    g.DrawLine(new Pen(Color.Red), 200, 200,210, 210);
-                    one.X = cir_Point.X + point_diff.X;
-                    one.Y = cir_Point.Y + point_diff.Y;
-                    two.X = fftList[i + 1].X - pictureBox4.Left + cir_Point.X;
-                    two.Y = fftList[i + 1].Y - pictureBox4.Top + cir_Point.Y;
-                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-
-                    g.FillEllipse(myBrush, new Rectangle(one.X - 3,
-                       one.Y - 3, 6, 6));//画实心椭圆
-                    g.FillEllipse(myBrush, new Rectangle(two.X - 3,
-                      two.Y - 3, 6, 6));//画实心椭圆
-
-                    g.DrawLine(p, one, two);
-                    System.Threading.Thread.Sleep(200);
-                }
-            }
-
-
-            one = new Point(0, 0);
-            two = new Point(0, 0);
-
-            //反傅立叶
-            if (ifftList.Count == 1)
-            {
-                one.X = ifftList[0].X - pictureBox4.Left + cir_Point.X;
-                one.Y = ifftList[0].Y - pictureBox4.Left + cir_Point.Y;
-                g.FillEllipse(myBrush, new Rectangle(one.X - 3,
-                  one.Y - 3, 6, 6));//画实心椭圆
-            }
-            else
-            {
-                for (int i = 0; i < ifftList.Count - 1; i++)
-                {
-                    point = ifftList[i];
-                    point_diff = point;
-                    point_diff.X = point.X - pictureBox4.Left;
-                    point_diff.Y = point.Y - pictureBox4.Top;
-                    distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
-                    if (distance2 - distance1 > 0)
-                        continue;
-                    //        g.FillEllipse(myBrush, new Rectangle(cir_Point.X + point_diff.X - 3, cir_Point.Y + point_diff.Y - 3, 3, 3));//画实心椭圆
-                    //    g.DrawLine(new Pen(Color.Red), point_diff.X, point_diff.Y, point_diff.X, point_diff.Y);
-                    //    g.DrawLine(new Pen(Color.Red), 200, 200,210, 210);
-                    one.X = cir_Point.X + point_diff.X;
-                    one.Y = cir_Point.Y + point_diff.Y;
-                    two.X = ifftList[i + 1].X - pictureBox4.Left + cir_Point.X;
-                    two.Y = ifftList[i + 1].Y - pictureBox4.Top + cir_Point.Y;
-                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-
-                    g.FillEllipse(myBrush, new Rectangle(one.X - 3,
-                       one.Y - 3, 6, 6));//画实心椭圆
-                    g.FillEllipse(myBrush, new Rectangle(two.X - 3,
-                      two.Y - 3, 6, 6));//画实心椭圆
-
-                    g.DrawLine(p, one, two);
-                    System.Threading.Thread.Sleep(200);
-                }
-
-            }
-            
-            
-
-        }
 
         //在波形图中绘制指挥控制融合后的轨迹
         public void draw_mix_trail()
@@ -585,20 +472,7 @@ namespace radarsystem
                     //g.DrawString();
                 }
             }
-        //    MessageBox.Show("ja");
-           /*  if (radioButton14.Checked==true)       //指挥控制单独处理
-             {
-                 //this.tabControl1.SelectedIndex = 1;
-                 
-              //   MessageBox.Show("ha");
-                for (int i = 0; i < command_listmix[flag].Count; i++)
-                {
-                    //double类型的坐标转换成int
-                //    MessageBox.Show(i.ToString());
-                    list_trace.Add(new Point((int)command_listmix[flag][i].X, (int)command_listmix[flag][i].Y));
-                    //g.DrawString();
-                }
-            }*/
+       
             if (list_trace.Count == 1)
             {
                 one.X = list_trace[0].X - pictureBox4.Left + cir_Point.X;
@@ -858,9 +732,8 @@ namespace radarsystem
         private void featurecomboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             
-            //int showIndex = featurecomboBox1.SelectedIndex;
             string selectedText = featurecomboBox1.SelectedItem.ToString();
-           // int selectedId =(int) Convert.ToInt64(selectedText);
+
             int index = arr_tar.IndexOf(selectedText);
             //int index =(int) selectedId;
             FeatureModel feature = new FeatureModel();
@@ -982,12 +855,11 @@ namespace radarsystem
             featurelistView.GridLines = true;
             featurelistView.EndUpdate();
 
-            //画出频率分析轨迹
-            //draw_frequency_trace(index);
-            //弹出新窗口，绘制频率曲线
+            //弹出新窗口，绘制频率分析轨迹
             FrequencyForm frequentForm = new FrequencyForm();
             frequentForm.Show();
-            frequentForm.draw_fft_trail(fftList, ifftList, color[index]);
+            frequentForm.draw_fft_trail(fftList, color[index]);
+            frequentForm.draw_ifft_trail(ifftList, color[index]);
                 
           
         }
@@ -1468,7 +1340,7 @@ namespace radarsystem
             Graphics g = Xpanel.CreateGraphics();
             double start = -1;
             int sLoc = 0;
-            int addition = 40;
+            int addition = 50;
             for (int i = 0; i < 11; i++)
             {
                 g.DrawString((start + 0.2 * i).ToString(), new Font(FontFamily.GenericMonospace, 10f), Brushes.Black, new PointF(sLoc + addition * i, 0));
@@ -1485,7 +1357,7 @@ namespace radarsystem
             Graphics g = Ypanel.CreateGraphics();
             double start = 1;
             int sLoc = 0;
-            int addition = 40;
+            int addition = 50;
             for (int i = 0; i < 11; i++)
             {
                 g.DrawString((start - 0.2 * i).ToString(), new Font(FontFamily.GenericMonospace, 10f), Brushes.Black, new PointF(0, sLoc + addition * i));

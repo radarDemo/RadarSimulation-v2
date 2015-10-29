@@ -16,42 +16,27 @@ namespace radarsystem
             InitializeComponent();
         }
 
-        public void draw_fft_trail(List<Point> fftList,List<Point> ifftList,Color c)
+        public void draw_fft_trail(List<Point> fftList,Color c)
         {
-            //int index = (int)obj;
-            List<Point> list_trace = new List<Point>();
-            List<Point> fft_trace = new List<Point>();
-            List<Point> ifft_trace = new List<Point>();
 
-            double distance1, distance2;
-            distance1 = 7 * frequentpanel.Width / 20;
+            List<Point> fft_trace = new List<Point>();
+           
             Graphics g;
             SolidBrush myBrush = new SolidBrush(c);//画刷
             Pen p = new Pen(c, 2);
             g = frequentpanel.CreateGraphics();
-            Point point;
-            Point point_diff;
-            Point cir_Point = new Point(0, 0);
+
             Point one = new Point(0, 0);
             Point two = new Point(0, 0);
-            cir_Point.X = frequentpanel.Width / 10 * 5;
-            cir_Point.Y = frequentpanel.Height / 10 * 5;
+
 
             //检测傅立叶和反傅立叶中是否有点不再波形图内
             for (int i = 0; i < fftList.Count;i++ )
             {
-                if (fftList[i].X > 502 || fftList[i].X < 0 || fftList[i].Y > 460 || fftList[i].Y < 0)
+                if (fftList[i].X > 251 || fftList[i].X < -251 || fftList[i].Y > 230 || fftList[i].Y < -230)
                     continue;
                 fft_trace.Add(fftList[i]);
             }
-
-            for (int i = 0; i < ifftList.Count; i++)
-            {
-                if (ifftList[i].X > 502 || ifftList[i].X < 0 || ifftList[i].Y > 460 || ifftList[i].Y < 0)
-                    continue;
-                ifft_trace.Add(ifftList[i]);
-            }
-
 
                 //傅立叶
             if (fft_trace.Count == 0)
@@ -60,8 +45,8 @@ namespace radarsystem
             }
             else if (fft_trace.Count == 1)
             {
-                one.X = fft_trace[0].X;
-                one.Y = fft_trace[0].Y;
+                one.X = fft_trace[0].X + 250;
+                one.Y = fft_trace[0].Y + 250;
                 g.FillEllipse(myBrush, new Rectangle(one.X - 3,
                     one.Y - 3, 6, 6));//画实心椭圆
             }
@@ -69,21 +54,11 @@ namespace radarsystem
             {
                 for (int i = 0; i < fft_trace.Count - 1; i++)
                 {
-                    /*point = fftList[i];
-                    point_diff = point;
-                    point_diff.X = point.X - pictureBox4.Left;
-                    point_diff.Y = point.Y - pictureBox4.Top;
-                    distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
-                    if (distance2 - distance1 > 0)
-                        continue;
-                   
-                    one.X = cir_Point.X + point_diff.X;
-                    one.Y = cir_Point.Y + point_diff.Y;
-                    two.X = fftList[i + 1].X - pictureBox4.Left + cir_Point.X;
-                    two.Y = fftList[i + 1].Y - pictureBox4.Top + cir_Point.Y;*/
 
-                    one = fft_trace[i];
-                    two = fft_trace[i + 1];
+                    one.X = fft_trace[i].X + 250;
+                    one.Y = fft_trace[i].Y + 250;
+                    two.X = fft_trace[i + 1].X + 250;
+                    two.Y = fft_trace[i + 1].Y + 250;
                     g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
 
@@ -97,43 +72,50 @@ namespace radarsystem
                 }
             }
 
+            
+        }
 
-            one = new Point(0, 0);
-            two = new Point(0, 0);
+        public void draw_ifft_trail(List<Point> ifftList, Color c)
+        {
+            List<Point> ifft_trace = new List<Point>();
+            Graphics g;
+            SolidBrush myBrush = new SolidBrush(c);//画刷
+            Pen p = new Pen(c, 2);
+            g = frequentpanel.CreateGraphics();
 
-            //反傅立叶
-            if(ifft_trace.Count == 0)
+            Point one = new Point(0, 0);
+            Point two = new Point(0, 0);
+
+
+            for (int i = 0; i < ifftList.Count; i++)
+            {
+                if (ifftList[i].X > 251 || ifftList[i].X < -251 || ifftList[i].Y > 230 || ifftList[i].Y < -230)
+                    continue;
+
+                ifft_trace.Add(ifftList[i]);
+            }
+
+            if (ifft_trace.Count == 0)
             {
 
             }
             else if (ifft_trace.Count == 1)
             {
-                one.X = ifft_trace[0].X;
-                one.Y = ifft_trace[0].Y;
+                one.X = ifft_trace[0].X+250;
+                one.Y = ifft_trace[0].Y+250;
                 g.FillEllipse(myBrush, new Rectangle(one.X - 3,
                   one.Y - 3, 6, 6));//画实心椭圆
             }
             else
             {
-                for (int i = 0; i < ifftList.Count - 1; i++)
+                for (int i = 0; i < ifft_trace.Count - 1; i++)
                 {
-                    /*point = ifftList[i];
-                    point_diff = point;
-                    point_diff.X = point.X - pictureBox4.Left;
-                    point_diff.Y = point.Y - pictureBox4.Top;
-                    distance2 = Math.Sqrt(point_diff.X * point_diff.X + point_diff.Y * point_diff.Y);
-                    if (distance2 - distance1 > 0)
-                        continue;*/
-                    //        g.FillEllipse(myBrush, new Rectangle(cir_Point.X + point_diff.X - 3, cir_Point.Y + point_diff.Y - 3, 3, 3));//画实心椭圆
-                    //    g.DrawLine(new Pen(Color.Red), point_diff.X, point_diff.Y, point_diff.X, point_diff.Y);
-                    //    g.DrawLine(new Pen(Color.Red), 200, 200,210, 210);
-                    /*one.X = cir_Point.X + point_diff.X;
-                    one.Y = cir_Point.Y + point_diff.Y;
-                    two.X = ifftList[i + 1].X - pictureBox4.Left + cir_Point.X;
-                    two.Y = ifftList[i + 1].Y - pictureBox4.Top + cir_Point.Y;
-                     * */
-                    one = ifft_trace[i];
-                    two = ifft_trace[i + 1];
+                    //坐标变换，图中中心变为坐标原点
+                    one.X = ifft_trace[i].X + 250;
+                    one.Y = ifft_trace[i].Y + 250;
+
+                    two.X = ifft_trace[i + 1].X + 250;
+                    two.Y = ifft_trace[i + 1].Y + 250;
                     g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
 
@@ -180,7 +162,7 @@ namespace radarsystem
             Graphics g = xpanel.CreateGraphics();
             double start = -1;
             int sLoc = 0;
-            int addition = 40;
+            int addition = 50;
             for (int i = 0; i < 11; i++)
             {
                 g.DrawString((start + 0.2 * i).ToString(), new Font(FontFamily.GenericMonospace, 10f), Brushes.Black, new PointF(sLoc + addition * i, 0));
@@ -192,7 +174,7 @@ namespace radarsystem
             Graphics g = ypanel.CreateGraphics();
             double start = 1;
             int sLoc = 0;
-            int addition = 40;
+            int addition = 50;
             for (int i = 0; i < 11; i++)
             {
                 g.DrawString((start - 0.2 * i).ToString(), new Font(FontFamily.GenericMonospace, 10f), Brushes.Black, new PointF(0, sLoc + addition * i));
