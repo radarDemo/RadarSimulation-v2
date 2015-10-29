@@ -1488,7 +1488,7 @@ namespace radarsystem
                 readTxt();
 
             }
-            if (radioButton4.Checked == true)  //选中了第4个单选按钮，即选择了声呐
+            if (radioButton4.Checked == true)  //选中了第4个单选按钮，即选择了声呐（主动）
             {
 
                 //  button_goback.Visible = true;
@@ -1507,6 +1507,20 @@ namespace radarsystem
                // drawtrace();
             //    readTxt();
 
+            }
+            if(radioButton13.Checked == true) //选中了声呐（被动）
+            {
+                pictureBox4.BackgroundImage = global::radarsystem.Properties.Resources.SONAR;  //还没替换为多基地雷达图标
+                pictureBox4.Visible = true;
+                buttonDectecModeling.Visible = true;
+                label_sel_radartype.Visible = true;
+                label_sel_radartype.Text = "声呐主动";
+                groupBox1.Visible = false;
+                scene = Scene.PAS_SONAR;
+                //清空combobox的值
+                this.featurecomboBox1.Items.Clear();
+                pictureBox4.Left = (int)screenX;
+                pictureBox4.Top = (int)screenY; 
             }
             if (radioButton5.Checked == true)  //选中了第5个单选按钮，即选择了电子对抗
             {

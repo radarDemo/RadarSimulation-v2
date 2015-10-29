@@ -338,6 +338,7 @@ namespace radarsystem
             this.radioButton13.TabStop = true;
             this.radioButton13.Text = "声呐(被动)";
             this.radioButton13.UseVisualStyleBackColor = true;
+            this.radioButton13.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
             // groupBox3
             // 
