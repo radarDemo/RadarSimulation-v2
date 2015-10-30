@@ -9,10 +9,12 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 //using System.Runtime.InteropServices;
 using System.Net.NetworkInformation;
+
 namespace udpserver
 {
     class Program
     {
+      //  static int MAX_TARGET_NUM = 20;
         static int num=20;     //客户端允许开启的个数
        static void Main(string[] args)
         {
@@ -176,7 +178,10 @@ namespace udpserver
          private  static void SendData()
         {
 
-            StructDemo sd;
+            StructDemo sd;      //报文数组，每个报文里面有一个目标,
+           
+          
+             //通过修改结构体中经纬度变量，模拟轨迹         
             sd.scsmhead.length = 200;
             sd.scsmhead.recv = 127001;
             sd.scsmhead.reserve = 0;
@@ -263,8 +268,11 @@ namespace udpserver
             sd.srcTgtTrk.nModel = 1;
             sd.srcTgtTrk.nReserve3 = 1;
             sd.srcTgtTrk.nRadarT = 1;
-         
 
+            
+           
+         
+         
             int size = 0;
             //此处使用非安全代码来获取到StructDemo的值
             //unsafe
@@ -272,14 +280,14 @@ namespace udpserver
             //    size = Marshal.SizeOf(sd);
             //}
              unsafe
-             {              
+             {    
                  size = Marshal.SizeOf(sd);
              }
              
              //Console.WriteLine(size);
                      
         
-            int i = 0;
+            int i_num = 0;
             IPAddress HostIP = IPAddress.Parse("127.0.0.1");
 
             int []port = new int[num]; //创建20个udp sockets，对应的客户端也可以打开20个            
@@ -296,19 +304,28 @@ namespace udpserver
             
             while (true)
             {
-                sd.srcTgtTrk.dLat = 8 * i+50;
-                sd.srcTgtTrk.dLon = 8 * i+50;
-                byte[] bytes = StructToBytes(sd, size);            
+                sd.srcTgtTrk.dLat = 8 * i_num+50;
+                sd.srcTgtTrk.dLon = 8 * i_num+50;            
+                //sd[0]模拟的是匀速直线运动
+                //sd[1]模拟的是匀加速直线运动
+            //    sd[1].srcTgtTrk.dLat = 2 * i_num*i_num + 50;
+            //    sd[1].srcTgtTrk.dLon = 2 * i_num*i_num + 50;  
+                byte[] bytes = StructToBytes(sd, size);
+           //     byte[] bytes1 = StructToBytes(sd[1], size); 
                 try
                 {
                     
                     Console.WriteLine(bytes[1]);
-                    for (int ct = 0; ct < 20;ct++ )
-                        udpServer[ct].Send(bytes, bytes.Length, iep[ct]);
+                    for (int ct = 0; ct < 20; ct++)
+                    {
+                        udpServer[ct].Send(bytes, bytes.Length, iep[ct]);       //模拟报文发送
+             //           udpServer[ct].Send(bytes1, bytes1.Length, iep[ct]);
+                    }
+                       
                     //   udpServer1.Send(bytes, bytes.Length, host1);
-                    i++;
-                    if ((i + 1) % 30 == 0)
-                        i = 0;
+                    i_num++;
+                    if ((i_num + 1) % 30 == 0)
+                        i_num = 0;
                     Thread.Sleep(2000);  //为了让客户端更有效接受
                   
 
