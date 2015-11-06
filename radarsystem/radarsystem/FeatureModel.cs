@@ -516,7 +516,7 @@ namespace radarsystem
                 return null;
             for (int i = 0; i < countN; i++)
             {
-                sourceData[i] = sourceData[i].Conjugate();
+                sourceData[i] = sourceData[i].Conjugate();  //共轭运算
             }
 
             Complex[] interVar = new Complex[countN];
